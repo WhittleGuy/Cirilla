@@ -1,5 +1,4 @@
-import { APIMessage } from 'discord-api-types'
-import { CommandInteraction, CacheType, Message } from 'discord.js'
+import { CommandInteraction, CacheType } from 'discord.js'
 
 export const FailureEmbed = (
   interaction: CommandInteraction<CacheType>,
