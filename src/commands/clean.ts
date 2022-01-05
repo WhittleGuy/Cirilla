@@ -21,12 +21,13 @@ export default {
   callback: ({ interaction, channel }) => {
     const amount = interaction.options.getNumber('number')
     if (amount < 1 || amount > 99) {
-      const invalidEmbed = {
-        color: 0xff8e14,
-        description: 'Specify a number of messages between 1 and 99',
-      }
       return interaction.reply({
-        embeds: [invalidEmbed],
+        embeds: [
+          {
+            color: 0xff8e14,
+            description: 'Specify a number of messages between 1 and 99',
+          },
+        ],
         ephemeral: true,
       })
     }
@@ -34,18 +35,26 @@ export default {
     channel
       .bulkDelete(amount)
       .then(() => {
-        const successEmbed = {
-          color: 0x00ff00,
-          description: `Cleaned up ${amount} messages`,
-        }
-        return interaction.reply({ embeds: [successEmbed] })
+        return interaction.reply({
+          embeds: [
+            {
+              color: 0x00ff00,
+              description: `Cleaned up ${amount} messages`,
+            },
+          ],
+          ephemeral: true,
+        })
       })
       .catch((err) => {
-        const failureEmbed = {
-          color: 0xff0000,
-          description: `Something went wrong:\n${err}`,
-        }
-        return interaction.reply({ embeds: [failureEmbed], ephemeral: true })
+        return interaction.reply({
+          embeds: [
+            {
+              color: 0xff0000,
+              description: `Something went wrong:\n${err}`,
+            },
+          ],
+          ephemeral: true,
+        })
       })
   },
 } as ICommand
