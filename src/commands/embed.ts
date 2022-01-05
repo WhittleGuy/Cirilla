@@ -43,9 +43,9 @@ export default {
     }
 
     channel.send({ embeds: [embed] })
-    return interaction.reply({
+    interaction.reply({
       content: 'Embed posted',
-      ephemeral: true,
     })
+    setTimeout(() => interaction.deleteReply(), 3000)
   },
 } as ICommand

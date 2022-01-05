@@ -35,15 +35,15 @@ export default {
     channel
       .bulkDelete(amount)
       .then(() => {
-        return interaction.reply({
+        interaction.reply({
           embeds: [
             {
               color: 0x00ff00,
               description: `Cleaned up ${amount} messages`,
             },
           ],
-          ephemeral: true,
         })
+        setTimeout(() => interaction.deleteReply(), 3000)
       })
       .catch((err) => {
         return interaction.reply({
