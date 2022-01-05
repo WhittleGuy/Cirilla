@@ -21,50 +21,50 @@ export default {
       interaction.member) as GuildMember
     const user = member.user
 
-    const userInfoEmbed = {
-      color: 0xffee8f,
-      title: user.tag,
-      thumbnail: { url: user.displayAvatarURL() },
-      fields: [
+    return interaction.reply({
+      embeds: [
         {
-          name: 'Bot',
-          value: user.bot ? 'Yes' : 'No',
-          inline: true,
-        },
-        {
-          name: 'Nickname',
-          value: member.nickname || 'None',
-          inline: true,
-        },
-        {
-          name: 'Roles',
-          value: member.roles.cache
-            .map((role: Role) => role)
-            .slice(0, -1)
-            .join(' '),
-          inline: true,
-        },
-        {
-          name: 'Joined Server',
-          value:
-            new Date(member.joinedTimestamp).toLocaleDateString() +
-            '\n' +
-            new Date(member.joinedTimestamp).toLocaleTimeString(),
-          inline: true,
-        },
-        {
-          name: 'Joined Discord',
-          value:
-            new Date(user.createdTimestamp).toLocaleDateString() +
-            '\n' +
-            new Date(user.createdTimestamp).toLocaleTimeString(),
-          inline: true,
+          color: 0xffee8f,
+          title: user.tag,
+          thumbnail: { url: user.displayAvatarURL() },
+          fields: [
+            {
+              name: 'Bot',
+              value: user.bot ? 'Yes' : 'No',
+              inline: true,
+            },
+            {
+              name: 'Nickname',
+              value: member.nickname || 'None',
+              inline: true,
+            },
+            {
+              name: 'Roles',
+              value: member.roles.cache
+                .map((role: Role) => role)
+                .slice(0, -1)
+                .join(' '),
+              inline: true,
+            },
+            {
+              name: 'Joined Server',
+              value:
+                new Date(member.joinedTimestamp).toLocaleDateString() +
+                '\n' +
+                new Date(member.joinedTimestamp).toLocaleTimeString(),
+              inline: true,
+            },
+            {
+              name: 'Joined Discord',
+              value:
+                new Date(user.createdTimestamp).toLocaleDateString() +
+                '\n' +
+                new Date(user.createdTimestamp).toLocaleTimeString(),
+              inline: true,
+            },
+          ],
         },
       ],
-    }
-
-    return interaction.reply({
-      embeds: [userInfoEmbed],
     })
   },
 } as ICommand
