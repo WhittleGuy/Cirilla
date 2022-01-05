@@ -31,21 +31,34 @@ export default {
     },
   ],
 
-  callback: ({ interaction }) => {
+  callback: async ({ interaction }) => {
     const channel = interaction.options.getChannel('channel') as TextChannel
     const title = interaction.options.getString('title')
     const description = interaction.options.getString('description')
 
-    const embed = {
-      color: 0xff9ed7,
-      title: title,
-      description: description,
+    const postEmbed = await channel
+      .send({
+        embeds: [
+          {
+            color: 0xff9ed7,
+            title: title,
+            description: description,
+          },
+        ],
+      })
+      .catch(() => {
+        return false
+      })
+    if (postEmbed) {
+      interaction.reply({
+        embeds: [
+          {
+            color: 0x00ff00,
+            description: `Embed posted in <#${channel.id}>`,
+          },
+        ],
+      })
+      setTimeout(() => interaction.deleteReply(), 3000)
     }
-
-    channel.send({ embeds: [embed] })
-    interaction.reply({
-      content: 'Embed posted',
-    })
-    setTimeout(() => interaction.deleteReply(), 3000)
   },
 } as ICommand
