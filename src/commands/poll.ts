@@ -82,7 +82,6 @@ export default {
           return
         })
         if (!reaction) {
-          console.log('Bad reaction')
           interaction.editReply({
             embeds: [
               {
