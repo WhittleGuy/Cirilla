@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { TONE_INDICATORS } from '../constants/TONE_INDICATORS'
+import { TONE_INDICATORS, TONE } from '../constants/TONE_INDICATORS'
 
 export default {
   category: 'Utility',
@@ -20,7 +20,9 @@ export default {
     const indicator = interaction.options.getString('indicator')
 
     if (indicator) {
-      const match = TONE_INDICATORS.find((item) => item.name === indicator)
+      const match: TONE = TONE_INDICATORS.find(
+        (item) => item.name === indicator
+      )
       if (!match) {
         const failureEmbed = {
           color: 0xff0000,

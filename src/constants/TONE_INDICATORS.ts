@@ -1,4 +1,11 @@
-export const TONE_INDICATORS = [
+export interface TONE {
+  name: string
+  shortDesc: string
+  longDesc: string
+  duplicate: boolean
+}
+
+export const TONE_INDICATORS: TONE[] = [
   { name: '/j', shortDesc: 'Joking', longDesc: '', duplicate: false },
   { name: '/hj', shortDesc: 'Half Joking', longDesc: '', duplicate: false },
   { name: '/s', shortDesc: 'Sarcastic', longDesc: '', duplicate: false },
