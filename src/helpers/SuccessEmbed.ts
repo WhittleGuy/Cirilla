@@ -2,7 +2,8 @@ import { CommandInteraction, CacheType } from 'discord.js'
 
 const SuccessEmbed = (
   interaction: CommandInteraction<CacheType>,
-  msg?: string
+  msg?: string,
+  show?: boolean
 ): void => {
   const successEmbed = {
     color: 0x00ff00,
@@ -14,7 +15,7 @@ const SuccessEmbed = (
     interaction.editReply({ embeds: [successEmbed] })
   } else {
     //console.log('Try reply')
-    interaction.reply({ embeds: [successEmbed], ephemeral: true })
+    interaction.reply({ embeds: [successEmbed], ephemeral: !show })
   }
   return
 }
