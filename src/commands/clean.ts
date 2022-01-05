@@ -26,11 +26,13 @@ export default {
       return FailureEmbed(interaction, 'Specify a number between 1 and 99')
     }
 
-    const success = await channel.bulkDelete(amount).catch((err) => {
-      return FailureEmbed(interaction, err)
-    })
-    if (!success) {
-      return SuccessEmbed(interaction, `Cleaned up ${amount} messages`)
-    }
+    await channel
+      .bulkDelete(amount)
+      .then(() => {
+        return SuccessEmbed(interaction, `Cleaned up ${amount} messages`)
+      })
+      .catch((err) => {
+        return FailureEmbed(interaction, err)
+      })
   },
 } as ICommand
