@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed } from '../helpers/FailureEmbed'
+import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
@@ -33,26 +33,20 @@ export default {
     },
   ],
 
-  callback: ({ interaction }) => {
+  callback: async ({ interaction }) => {
     const member = interaction.options.getMember('user') as GuildMember
     const reason = interaction.options.getString('reason')
     let length = interaction.options.getNumber('length') * 1000
     length < 1 ? (length = 300000) : length
     if (!member) return FailureEmbed(interaction, 'Tag a valid user')
 
-    member
-      .timeout(length, reason)
-      .then(() => {
-        const successEmbed = {
-          color: 0x00ff00,
-          description: `${member.user.tag} has been timed out for ${
-            length / 1000
-          }s`,
-        }
-        return interaction.reply({ embeds: [successEmbed], ephemeral: true })
-      })
-      .catch((err) => {
-        return FailureEmbed(interaction, err)
-      })
+    const timed = await member.timeout(length, reason).catch((err) => {
+      return FailureEmbed(interaction, err)
+    })
+    if (timed)
+      SuccessEmbed(
+        interaction,
+        `${member.user.tag} has been timed out for ${length / 1000}s`
+      )
   },
 } as ICommand

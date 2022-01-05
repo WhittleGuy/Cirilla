@@ -1,6 +1,6 @@
 import { Message, TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed } from '../helpers/FailureEmbed'
+import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Utility',
@@ -92,14 +92,10 @@ export default {
       }
 
       if (await postRaffle(channel, title, description)) {
-        interaction.editReply({
-          embeds: [
-            {
-              color: 0x00ff00,
-              description: `Raffle post has been created in <#${channel.id}>`,
-            },
-          ],
-        })
+        SuccessEmbed(
+          interaction,
+          `Raffle post has been created in <#${channel.id}>`
+        )
       }
 
       // Select a winner
@@ -150,14 +146,7 @@ export default {
 
       const winner = await pickWinner(channel, message)
       if (!winner) return FailureEmbed(interaction)
-      interaction.editReply({
-        embeds: [
-          {
-            color: 0x00ff00,
-            description: `${winner.tag} has won the raffle`,
-          },
-        ],
-      })
+      return SuccessEmbed(interaction, `${winner.tag} has won the raffle`)
     }
   },
 } as ICommand

@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureEmbed } from '../helpers/FailureEmbed'
+import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
@@ -19,27 +19,18 @@ export default {
     },
   ],
 
-  callback: ({ interaction, channel }) => {
+  callback: async ({ interaction, channel }) => {
     const amount = interaction.options.getNumber('number')
+
     if (amount < 1 || amount > 99) {
       return FailureEmbed(interaction, 'Specify a number between 1 and 99')
     }
 
-    channel
-      .bulkDelete(amount)
-      .then(() => {
-        interaction.reply({
-          embeds: [
-            {
-              color: 0x00ff00,
-              description: `Cleaned up ${amount} messages`,
-            },
-          ],
-        })
-        setTimeout(() => interaction.deleteReply(), 3000)
-      })
-      .catch((err) => {
-        return FailureEmbed(interaction, err)
-      })
+    const success = await channel.bulkDelete(amount).catch((err) => {
+      return FailureEmbed(interaction, err)
+    })
+    if (!success) {
+      return SuccessEmbed(interaction, `Cleaned up ${amount} messages`)
+    }
   },
 } as ICommand

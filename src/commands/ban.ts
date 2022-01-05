@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed } from '../helpers/FailureEmbed'
+import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
@@ -44,15 +44,7 @@ export default {
         days: 7,
       })
       .then(() => {
-        return interaction.reply({
-          embeds: [
-            {
-              color: 0x00ff00,
-              description: `${member.user.tag} has been banned`,
-            },
-          ],
-          ephemeral: true,
-        })
+        return SuccessEmbed(interaction, `${member.user.tag} has been banned`)
       })
       .catch((err) => {
         return FailureEmbed(interaction, err)

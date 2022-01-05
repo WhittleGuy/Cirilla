@@ -1,6 +1,6 @@
 import { ICommand } from 'wokcommands'
 import { RULES } from '../constants/RULES'
-import { FailureEmbed } from '../helpers/FailureEmbed'
+import { FailureEmbed } from '../helpers'
 
 interface RULE_CATEGORY {
   name: string

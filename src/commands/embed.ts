@@ -1,6 +1,6 @@
 import { TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed } from '../helpers/FailureEmbed'
+import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Utility',
@@ -51,15 +51,7 @@ export default {
         return FailureEmbed(interaction, err)
       })
     if (postEmbed) {
-      interaction.reply({
-        embeds: [
-          {
-            color: 0x00ff00,
-            description: `Embed posted in <#${channel.id}>`,
-          },
-        ],
-      })
-      setTimeout(() => interaction.deleteReply(), 3000)
+      return SuccessEmbed(interaction, `Embed posted in <#${channel.id}>`)
     }
   },
 } as ICommand

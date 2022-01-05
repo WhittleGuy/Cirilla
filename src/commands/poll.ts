@@ -1,5 +1,6 @@
+import { TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed } from '../helpers/FailureEmbed'
+import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Utility',
@@ -10,6 +11,12 @@ export default {
   testOnly: true,
   guildOnly: true,
   options: [
+    {
+      name: 'channel',
+      description: 'The channel to post the poll in',
+      type: 7,
+      required: true,
+    },
     {
       name: 'title',
       description: 'The title of the poll',
@@ -30,6 +37,7 @@ export default {
     const EMOJI = /\p{Extended_Pictographic}/u
     const EMOTE_ID = /\d{18}/
 
+    const channel = interaction.options.getChannel('channel') as TextChannel
     const title = interaction.options.getString('title')
     const options = interaction.options.getString('options')
     const optionArray = options.split('|')
@@ -49,7 +57,7 @@ export default {
     }
 
     // Create poll
-    const poll = await interaction.channel.send({
+    const poll = await channel.send({
       embeds: [
         {
           color: 0xff9ed7,
@@ -76,13 +84,6 @@ export default {
     }
 
     if (await addReactions(emoteArray))
-      interaction.editReply({
-        embeds: [
-          {
-            color: 0x00ff00,
-            description: 'Poll has been created',
-          },
-        ],
-      })
+      return SuccessEmbed(interaction, 'Poll has been created')
   },
 } as ICommand

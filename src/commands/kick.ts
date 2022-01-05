@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed } from '../helpers/FailureEmbed'
+import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
@@ -26,7 +26,7 @@ export default {
     },
   ],
 
-  callback: ({ interaction }) => {
+  callback: async ({ interaction }) => {
     const member = interaction.options.getMember('user') as GuildMember
     const reason = interaction.options.getString('reason')
 
@@ -38,17 +38,9 @@ export default {
       return FailureEmbed(interaction, 'Cannot kick that user')
     }
 
-    member
-      .kick(reason)
-      .then(() => {
-        const successEmbed = {
-          color: 0x00ff00,
-          description: `${member.user.tag} has been kicked`,
-        }
-        return interaction.reply({ embeds: [successEmbed], ephemeral: true })
-      })
-      .catch((err) => {
-        return FailureEmbed(interaction, err)
-      })
+    const kicked = await member.kick(reason).catch((err) => {
+      return FailureEmbed(interaction, err)
+    })
+    if (kicked) SuccessEmbed(interaction, `${member.user.tag} has been kicked`)
   },
 } as ICommand

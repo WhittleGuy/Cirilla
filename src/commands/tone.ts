@@ -1,6 +1,6 @@
 import { ICommand } from 'wokcommands'
 import { TONE_INDICATORS, TONE } from '../constants/TONE_INDICATORS'
-import { FailureEmbed } from '../helpers/FailureEmbed'
+import { FailureEmbed } from '../helpers'
 
 export default {
   category: 'Utility',

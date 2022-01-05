@@ -1,7 +1,6 @@
 import { TextChannel } from 'discord.js'
-import { execPath } from 'process'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed } from '../helpers/FailureEmbed'
+import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Utility',
@@ -35,18 +34,12 @@ export default {
       await channel.send(msg)
     }
 
-    if (sendMessage(channel, message)) {
-      interaction.reply({
-        embeds: [
-          {
-            color: 0x00ff00,
-            description: `Message sent in ${channel.toString()}\n\`\`\`${message}\n\`\`\``,
-          },
-        ],
-        ephemeral: true,
-      })
-    } else {
+    if (!sendMessage(channel, message)) {
       return FailureEmbed(interaction)
     }
+    return SuccessEmbed(
+      interaction,
+      `Message sent in ${channel.toString()}\n\`\`\`${message}\n\`\`\``
+    )
   },
 } as ICommand

@@ -1,6 +1,7 @@
+import { fail } from 'assert'
 import { CommandInteraction, CacheType } from 'discord.js'
 
-export const FailureEmbed = (
+const FailureEmbed = (
   interaction: CommandInteraction<CacheType>,
   err?: string
 ): void => {
@@ -19,3 +20,5 @@ export const FailureEmbed = (
   }
   return
 }
+
+export default FailureEmbed

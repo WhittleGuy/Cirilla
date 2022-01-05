@@ -1,4 +1,5 @@
 import { ICommand } from 'wokcommands'
+import { FailureEmbed } from '../helpers'
 
 export default {
   category: 'Utility',
@@ -22,11 +23,7 @@ export default {
         (cmd) => cmd.names[0] === command
       )[0]
       if (!match) {
-        const failureEmbed = {
-          color: 0xff0000,
-          description: `Command "${command}" not found`,
-        }
-        return interaction.reply({ embeds: [failureEmbed], ephemeral: true })
+        return FailureEmbed(interaction, `Command "${command}" not found`)
       }
 
       const commandEmbed = {
