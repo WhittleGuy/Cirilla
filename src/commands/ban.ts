@@ -1,5 +1,6 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
+import { FailureEmbed } from '../helpers/FailureEmbed'
 
 export default {
   category: 'Moderation',
@@ -25,24 +26,16 @@ export default {
     },
   ],
 
-  callback: ({ interaction }) => {
+  callback: async ({ interaction }) => {
     const member = interaction.options.getMember('user') as GuildMember
     const reason = interaction.options.getString('reason')
 
     if (!member) {
-      const failureEmbed = {
-        color: 0xff0000,
-        description: 'Please tag the user to ban',
-      }
-      return interaction.reply({ embeds: [failureEmbed], ephemeral: true })
+      return FailureEmbed(interaction, 'Tag a valid user')
     }
 
     if (!member.bannable) {
-      const failureEmbed = {
-        color: 0xff0000,
-        description: 'Cannot ban that user',
-      }
-      return interaction.reply({ embeds: [failureEmbed], ephemeral: true })
+      return FailureEmbed(interaction, 'Cannot ban that user')
     }
 
     member
@@ -51,18 +44,18 @@ export default {
         days: 7,
       })
       .then(() => {
-        const successEmbed = {
-          color: 0x00ff00,
-          description: `${member.user.tag} has been banned`,
-        }
-        return interaction.reply({ embeds: [successEmbed], ephemeral: true })
+        return interaction.reply({
+          embeds: [
+            {
+              color: 0x00ff00,
+              description: `${member.user.tag} has been banned`,
+            },
+          ],
+          ephemeral: true,
+        })
       })
       .catch((err) => {
-        const failureEmbed = {
-          color: 0xff0000,
-          description: `Something went wrong:\n${err}`,
-        }
-        return interaction.reply({ embeds: [failureEmbed], ephemeral: true })
+        return FailureEmbed(interaction, err)
       })
   },
 } as ICommand

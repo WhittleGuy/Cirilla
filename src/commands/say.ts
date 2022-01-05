@@ -1,6 +1,7 @@
 import { TextChannel } from 'discord.js'
 import { execPath } from 'process'
 import { ICommand } from 'wokcommands'
+import { FailureEmbed } from '../helpers/FailureEmbed'
 
 export default {
   category: 'Utility',
@@ -45,15 +46,7 @@ export default {
         ephemeral: true,
       })
     } else {
-      interaction.reply({
-        embeds: [
-          {
-            color: 0xff0000,
-            description: `Something went wrong`,
-          },
-        ],
-        ephemeral: true,
-      })
+      return FailureEmbed(interaction)
     }
   },
 } as ICommand

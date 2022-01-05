@@ -1,5 +1,6 @@
 import { ICommand } from 'wokcommands'
 import { TONE_INDICATORS, TONE } from '../constants/TONE_INDICATORS'
+import { FailureEmbed } from '../helpers/FailureEmbed'
 
 export default {
   category: 'Utility',
@@ -24,11 +25,10 @@ export default {
         (item) => item.name === indicator
       )
       if (!match) {
-        const failureEmbed = {
-          color: 0xff0000,
-          description: `No indicator matching ${indicator} found`,
-        }
-        return interaction.reply({ embeds: [failureEmbed], ephemeral: true })
+        return FailureEmbed(
+          interaction,
+          `No indicator matching ${indicator} found`
+        )
       }
       const toneEmbed = {
         color: 0xff9ed7,

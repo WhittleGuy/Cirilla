@@ -1,5 +1,6 @@
 import { ICommand } from 'wokcommands'
 import { RULES } from '../constants/RULES'
+import { FailureEmbed } from '../helpers/FailureEmbed'
 
 interface RULE_CATEGORY {
   name: string
@@ -23,7 +24,6 @@ export default {
 
   callback: ({ interaction }) => {
     const show = interaction.options.getBoolean('show')
-    console.log(show)
     const categories = []
     const sortedRules: RULE_CATEGORY[] = []
 
@@ -47,16 +47,19 @@ export default {
         value: '- ' + category.rules.join('\n- '),
       })
     }
-    console.log(show)
-    interaction.reply({
-      embeds: [
-        {
-          color: 0xff9ed7,
-          title: 'Rules', //@ts-ignore
-          fields: [rulesEmbedFields],
-        },
-      ],
-      ephemeral: !show,
-    })
+    interaction
+      .reply({
+        embeds: [
+          {
+            color: 0xff9ed7,
+            title: 'Rules', //@ts-ignore
+            fields: [rulesEmbedFields],
+          },
+        ],
+        ephemeral: !show,
+      })
+      .catch((err) => {
+        return FailureEmbed(interaction, err)
+      })
   },
 } as ICommand

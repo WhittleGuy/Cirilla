@@ -1,5 +1,6 @@
 import { Message, TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
+import { FailureEmbed } from '../helpers/FailureEmbed'
 
 export default {
   category: 'Utility',
@@ -57,12 +58,6 @@ export default {
   ],
 
   callback: async ({ interaction }) => {
-    // Status embed
-    const failureEmbed = {
-      color: 0xff0000,
-      description: `Something went wrong`,
-    }
-
     // Start a raffle
     if (interaction.options.getSubcommand() === 'start') {
       const channel = interaction.options.getChannel('channel') as TextChannel
@@ -81,16 +76,15 @@ export default {
               },
             ],
           })
-          .catch(() => {
-            interaction.editReply({ embeds: [failureEmbed] })
-            return
+          .catch((err) => {
+            return FailureEmbed(interaction, err)
           })
         if (post) {
           const reaction = await post.react('❤').catch(() => {
             return
           })
           if (!reaction) {
-            interaction.editReply({ embeds: [failureEmbed] })
+            FailureEmbed(interaction)
             return false
           }
         }
@@ -118,13 +112,11 @@ export default {
         const msg: Message = await channel.messages.fetch(message)
 
         if (!msg) {
-          interaction.editReply({ embeds: [failureEmbed] })
-
+          FailureEmbed(interaction)
           return false
         }
         if (msg.reactions.cache.size < 1) {
-          interaction.editReply({ embeds: [failureEmbed] })
-
+          FailureEmbed(interaction)
           return false
         }
 
@@ -149,25 +141,23 @@ export default {
                 },
               ],
             })
-            .catch(() => {
-              return
+            .catch((err) => {
+              return FailureEmbed(interaction, err)
             })
           return winner
         }
       }
 
       const winner = await pickWinner(channel, message)
-      if (!winner) interaction.editReply({ embeds: [failureEmbed] })
-      else {
-        interaction.editReply({
-          embeds: [
-            {
-              color: 0x00ff00,
-              description: `${winner.tag} has won the raffle`,
-            },
-          ],
-        })
-      }
+      if (!winner) return FailureEmbed(interaction)
+      interaction.editReply({
+        embeds: [
+          {
+            color: 0x00ff00,
+            description: `${winner.tag} has won the raffle`,
+          },
+        ],
+      })
     }
   },
 } as ICommand

@@ -1,4 +1,5 @@
 import { ICommand } from 'wokcommands'
+import { FailureEmbed } from '../helpers/FailureEmbed'
 
 export default {
   category: 'Moderation',
@@ -21,15 +22,7 @@ export default {
   callback: ({ interaction, channel }) => {
     const amount = interaction.options.getNumber('number')
     if (amount < 1 || amount > 99) {
-      return interaction.reply({
-        embeds: [
-          {
-            color: 0xff8e14,
-            description: 'Specify a number of messages between 1 and 99',
-          },
-        ],
-        ephemeral: true,
-      })
+      return FailureEmbed(interaction, 'Specify a number between 1 and 99')
     }
 
     channel
@@ -46,15 +39,7 @@ export default {
         setTimeout(() => interaction.deleteReply(), 3000)
       })
       .catch((err) => {
-        return interaction.reply({
-          embeds: [
-            {
-              color: 0xff0000,
-              description: `Something went wrong:\n${err}`,
-            },
-          ],
-          ephemeral: true,
-        })
+        return FailureEmbed(interaction, err)
       })
   },
 } as ICommand

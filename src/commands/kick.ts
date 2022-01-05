@@ -1,5 +1,6 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
+import { FailureEmbed } from '../helpers/FailureEmbed'
 
 export default {
   category: 'Moderation',
@@ -30,19 +31,11 @@ export default {
     const reason = interaction.options.getString('reason')
 
     if (!member) {
-      const failureEmbed = {
-        color: 0xff0000,
-        description: 'Please tag the user to kick',
-      }
-      return interaction.reply({ embeds: [failureEmbed], ephemeral: true })
+      return FailureEmbed(interaction, 'Tag a valid user')
     }
 
     if (!member.kickable) {
-      const failureEmbed = {
-        color: 0xff0000,
-        description: 'Cannot kick that user',
-      }
-      return interaction.reply({ embeds: [failureEmbed], ephemeral: true })
+      return FailureEmbed(interaction, 'Cannot kick that user')
     }
 
     member
@@ -55,11 +48,7 @@ export default {
         return interaction.reply({ embeds: [successEmbed], ephemeral: true })
       })
       .catch((err) => {
-        const failureEmbed = {
-          color: 0xff0000,
-          description: `Something went wrong:\n${err}`,
-        }
-        return interaction.reply({ embeds: [failureEmbed], ephemeral: true })
+        return FailureEmbed(interaction, err)
       })
   },
 } as ICommand

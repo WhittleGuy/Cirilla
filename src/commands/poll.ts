@@ -1,4 +1,5 @@
 import { ICommand } from 'wokcommands'
+import { FailureEmbed } from '../helpers/FailureEmbed'
 
 export default {
   category: 'Utility',
@@ -24,16 +25,6 @@ export default {
   ],
 
   callback: async ({ interaction }) => {
-    // Status embeds
-    const failureEmbed = {
-      color: 0xff0000,
-      description: `Something went wrong`,
-    }
-    const successEmbed = {
-      color: 0x00ff00,
-      description: 'Poll has been created',
-    }
-
     // RegEx to verify emote Ids
     const EMOTE = /^<:[\w\W]+:\d+>$/
     const EMOJI = /\p{Extended_Pictographic}/u
@@ -43,7 +34,7 @@ export default {
     const options = interaction.options.getString('options')
     const optionArray = options.split('|')
     const emoteArray: string[] = []
-
+    await interaction.deferReply({ ephemeral: true })
     // Separate options and verify emote presence
     for (const option of optionArray) {
       const emoteCandidate = option.trim().split(' ')[0] || option
@@ -53,14 +44,10 @@ export default {
       } else if (emoteCandidate.match(EMOJI)) {
         emoteArray.push(emoteCandidate)
       } else {
-        console.log('Emoji check throw')
-        return interaction.reply({
-          embeds: [failureEmbed],
-        })
+        return FailureEmbed(interaction)
       }
     }
 
-    interaction.deferReply({ ephemeral: true })
     // Create poll
     const poll = await interaction.channel.send({
       embeds: [
@@ -72,9 +59,7 @@ export default {
       ],
     })
 
-    if (!poll) {
-      interaction.editReply({ embeds: [failureEmbed] })
-    }
+    if (!poll) return FailureEmbed(interaction)
 
     const addReactions = async (emotes: string[]) => {
       for (const emote of emotes) {
@@ -82,14 +67,7 @@ export default {
           return
         })
         if (!reaction) {
-          interaction.editReply({
-            embeds: [
-              {
-                color: 0xff0000,
-                description: `I don't have access to ${emote}`,
-              },
-            ],
-          })
+          FailureEmbed(interaction)
           poll.delete()
           return false
         }
@@ -98,6 +76,13 @@ export default {
     }
 
     if (await addReactions(emoteArray))
-      interaction.editReply({ embeds: [successEmbed] })
+      interaction.editReply({
+        embeds: [
+          {
+            color: 0x00ff00,
+            description: 'Poll has been created',
+          },
+        ],
+      })
   },
 } as ICommand

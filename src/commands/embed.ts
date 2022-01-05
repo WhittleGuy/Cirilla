@@ -1,5 +1,6 @@
 import { TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
+import { FailureEmbed } from '../helpers/FailureEmbed'
 
 export default {
   category: 'Utility',
@@ -46,8 +47,8 @@ export default {
           },
         ],
       })
-      .catch(() => {
-        return false
+      .catch((err) => {
+        return FailureEmbed(interaction, err)
       })
     if (postEmbed) {
       interaction.reply({

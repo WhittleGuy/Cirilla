@@ -17,7 +17,7 @@ export default {
   ],
 
   callback: ({ interaction }) => {
-    let member = (interaction.options.getMember('user') ||
+    const member = (interaction.options.getMember('user') ||
       interaction.member) as GuildMember
     const user = member.user
 
