@@ -3,7 +3,7 @@ import { FailureEmbed } from '../helpers'
 
 export default class Revolver {
   CHAMBER: number[] | null
-  SEXY_CHANCE: number = 5 // 1 out of X
+  SEXY_CHANCE: number = 100 // 1 out of X
   TIMEOUT_LENGTH: number = 1 // Seconds
 
   constructor() {
