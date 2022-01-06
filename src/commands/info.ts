@@ -2,7 +2,7 @@ import { GuildMember, Role, User } from 'discord.js'
 import { ICommand } from 'wokcommands'
 
 export default {
-  category: 'Utility',
+  category: 'Information',
   description: 'Get information about a user or the server',
   slash: true,
   testOnly: true,

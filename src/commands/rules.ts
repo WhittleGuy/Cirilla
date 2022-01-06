@@ -8,7 +8,7 @@ interface RULE_CATEGORY {
 }
 
 export default {
-  category: 'Utility',
+  category: 'Information',
   description: 'Display the rules of the server',
   slash: true,
   testOnly: true,

@@ -2,7 +2,7 @@ import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
-  category: 'Utility',
+  category: 'Fun',
   description: 'Get information about yourself or another user',
   slash: true,
   testOnly: true,

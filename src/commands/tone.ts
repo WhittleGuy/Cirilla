@@ -3,7 +3,7 @@ import { TONE_INDICATORS, TONE } from '../constants/TONE_INDICATORS'
 import { FailureEmbed } from '../helpers'
 
 export default {
-  category: 'Utility',
+  category: 'Information',
   description: 'Get a list of tone indicator meanings',
   slash: true,
   testOnly: true,

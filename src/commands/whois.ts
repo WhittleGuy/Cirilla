@@ -3,7 +3,7 @@ import { ICommand } from 'wokcommands'
 import { FailureEmbed } from '../helpers'
 
 export default {
-  category: 'Moderation',
+  category: 'Information',
   description: 'Lookup a userId',
   permissions: ['ADMINISTRATOR'],
   // requireRoles: true,
