@@ -24,7 +24,7 @@ client.on('ready', () => {
   new WOKCommands(client, {
     commandsDir: path.join(__dirname, 'commands'),
     typeScript: true,
-    testServers: '701879717015584881',
+    testServers: ['701879717015584881'],
   })
 })
 
@@ -37,7 +37,7 @@ client.on('messageCreate', (msg) => {
         embeds: [
           {
             color: 0xff9ed7,
-            description: 'Use /help to get a list of commands',
+            description: 'Use /commands to get a list of commands',
           },
         ],
       })
