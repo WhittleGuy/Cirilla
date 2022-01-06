@@ -6,11 +6,10 @@ export default {
   description: 'Get information about yourself or another user',
   slash: true,
   testOnly: true,
-  syntax: '[user]',
   options: [
     {
       name: 'dice',
-      description: 'The di(c)e you want to roll',
+      description: 'The di(c)e you want to roll <#d##>',
       type: 3,
       required: true,
     },

@@ -7,7 +7,6 @@ export default {
   description: 'Get a list of tone indicator meanings',
   slash: true,
   testOnly: true,
-  syntax: '[indicator]',
   options: [
     {
       name: 'indicator',

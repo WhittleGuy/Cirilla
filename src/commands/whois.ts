@@ -10,7 +10,6 @@ export default {
   slash: true,
   testOnly: true,
   guildOnly: true,
-  syntax: '<user> [reason]',
   options: [
     {
       name: 'id',

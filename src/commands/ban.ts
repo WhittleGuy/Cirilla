@@ -5,12 +5,11 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 export default {
   category: 'Moderation',
   description: 'Bans a user',
-  permissions: ['ADMINISTRATOR'],
+  permissions: ['BAN_MEMBERS'],
   // requireRoles: true,
   slash: true,
   testOnly: true,
   guildOnly: true,
-  syntax: '<user> [reason]',
   options: [
     {
       name: 'user',

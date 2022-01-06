@@ -9,7 +9,6 @@ export default {
   slash: true,
   testOnly: true,
   guildOnly: true,
-  syntax: '<number>',
   options: [
     {
       name: 'number',

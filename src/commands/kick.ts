@@ -5,12 +5,11 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 export default {
   category: 'Moderation',
   description: 'Kicks a user',
-  permissions: ['ADMINISTRATOR'],
+  permissions: ['KICK_MEMBERS'],
   // requireRoles: true,
   slash: true,
   testOnly: true,
   guildOnly: true,
-  syntax: '<user> [reason]',
   options: [
     {
       name: 'user',

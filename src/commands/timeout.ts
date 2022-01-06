@@ -4,17 +4,16 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
-  description: 'Kicks a user',
-  permissions: ['ADMINISTRATOR'],
+  description: 'Times out a user',
+  permissions: ['MODERATE_MEMBERS'],
   // requireRoles: true,
   slash: true,
   testOnly: true,
   guildOnly: true,
-  syntax: '<user> [length] [reason]',
   options: [
     {
       name: 'user',
-      description: 'The user you want to kick',
+      description: 'The user you want to timeout',
       type: 6,
       required: true,
     },
@@ -27,7 +26,7 @@ export default {
     },
     {
       name: 'reason',
-      description: 'Explain why you are kicking this user',
+      description: 'Explain why you are timing out this user',
       type: 3,
       required: false,
     },

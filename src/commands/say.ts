@@ -6,11 +6,9 @@ export default {
   category: 'Utility',
   description: 'Make Cirilla say stuff',
   permissions: ['ADMINISTRATOR'],
-  // requireRoles: true,
   slash: true,
   testOnly: true,
   guildOnly: true,
-  syntax: '<channel> <title> <description>',
   options: [
     {
       name: 'channel',
@@ -20,7 +18,7 @@ export default {
     },
     {
       name: 'message',
-      description: 'What you want the message to say',
+      description: 'What you want the Cirilla to say',
       type: 3,
       required: true,
     },

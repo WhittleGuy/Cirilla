@@ -6,11 +6,9 @@ export default {
   category: 'Utility',
   description: 'Sends a custom embed to a tagged channel',
   permissions: ['ADMINISTRATOR'],
-  // requireRoles: true,
   slash: true,
   testOnly: true,
   guildOnly: true,
-  syntax: '<channel> <title> <description>',
   options: [
     {
       name: 'channel',
