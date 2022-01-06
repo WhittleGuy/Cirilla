@@ -5,7 +5,7 @@ export default {
   category: 'Fun',
   description: "Sit down with your friends, play a game. It'll be function.",
   slash: true,
-  testOnly: true,
+  testOnly: false,
 
   callback: ({ interaction }) => {
     REVOLVER.fire(interaction)

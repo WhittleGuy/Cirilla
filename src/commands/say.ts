@@ -7,7 +7,7 @@ export default {
   description: 'Make Cirilla say stuff',
   permissions: ['ADMINISTRATOR'],
   slash: true,
-  testOnly: true,
+  testOnly: false,
   guildOnly: true,
   options: [
     {

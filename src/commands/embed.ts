@@ -7,7 +7,7 @@ export default {
   description: 'Sends a custom embed to a tagged channel',
   permissions: ['ADMINISTRATOR'],
   slash: true,
-  testOnly: true,
+  testOnly: false,
   guildOnly: true,
   options: [
     {

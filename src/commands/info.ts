@@ -5,7 +5,7 @@ export default {
   category: 'Information',
   description: 'Get information about a user or the server',
   slash: true,
-  testOnly: true,
+  testOnly: false,
   options: [
     {
       name: 'user',

@@ -5,7 +5,7 @@ export default {
   category: 'Fun',
   description: 'Get information about yourself or another user',
   slash: true,
-  testOnly: true,
+  testOnly: false,
   options: [
     {
       name: 'dice',

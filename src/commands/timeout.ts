@@ -8,7 +8,7 @@ export default {
   permissions: ['MODERATE_MEMBERS'],
   // requireRoles: true,
   slash: true,
-  testOnly: true,
+  testOnly: false,
   guildOnly: true,
   options: [
     {

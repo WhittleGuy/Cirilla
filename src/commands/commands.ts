@@ -10,7 +10,7 @@ export default {
   category: 'Information',
   description: 'Get a list of commands',
   slash: true,
-  testOnly: true,
+  testOnly: false,
   options: [
     {
       name: 'command',

@@ -11,7 +11,7 @@ export default {
   category: 'Information',
   description: 'Display the rules of the server',
   slash: true,
-  testOnly: true,
+  testOnly: false,
   options: [
     {
       name: 'show',
