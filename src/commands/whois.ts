@@ -4,7 +4,7 @@ import { FailureEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
-  description: 'Bans a user',
+  description: 'Lookup a userId',
   permissions: ['ADMINISTRATOR'],
   // requireRoles: true,
   slash: true,
