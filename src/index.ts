@@ -1,4 +1,4 @@
-import DiscordJS, { Intents } from 'discord.js'
+import { Client, Intents } from 'discord.js'
 import WOKCommands from 'wokcommands'
 import dotenv from 'dotenv'
 import path from 'path'
@@ -9,7 +9,7 @@ dotenv.config()
 
 export const REVOLVER = new Revolver()
 
-const client = new DiscordJS.Client({
+const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MESSAGES,
