@@ -101,6 +101,7 @@ export default {
       {
         label: role.name,
         value: role.id,
+        description: description,
       },
     ]
 
