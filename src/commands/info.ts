@@ -81,7 +81,6 @@ export default {
       })
     } else if (interaction.options.getSubcommand() === 'server') {
       const guild = interaction.guild
-      console.log(guild.iconURL())
       return interaction.reply({
         embeds: [
           {
