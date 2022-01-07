@@ -20,7 +20,10 @@ const client = new Client({
 
 client.on('ready', async () => {
   console.log(`[+] Connected to Discord as ${client.user.tag}`)
-  client.user.setActivity('/commands')
+  client.user.setPresence({
+    activities: [{ name: '/commands', type: 'STREAMING' }],
+    status: 'dnd',
+  })
 
   new WOKCommands(client, {
     commandsDir: path.join(__dirname, 'commands'),
