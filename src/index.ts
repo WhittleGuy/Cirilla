@@ -21,7 +21,7 @@ const client = new Client({
 client.on('ready', async () => {
   console.log(`[+] Connected to Discord as ${client.user.tag}`)
   client.user.setPresence({
-    activities: [{ name: '/commands', type: 'STREAMING' }],
+    activities: [{ name: '/commands', type: 0 }],
     status: 'dnd',
   })
 
