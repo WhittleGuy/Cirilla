@@ -48,12 +48,21 @@ export default {
     for (const option of optionArray) {
       const emoteCandidate = option.trim().split(' ')[0] || option
 
+      let emote = ''
       if (emoteCandidate.match(EMOTE)) {
-        emoteArray.push(EMOTE_ID.exec(emoteCandidate)[0])
+        emote = EMOTE_ID.exec(emoteCandidate)[0]
       } else if (emoteCandidate.match(EMOJI)) {
-        emoteArray.push(emoteCandidate)
+        emote = emoteCandidate
       } else {
-        return FailureEmbed(interaction)
+        return FailureEmbed(
+          interaction,
+          `I don't have access to ${emoteCandidate}`
+        )
+      }
+      if (emoteArray.includes(emote))
+        return FailureEmbed(interaction, 'Duplicate emote used')
+      else {
+        emoteArray.push(emote)
       }
     }
 
@@ -76,7 +85,7 @@ export default {
           return
         })
         if (!reaction) {
-          FailureEmbed(interaction)
+          FailureEmbed(interaction, "I don't have access to that emote")
           poll.delete()
           return false
         }
