@@ -1,4 +1,4 @@
-import { TextChannel } from 'discord.js'
+import { Message, TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
 
@@ -27,7 +27,7 @@ export default {
       name: 'description',
       description: 'The description for the embed',
       type: 3,
-      required: true,
+      required: false,
     },
   ],
 
@@ -36,19 +36,37 @@ export default {
     const title = interaction.options.getString('title')
     const description = interaction.options.getString('description')
 
-    const postEmbed = await channel
-      .send({
-        embeds: [
-          {
-            color: 0xff9ed7,
-            title: title,
-            description: description,
-          },
-        ],
-      })
-      .catch((err) => {
-        return FailureEmbed(interaction, err)
-      })
+    let postEmbed: void | Message<boolean>
+
+    if (!description) {
+      postEmbed = await channel
+        .send({
+          embeds: [
+            {
+              color: 0xff9ed7,
+              title: title,
+            },
+          ],
+        })
+        .catch((err) => {
+          return FailureEmbed(interaction, err)
+        })
+    } else {
+      postEmbed = await channel
+        .send({
+          embeds: [
+            {
+              color: 0xff9ed7,
+              title: title,
+              description: description,
+            },
+          ],
+        })
+        .catch((err) => {
+          return FailureEmbed(interaction, err)
+        })
+    }
+
     if (postEmbed) {
       return SuccessEmbed(interaction, `Embed posted in <#${channel.id}>`)
     }
