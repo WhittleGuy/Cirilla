@@ -43,6 +43,8 @@ export default {
             color: 0xffee8f,
             title: user.tag,
             thumbnail: { url: user.displayAvatarURL() },
+            footer: { text: `Id: ${user.id}` },
+            timestamp: new Date().toLocaleString(),
             fields: [
               {
                 name: 'Joined',
