@@ -103,7 +103,7 @@ export default {
       name: 'hex',
       description: 'Color hex value',
       type: 3,
-      required: true,
+      required: false,
     },
   ],
 
@@ -111,7 +111,7 @@ export default {
     await interaction.deferReply()
     const WIDTH = 80
     const RADIUS = 20
-    let hex = interaction.options.getString('hex')
+    let hex = interaction.options.getString('hex') || '#ff9ed7'
     if (hex.charAt(0) !== '#') hex = '#' + hex
     const hexRegEx = /^#([a-f\d]{3}){1,2}$/i
     if (!hex.match(hexRegEx))
