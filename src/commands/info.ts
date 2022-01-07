@@ -46,28 +46,12 @@ export default {
             fields: [
               {
                 name: 'Joined',
-                value:
-                  new Date(member.joinedTimestamp).toLocaleDateString() +
-                  '\n' +
-                  new Date(member.joinedTimestamp).toLocaleTimeString(),
+                value: new Date(member.joinedTimestamp).toLocaleDateString(),
                 inline: true,
               },
               {
                 name: 'Registered',
-                value:
-                  new Date(user.createdTimestamp).toLocaleDateString() +
-                  '\n' +
-                  new Date(user.createdTimestamp).toLocaleTimeString(),
-                inline: true,
-              },
-              {
-                name: 'Bot',
-                value: user.bot ? 'Yes' : 'No',
-                inline: true,
-              },
-              {
-                name: 'Nickname',
-                value: member.nickname || 'None',
+                value: new Date(user.createdTimestamp).toLocaleString(),
                 inline: true,
               },
               {
@@ -76,6 +60,16 @@ export default {
                   .map((role: Role) => role)
                   .slice(0, -1)
                   .join(' '),
+                inline: true,
+              },
+              {
+                name: 'Nickname',
+                value: member.nickname || 'None',
+                inline: true,
+              },
+              {
+                name: 'Bot',
+                value: user.bot ? 'Yes' : 'No',
                 inline: true,
               },
             ],
