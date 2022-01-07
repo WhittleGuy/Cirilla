@@ -55,14 +55,6 @@ export default {
                 inline: true,
               },
               {
-                name: `Roles [${member.roles.cache.size}]`,
-                value: member.roles.cache
-                  .map((role: Role) => role)
-                  .slice(0, -1)
-                  .join(' '),
-                inline: true,
-              },
-              {
                 name: 'Nickname',
                 value: member.nickname || 'None',
                 inline: true,
@@ -71,6 +63,14 @@ export default {
                 name: 'Bot',
                 value: user.bot ? 'Yes' : 'No',
                 inline: true,
+              },
+              {
+                name: `Roles [${member.roles.cache.size}]`,
+                value: member.roles.cache
+                  .map((role: Role) => role)
+                  .slice(0, -1)
+                  .join(' '),
+                inline: false,
               },
             ],
           },
