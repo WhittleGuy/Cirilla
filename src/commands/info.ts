@@ -55,7 +55,7 @@ export default {
                 inline: true,
               },
               {
-                name: 'Roles',
+                name: `Roles [${member.roles.cache.size}]`,
                 value: member.roles.cache
                   .map((role: Role) => role)
                   .slice(0, -1)
@@ -63,7 +63,7 @@ export default {
                 inline: true,
               },
               {
-                name: 'Joined Server',
+                name: 'Joined',
                 value:
                   new Date(member.joinedTimestamp).toLocaleDateString() +
                   '\n' +
@@ -71,7 +71,7 @@ export default {
                 inline: true,
               },
               {
-                name: 'Joined Discord',
+                name: 'Registered',
                 value:
                   new Date(user.createdTimestamp).toLocaleDateString() +
                   '\n' +
