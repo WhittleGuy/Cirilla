@@ -13,7 +13,7 @@ export default {
   permissions: ['MANAGE_ROLES'],
   // requireRoles: true,
   slash: true,
-  testOnly: true,
+  testOnly: false,
   guildOnly: true,
   options: [
     {
