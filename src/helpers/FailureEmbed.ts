@@ -1,8 +1,11 @@
-import { fail } from 'assert'
-import { CommandInteraction, CacheType } from 'discord.js'
+import {
+  CommandInteraction,
+  CacheType,
+  SelectMenuInteraction,
+} from 'discord.js'
 
 const FailureEmbed = (
-  interaction: CommandInteraction<CacheType>,
+  interaction: CommandInteraction<CacheType> | SelectMenuInteraction<CacheType>,
   err?: string
 ): void => {
   const failureEmbed = {
@@ -13,10 +16,17 @@ const FailureEmbed = (
 
   if (interaction.replied || interaction.deferred) {
     //console.log('Try editReply')
-    interaction.editReply({ embeds: [failureEmbed] })
+    interaction.editReply({
+      embeds: [failureEmbed],
+      allowedMentions: { roles: [] },
+    })
   } else {
     //console.log('Try reply')
-    interaction.reply({ embeds: [failureEmbed], ephemeral: true })
+    interaction.reply({
+      embeds: [failureEmbed],
+      allowedMentions: { roles: [] },
+      ephemeral: true,
+    })
   }
   return
 }

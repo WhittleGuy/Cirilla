@@ -1,7 +1,11 @@
-import { CommandInteraction, CacheType } from 'discord.js'
+import {
+  CommandInteraction,
+  CacheType,
+  SelectMenuInteraction,
+} from 'discord.js'
 
 const SuccessEmbed = (
-  interaction: CommandInteraction<CacheType>,
+  interaction: CommandInteraction<CacheType> | SelectMenuInteraction<CacheType>,
   msg?: string,
   show?: boolean
 ): void => {
