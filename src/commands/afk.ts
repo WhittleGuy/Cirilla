@@ -4,7 +4,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 import afkSchema from '../models/afk-schema'
 
 const afkData = {} as {
-  // memberId: [message, AFK]
+  // userId: [message, AFK]
   [key: string]: [string, boolean]
 }
 
@@ -14,7 +14,7 @@ export default {
   requireRoles: false,
   slash: true,
   testOnly: false,
-  guildOnly: true,
+  guildOnly: false,
   options: [
     {
       name: 'set',
@@ -36,7 +36,8 @@ export default {
     },
   ],
 
-  callback: async ({ member, interaction }) => {
+  callback: async ({ interaction }) => {
+    const user = interaction.user
     // Set AFK message
     if (interaction.options.getSubcommand() === 'set') {
       const afkMessage = interaction.options.getString('message')
@@ -44,10 +45,10 @@ export default {
       await afkSchema
         .findOneAndUpdate(
           {
-            _id: member.id,
+            _id: user.id,
           },
           {
-            _id: member.id,
+            _id: user.id,
             text: afkMessage,
             afk: true,
           },
@@ -58,34 +59,34 @@ export default {
         .catch((err) => {
           return FailureEmbed(interaction, err)
         })
-      afkData[member.id] = [afkMessage, true]
+      afkData[user.id] = [afkMessage, true]
       return SuccessEmbed(
         interaction,
-        `AFK message for ${member.user.tag} has been set and is \`ENABLED\``
+        `AFK message for ${user.tag} has been set and is \`ENABLED\``
       )
     }
     // Toggle on or off
     else if (interaction.options.getSubcommand() === 'toggle') {
       // Get present data
-      let data = afkData[member.id]
+      let data = afkData[user.id]
 
       if (!data) {
-        const results = await afkSchema.findById(member.id)
+        const results = await afkSchema.findById(user.id)
         if (!results)
           return FailureEmbed(interaction, 'Use `/afk set` and try again')
 
         const { text, afk } = results
 
-        data = afkData[member.id] = [text, afk]
+        data = afkData[user.id] = [text, afk]
       }
 
       await afkSchema
         .findOneAndUpdate(
           {
-            _id: member.id,
+            _id: user.id,
           },
           {
-            _id: member.id,
+            _id: user.id,
             text: data[0],
             afk: !data[1],
           }
@@ -93,10 +94,10 @@ export default {
         .catch((err) => {
           return FailureEmbed(interaction, err)
         })
-      afkData[member.id] = [data[0], !data[1]]
+      afkData[user.id] = [data[0], !data[1]]
       return SuccessEmbed(
         interaction,
-        `AFK message for ${member.user.tag} is now \`${
+        `AFK message for ${user.tag} is now \`${
           !data[1] ? 'ENABLED' : 'DISABLED'
         }\``
       )
