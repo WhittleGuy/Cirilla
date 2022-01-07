@@ -60,7 +60,7 @@ export default {
         embeds: [
           {
             // @ts-ignore
-            color: color || 0xff9ed7,
+            color: color || '#fac0ca',
             title: title,
             description: `${description ? description : ''}`,
           },
