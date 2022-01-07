@@ -24,7 +24,7 @@ export default {
 
     if (indicator) {
       const match: TONE = TONE_INDICATORS.find(
-        (item) => item.name === indicator
+        (item) => item.name.replace('/', '') === indicator.replace('/', '')
       )
       if (!match) {
         return FailureEmbed(
