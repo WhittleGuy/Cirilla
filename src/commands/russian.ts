@@ -4,8 +4,12 @@ import { REVOLVER } from '..'
 export default {
   category: 'Fun',
   description: "Sit down with your friends, play a game. It'll be function.",
+  // permissions: ['ADMINISTRATOR'],
+  requireRoles: false,
   slash: true,
   testOnly: false,
+  guildOnly: true,
+  options: [],
 
   callback: ({ interaction }) => {
     REVOLVER.fire(interaction)

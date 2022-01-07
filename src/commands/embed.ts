@@ -5,6 +5,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 export default {
   category: 'Utility',
   description: 'Sends a custom embed to a tagged channel',
+  // permissions: ['ADMINISTRATOR'],
   requireRoles: true,
   slash: true,
   testOnly: false,

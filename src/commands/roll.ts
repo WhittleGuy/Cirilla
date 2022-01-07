@@ -4,8 +4,11 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 export default {
   category: 'Fun',
   description: 'Roll di(c)e',
+  // permissions: ['ADMINISTRATOR'],
+  requireRoles: false,
   slash: true,
   testOnly: false,
+  guildOnly: false,
   options: [
     {
       name: 'dice',

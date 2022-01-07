@@ -4,6 +4,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 export default {
   category: 'Moderation',
   description: 'Clean up the specified number of messages',
+  // permissions: ['ADMINISTRATOR'],
   requireRoles: true,
   slash: true,
   testOnly: false,

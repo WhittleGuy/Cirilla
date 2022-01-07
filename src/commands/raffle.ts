@@ -5,6 +5,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 export default {
   category: 'Utility',
   description: 'Manage a raffle',
+  // permissions: ['ADMINISTRATOR'],
   requireRoles: true,
   slash: true,
   testOnly: false,

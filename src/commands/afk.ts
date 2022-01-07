@@ -11,6 +11,7 @@ const afkData = {} as {
 export default {
   category: 'Utility',
   description: 'Set/Enable/Disable an afk message',
+  // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: true,
   testOnly: false,

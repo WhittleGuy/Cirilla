@@ -5,7 +5,8 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 export default {
   category: 'Utility',
   description: 'Make Cirilla say stuff',
-  permissions: ['ADMINISTRATOR'],
+  // permissions: ['ADMINISTRATOR'],
+  requireRoles: true,
   slash: true,
   testOnly: false,
   guildOnly: true,

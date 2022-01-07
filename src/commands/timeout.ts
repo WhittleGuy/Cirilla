@@ -5,6 +5,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 export default {
   category: 'Moderation',
   description: 'Times out a user',
+  // permissions: ['ADMINISTRATOR'],
   requireRoles: true,
   slash: true,
   testOnly: false,

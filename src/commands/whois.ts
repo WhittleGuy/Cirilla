@@ -6,7 +6,7 @@ export default {
   category: 'Information',
   description: 'Lookup a userId',
   // permissions: ['ADMINISTRATOR'],
-  // requireRoles: true,
+  requireRoles: false,
   slash: true,
   testOnly: false,
   guildOnly: true,

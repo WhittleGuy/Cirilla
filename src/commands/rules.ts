@@ -10,6 +10,8 @@ interface RULE_CATEGORY {
 export default {
   category: 'Information',
   description: 'Display the rules of the server',
+  // permissions: ['ADMINISTRATOR'],
+  requireRoles: false,
   slash: true,
   testOnly: false,
   options: [

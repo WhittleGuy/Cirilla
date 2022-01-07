@@ -4,8 +4,11 @@ import { ICommand } from 'wokcommands'
 export default {
   category: 'Information',
   description: 'Get information about a user or the server',
+  // permissions: ['ADMINISTRATOR'],
+  requireRoles: false,
   slash: true,
   testOnly: false,
+  guildOnly: true,
   options: [
     {
       name: 'user',

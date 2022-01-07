@@ -5,8 +5,11 @@ import { FailureEmbed } from '../helpers'
 export default {
   category: 'Information',
   description: 'Get a list of tone indicator meanings',
+  // permissions: ['ADMINISTRATOR'],
+  requireRoles: false,
   slash: true,
   testOnly: false,
+  guildOnly: false,
   options: [
     {
       name: 'indicator',

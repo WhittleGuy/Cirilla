@@ -9,8 +9,11 @@ interface COMMAND_CATEGORY {
 export default {
   category: 'Information',
   description: 'Get a list of commands',
+  // permissions: ['ADMINISTRATOR'],
+  requireRoles: false,
   slash: true,
   testOnly: false,
+  guildOnly: true,
   options: [
     {
       name: 'command',

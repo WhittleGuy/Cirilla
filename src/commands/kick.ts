@@ -6,7 +6,7 @@ export default {
   category: 'Moderation',
   description: 'Kicks a user',
   permissions: ['KICK_MEMBERS'],
-  //requireRoles: true,
+  // requireRoles: true,
   slash: true,
   testOnly: false,
   guildOnly: true,
