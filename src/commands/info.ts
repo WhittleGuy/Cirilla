@@ -46,7 +46,7 @@ export default {
             fields: [
               {
                 name: 'Joined',
-                value: new Date(member.joinedTimestamp).toLocaleDateString(),
+                value: new Date(member.joinedTimestamp).toLocaleString(),
                 inline: true,
               },
               {
