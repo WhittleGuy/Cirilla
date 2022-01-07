@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 import path from 'path'
 
 import Revolver from './classes/Russian'
-import testSchema from './models/test-schema'
 
 dotenv.config()
 
