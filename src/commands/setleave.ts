@@ -4,8 +4,8 @@ import leaveSchema from '../models/leave-schema'
 export default {
   category: 'Configuration',
   description: 'Set the leave channel',
-  // permissions: ['ADMINISTRATOR'],
-  requireRoles: true,
+  permissions: ['MANAGE_CHANNELS'],
+  requireRoles: false,
   slash: true,
   testOnly: true,
   guildOnly: true,

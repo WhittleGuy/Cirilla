@@ -4,8 +4,8 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 export default {
   category: 'Utility',
   description: 'Set up a poll',
-  // permissions: ['ADMINISTRATOR'],
-  requireRoles: true,
+  permissions: ['MANAGE_MESSAGES'],
+  requireRoles: false,
   slash: true,
   testOnly: false,
   guildOnly: true,
