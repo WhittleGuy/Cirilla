@@ -96,7 +96,7 @@ export default {
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: true,
-  testOnly: true,
+  testOnly: false,
   guildOnly: false,
   options: [
     {
