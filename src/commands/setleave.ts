@@ -4,7 +4,7 @@ import leaveSchema from '../models/leave-schema'
 export default {
   category: 'Configuration',
   description: 'Set the leave channel',
-  permissions: ['ADMINISTRATOR'],
+  requireRoles: true,
   slash: true,
   testOnly: true,
   options: [

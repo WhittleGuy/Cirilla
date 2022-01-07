@@ -3,7 +3,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Fun',
-  description: 'Get information about yourself or another user',
+  description: 'Roll di(c)e',
   slash: true,
   testOnly: false,
   options: [

@@ -5,7 +5,7 @@ import { FailureEmbed } from '../helpers'
 export default {
   category: 'Information',
   description: 'Lookup a userId',
-  permissions: ['ADMINISTRATOR'],
+  // permissions: ['ADMINISTRATOR'],
   // requireRoles: true,
   slash: true,
   testOnly: false,
