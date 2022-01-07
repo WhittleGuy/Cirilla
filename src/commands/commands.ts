@@ -13,7 +13,7 @@ export default {
   requireRoles: false,
   slash: true,
   testOnly: false,
-  guildOnly: true,
+  guildOnly: false,
   options: [
     {
       name: 'command',

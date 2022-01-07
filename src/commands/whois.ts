@@ -9,7 +9,7 @@ export default {
   requireRoles: false,
   slash: true,
   testOnly: false,
-  guildOnly: true,
+  guildOnly: false,
   options: [
     {
       name: 'id',
@@ -41,11 +41,12 @@ export default {
               },
               {
                 name: 'Flags',
-                value:
-                  user.flags
-                    .toArray()
-                    .map((flag) => flag.split('_').join(' '))
-                    .join('\n') || 'None',
+                value: user.flags
+                  ? user.flags
+                      .toArray()
+                      .map((flag) => flag.split('_').join(' '))
+                      .join('\n') || 'None'
+                  : 'None',
                 inline: true,
               },
               {

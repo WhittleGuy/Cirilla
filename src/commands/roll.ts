@@ -34,7 +34,7 @@ export default {
     const dice: string[] = diceString.split(SEPARATOR)
     const dieArray: string[][] = []
     for (const die of dice) {
-      if (!die.match(DIE)) return FailureEmbed(interaction)
+      if (!die.match(DIE)) return FailureEmbed(interaction, 'Invalid format')
       dieArray.push(die.split('d'))
     }
 

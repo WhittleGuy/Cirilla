@@ -14,6 +14,7 @@ export default {
   requireRoles: false,
   slash: true,
   testOnly: false,
+  guildOnly: false,
   options: [
     {
       name: 'show',
