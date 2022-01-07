@@ -45,6 +45,22 @@ export default {
             thumbnail: { url: user.displayAvatarURL() },
             fields: [
               {
+                name: 'Joined',
+                value:
+                  new Date(member.joinedTimestamp).toLocaleDateString() +
+                  '\n' +
+                  new Date(member.joinedTimestamp).toLocaleTimeString(),
+                inline: true,
+              },
+              {
+                name: 'Registered',
+                value:
+                  new Date(user.createdTimestamp).toLocaleDateString() +
+                  '\n' +
+                  new Date(user.createdTimestamp).toLocaleTimeString(),
+                inline: true,
+              },
+              {
                 name: 'Bot',
                 value: user.bot ? 'Yes' : 'No',
                 inline: true,
@@ -60,22 +76,6 @@ export default {
                   .map((role: Role) => role)
                   .slice(0, -1)
                   .join(' '),
-                inline: true,
-              },
-              {
-                name: 'Joined',
-                value:
-                  new Date(member.joinedTimestamp).toLocaleDateString() +
-                  '\n' +
-                  new Date(member.joinedTimestamp).toLocaleTimeString(),
-                inline: true,
-              },
-              {
-                name: 'Registered',
-                value:
-                  new Date(user.createdTimestamp).toLocaleDateString() +
-                  '\n' +
-                  new Date(user.createdTimestamp).toLocaleTimeString(),
                 inline: true,
               },
             ],
