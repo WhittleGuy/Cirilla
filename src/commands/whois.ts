@@ -22,8 +22,8 @@ export default {
   callback: async ({ client, interaction }) => {
     await interaction.deferReply()
     const userId = interaction.options.getString('id')
-    const user: User | void = await client.users.fetch(userId).catch((err) => {
-      FailureEmbed(interaction, err)
+    const user: User | void = await client.users.fetch(userId).catch(() => {
+      FailureEmbed(interaction, 'Invalid userId')
     })
     if (user) {
       interaction.editReply({
