@@ -25,7 +25,9 @@ export default {
   ],
 
   callback: ({ interaction }) => {
-    const channel = interaction.options.getChannel('channel') as TextChannel
+    const channel = interaction.options.getChannel('channel')
+    if (channel.type !== 'GUILD_TEXT')
+      return FailureEmbed(interaction, 'Please tag a text channel')
     const message = interaction.options.getString('message')
 
     const sendMessage = async (channel, msg) => {

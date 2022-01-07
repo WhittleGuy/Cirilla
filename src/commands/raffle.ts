@@ -1,4 +1,4 @@
-import { Message, TextChannel } from 'discord.js'
+import { Message } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
 
@@ -60,7 +60,9 @@ export default {
   callback: async ({ interaction }) => {
     // Start a raffle
     if (interaction.options.getSubcommand() === 'start') {
-      const channel = interaction.options.getChannel('channel') as TextChannel
+      const channel = interaction.options.getChannel('channel')
+      if (channel.type !== 'GUILD_TEXT')
+        return FailureEmbed(interaction, 'Please tag a text channel')
       const title = interaction.options.getString('title')
       const description = interaction.options.getString('description')
 
@@ -100,7 +102,9 @@ export default {
 
       // Select a winner
     } else if (interaction.options.getSubcommand() === 'draw') {
-      const channel = interaction.options.getChannel('channel') as TextChannel
+      const channel = interaction.options.getChannel('channel')
+      if (channel.type !== 'GUILD_TEXT')
+        return FailureEmbed(interaction, 'Please tag a text channel')
       const message = interaction.options.getString('message')
 
       const pickWinner = async (channel, message) => {

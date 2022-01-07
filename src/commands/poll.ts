@@ -1,4 +1,3 @@
-import { TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
 
@@ -37,7 +36,9 @@ export default {
     const EMOJI = /\p{Extended_Pictographic}/u
     const EMOTE_ID = /\d{18}/
 
-    const channel = interaction.options.getChannel('channel') as TextChannel
+    const channel = interaction.options.getChannel('channel')
+    if (channel.type !== 'GUILD_TEXT')
+      return FailureEmbed(interaction, 'Please tag a text channel')
     const title = interaction.options.getString('title')
     const options = interaction.options.getString('options')
     const optionArray = options.split('|')
