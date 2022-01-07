@@ -67,7 +67,7 @@ export default {
                 inline: true,
               },
               {
-                name: `Roles [${member.roles.cache.size}]`,
+                name: `Roles [${member.roles.cache.size - 1}]`,
                 value: member.roles.cache
                   .map((role: Role) => role)
                   .slice(0, -1)
