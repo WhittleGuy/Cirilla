@@ -1,7 +1,6 @@
-import { TextChannel, ColorResolvable } from 'discord.js'
+import { TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
-import { ResolveColor } from '../helpers/ResolveColor'
 
 export default {
   category: 'Utility',
@@ -30,37 +29,18 @@ export default {
       type: 3,
       required: false,
     },
-    {
-      name: 'color',
-      description: 'The color of the embed',
-      type: 3,
-      required: false,
-    },
   ],
 
   callback: async ({ interaction }) => {
     const channel = interaction.options.getChannel('channel') as TextChannel
     const title = interaction.options.getString('title')
     const description = interaction.options.getString('description')
-    let color: string | boolean = interaction.options.getString('color')
-    console.log(color)
-
-    if (color) {
-      color = ResolveColor(color)
-      if (!color) {
-        return FailureEmbed(
-          interaction,
-          'Invalid color. See tinyurl.com/disccolor'
-        )
-      }
-    }
 
     const postEmbed = await channel
       .send({
         embeds: [
           {
-            // @ts-ignore
-            color: color || '#fac0ca',
+            color: 0xff9ed7,
             title: title,
             description: `${description ? description : ''}`,
           },
