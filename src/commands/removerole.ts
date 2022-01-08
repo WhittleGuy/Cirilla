@@ -58,9 +58,7 @@ export default {
     const menu = row.components[0] as MessageSelectMenu
     if (menu) {
       if (
-        !['auto-drop-roles', 'auto-drop-roles-exclusive'].includes(
-          menu.customId
-        )
+        !['cirilla-roles', 'cirilla-roles-exclusive'].includes(menu.customId)
       ) {
         return FailureEmbed(interaction, 'Invalid message.')
       } else if (!menu.options.map((o) => o.value).includes(role.id))
