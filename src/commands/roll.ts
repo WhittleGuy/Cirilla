@@ -1,5 +1,6 @@
 import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
+import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Fun',
@@ -56,10 +57,16 @@ export default {
       }
     }
 
-    return SuccessEmbed(
-      interaction,
-      `${scores.join('\n')}\n------------------\n**Total:\t${total}**`,
-      !hide
-    )
+    return interaction.reply({
+      embeds: [
+        {
+          color: ColorCheck(),
+          description: `${scores.join(
+            '\n'
+          )}\n------------------\n**Total:\t${total}**`,
+        },
+      ],
+      ephemeral: hide,
+    })
   },
 } as ICommand
