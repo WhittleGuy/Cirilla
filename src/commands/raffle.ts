@@ -36,6 +36,12 @@ export default {
           required: false,
         },
         {
+          name: 'emote',
+          description: 'Emote to enter the raffle (default: ❤)',
+          type: 3,
+          required: false,
+        },
+        {
           name: 'color',
           description: 'Embed color (#ff9ed7)',
           type: 3,
@@ -64,7 +70,7 @@ export default {
     },
   ],
 
-  callback: async ({ interaction }) => {
+  callback: async ({ client, interaction }) => {
     // Start a raffle
     if (interaction.options.getSubcommand() === 'start') {
       const channel = interaction.options.getChannel('channel')
@@ -72,6 +78,7 @@ export default {
         return FailureEmbed(interaction, 'Please tag a text channel')
       const title = interaction.options.getString('title')
       const description = interaction.options.getString('description')
+      const emote = interaction.options.getString('emote')
       const color = interaction.options.getString('color') as ColorResolvable
 
       const postRaffle = async (
@@ -94,11 +101,11 @@ export default {
             return FailureEmbed(interaction, err)
           })
         if (post) {
-          const reaction = await post.react('❤').catch(() => {
+          const reaction = await post.react(emote ? emote : '❤').catch(() => {
             return
           })
           if (!reaction) {
-            FailureEmbed(interaction)
+            FailureEmbed(interaction, "I don't have access to that emote")
             return false
           }
         }
@@ -124,7 +131,14 @@ export default {
         const msg: Message = await channel.messages.fetch(message)
 
         if (!msg) {
-          FailureEmbed(interaction)
+          FailureEmbed(interaction, 'Invalid message Id')
+          return false
+        }
+        if (msg.author.id !== client.user.id) {
+          FailureEmbed(
+            interaction,
+            `Invalid message. Message author must be <@${client.user.id}>`
+          )
           return false
         }
         if (msg.reactions.cache.size < 1) {
@@ -161,7 +175,7 @@ export default {
       }
 
       const winner = await pickWinner(channel, message)
-      if (!winner) return FailureEmbed(interaction)
+      if (!winner) return
       return SuccessEmbed(interaction, `${winner.tag} has won the raffle`)
     }
   },
