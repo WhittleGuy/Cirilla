@@ -2,12 +2,9 @@ import { Client, Intents } from 'discord.js'
 import WOKCommands from 'wokcommands'
 import dotenv from 'dotenv'
 import path from 'path'
-
-import Revolver from './classes/Russian'
+import { ColorCheck } from './helpers/ColorCheck'
 
 dotenv.config()
-
-export const REVOLVER = new Revolver()
 
 const client = new Client({
   intents: [
@@ -43,7 +40,7 @@ client.on('messageCreate', (msg) => {
       .reply({
         embeds: [
           {
-            color: 0xff9ed7,
+            color: ColorCheck(),
             description: 'Use /commands to get a list of commands',
           },
         ],
