@@ -9,7 +9,7 @@ interface COMMAND_CATEGORY {
 
 export default {
   category: 'Information',
-  description: 'Get a list of commands',
+  description: 'List Cirilla commands',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: true,
@@ -18,14 +18,13 @@ export default {
   options: [
     {
       name: 'command',
-      description: 'The command you want more information about',
+      description: 'Specific command',
       type: 3,
       required: false,
     },
     {
       name: 'show',
-      description:
-        'True/False to display to everyone (defaults to just the user)',
+      description: 'Display response for all users',
       type: 5,
       required: false,
     },

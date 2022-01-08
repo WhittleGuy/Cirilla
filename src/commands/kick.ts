@@ -4,7 +4,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
-  description: 'Kicks a user',
+  description: 'Kick a user',
   permissions: ['KICK_MEMBERS'],
   // requireRoles: true,
   slash: true,
@@ -13,13 +13,13 @@ export default {
   options: [
     {
       name: 'user',
-      description: 'The user you want to kick',
+      description: 'User to kick',
       type: 6,
       required: true,
     },
     {
       name: 'reason',
-      description: 'Explain why you are kicking this user',
+      description: 'Reason for kick',
       type: 3,
       required: false,
     },

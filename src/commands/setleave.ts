@@ -3,7 +3,7 @@ import leaveSchema from '../models/leave-schema'
 
 export default {
   category: 'Configuration',
-  description: 'Set the leave channel',
+  description: 'Set the leave notification channel',
   permissions: ['MANAGE_CHANNELS'],
   requireRoles: false,
   slash: true,
@@ -12,7 +12,7 @@ export default {
   options: [
     {
       name: 'channel',
-      description: 'The channel to send leave messages to',
+      description: 'Leave notification channel',
       type: 7,
       required: true,
     },

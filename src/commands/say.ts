@@ -3,7 +3,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Utility',
-  description: 'Make Cirilla say stuff',
+  description: 'Send a message from Cirilla',
   permissions: ['MANAGE_MESSAGES'],
   requireRoles: false,
   slash: true,
@@ -12,7 +12,7 @@ export default {
   options: [
     {
       name: 'channel',
-      description: 'The channel you want to send the message in',
+      description: 'Message channel',
       type: 7,
       required: true,
     },

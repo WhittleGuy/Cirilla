@@ -93,7 +93,7 @@ const rgbToCMYK = (
 export default {
   category: 'Utility',
   description:
-    'Display a hex color swatch and convert to RGB, HSL, and CMYK (#ff9ed7)',
+    'Display a color swatch and convert to RGB, HSL, and CMYK (#ff9ed7)',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: true,
@@ -102,7 +102,7 @@ export default {
   options: [
     {
       name: 'hex',
-      description: 'Color hex value',
+      description: 'Hex value',
       type: 3,
       required: false,
     },

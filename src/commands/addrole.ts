@@ -18,7 +18,8 @@ interface RoleOption {
 
 export default {
   category: 'Moderation',
-  description: 'Adds a role dropdown or additional role to existing dropdown',
+  description:
+    'Add a role dropdown to a Cirilla embed or message | Add a new role to existing',
   permissions: ['MANAGE_ROLES'],
   // requireRoles: true,
   slash: true,
@@ -27,19 +28,19 @@ export default {
   options: [
     {
       name: 'channel',
-      description: 'Channel the role message is in',
+      description: 'Message channel',
       type: 7,
       required: true,
     },
     {
       name: 'message',
-      description: 'ID of the role message',
+      description: 'MessageId',
       type: 3,
       required: true,
     },
     {
       name: 'role_1',
-      description: 'Role to add',
+      description: 'Role',
       type: 8,
       required: true,
     },
@@ -51,13 +52,13 @@ export default {
     },
     {
       name: 'emote_1',
-      description: 'Emote representing the role',
+      description: 'Role panel emote',
       type: 3,
       required: false,
     },
     {
       name: 'role_2',
-      description: 'Role to add',
+      description: 'Role',
       type: 8,
       required: false,
     },
@@ -69,13 +70,13 @@ export default {
     },
     {
       name: 'emote_2',
-      description: 'Emote representing the role',
+      description: 'Role panel emote',
       type: 3,
       required: false,
     },
     {
       name: 'role_3',
-      description: 'Role to add',
+      description: 'Role',
       type: 8,
       required: false,
     },
@@ -87,13 +88,13 @@ export default {
     },
     {
       name: 'emote_3',
-      description: 'Emote representing the role',
+      description: 'Role panel emote',
       type: 3,
       required: false,
     },
     {
       name: 'role_4',
-      description: 'Role to add',
+      description: 'Role',
       type: 8,
       required: false,
     },
@@ -105,13 +106,13 @@ export default {
     },
     {
       name: 'emote_4',
-      description: 'Emote representing the role',
+      description: 'Role panel emote',
       type: 3,
       required: false,
     },
     {
       name: 'role_5',
-      description: 'Role to add',
+      description: 'Role',
       type: 8,
       required: false,
     },
@@ -123,14 +124,14 @@ export default {
     },
     {
       name: 'emote_5',
-      description: 'Emote representing the role',
+      description: 'Role panel emote',
       type: 3,
       required: false,
     },
     {
       name: 'exclusive',
       description:
-        'Only one role at a time from this list. Set on creation. (Default: false)',
+        'Roles are exclusive from eachother. Set on creation. (Default: false)',
       type: 5,
       required: false,
     },
@@ -176,7 +177,7 @@ export default {
     if (channel.type !== 'GUILD_TEXT')
       return FailureEmbed(interaction, 'Invalid channel')
 
-    // Get message to add roles to
+    // Get message
     const messageId = interaction.options.getString('message')
     const targetMessage = await channel.messages.fetch(messageId, {
       cache: true,

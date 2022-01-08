@@ -14,25 +14,25 @@ export default {
   options: [
     {
       name: 'channel',
-      description: 'The channel to post the poll in',
+      description: 'Poll channel',
       type: 7,
       required: true,
     },
     {
       name: 'title',
-      description: 'The title of the poll',
+      description: 'Poll title',
       type: 3,
       required: true,
     },
     {
       name: 'options',
-      description: 'Options for the poll, separated by | and led by an emoji',
+      description: 'Options for the poll [<emoji> <string>] separated with | ',
       type: 3,
       required: true,
     },
     {
       name: 'color',
-      description: 'Embed hex color (#ff9ed7)',
+      description: 'Embed color (#ff9ed7)',
       type: 3,
       required: false,
     },

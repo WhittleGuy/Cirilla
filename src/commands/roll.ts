@@ -12,7 +12,7 @@ export default {
   options: [
     {
       name: 'dice',
-      description: 'The di(c)e you want to roll <#d##>',
+      description: 'The di(c)e to roll <#d##>',
       type: 3,
       required: true,
     },

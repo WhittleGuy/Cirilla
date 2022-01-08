@@ -5,7 +5,7 @@ import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Utility',
-  description: 'Sends a custom embed to a tagged channel',
+  description: 'Post a custom embed',
   permissions: ['MANAGE_MESSAGES'],
   requireRoles: false,
   slash: true,
@@ -15,7 +15,7 @@ export default {
     {
       name: 'channel',
       type: 7,
-      description: 'The channel to post the embed to',
+      description: 'Embed channel',
       required: true,
     },
     {
@@ -32,7 +32,7 @@ export default {
     },
     {
       name: 'color',
-      description: 'Embed hex color (#ff9ed7)',
+      description: 'Embed color (#ff9ed7)',
       type: 3,
       required: false,
     },

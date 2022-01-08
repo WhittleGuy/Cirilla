@@ -4,7 +4,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
-  description: 'Bans a user',
+  description: 'Ban a user',
   permissions: ['BAN_MEMBERS'],
   // requireRoles: true,
   slash: true,
@@ -13,13 +13,13 @@ export default {
   options: [
     {
       name: 'user',
-      description: 'The user you want to ban',
+      description: 'User to ban',
       type: 6,
       required: true,
     },
     {
       name: 'reason',
-      description: 'Explain why you are banning this user',
+      description: 'Reason for ban',
       type: 3,
       required: false,
     },

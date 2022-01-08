@@ -3,7 +3,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
-  description: 'Clean up the specified number of messages',
+  description: 'Delete multiple messages',
   permissions: ['MANAGE_MESSAGES'],
   requireRoles: false,
   slash: true,
@@ -12,7 +12,7 @@ export default {
   options: [
     {
       name: 'number',
-      description: 'The number of messages you want to delete',
+      description: 'Number of messages to delete',
       type: 10,
       required: true,
     },

@@ -10,7 +10,7 @@ import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Information',
-  description: 'Get information about a user or the server',
+  description: 'Get user or server information',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: true,
@@ -24,7 +24,7 @@ export default {
       options: [
         {
           name: 'user',
-          description: 'Target user',
+          description: 'User to search',
           type: 6,
           required: false,
         },

@@ -14,12 +14,12 @@ export default {
   options: [
     {
       name: 'start',
-      description: 'Post a new raffle embed',
+      description: 'Post a raffle embed',
       type: 1,
       options: [
         {
           name: 'channel',
-          description: 'The channel the raffle message is posted in',
+          description: 'Raffle channel',
           type: 7,
           required: true,
         },
@@ -37,7 +37,7 @@ export default {
         },
         {
           name: 'color',
-          description: 'Embed hex color (#ff9ed7)',
+          description: 'Embed color (#ff9ed7)',
           type: 3,
           required: false,
         },

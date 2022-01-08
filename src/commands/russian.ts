@@ -3,7 +3,7 @@ import { REVOLVER } from '..'
 
 export default {
   category: 'Fun',
-  description: "Sit down with your friends, play a game. It'll be fun.",
+  description: 'Pull the trigger.',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: true,

@@ -10,7 +10,7 @@ interface RULE_CATEGORY {
 
 export default {
   category: 'Information',
-  description: 'Display the rules of the server',
+  description: 'Display server rules',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: true,
@@ -19,8 +19,7 @@ export default {
   options: [
     {
       name: 'show',
-      description:
-        'True/False to display to everyone (defaults to just the user)',
+      description: 'Display response for all users',
       type: 5,
       required: false,
     },

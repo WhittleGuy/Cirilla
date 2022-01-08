@@ -1,7 +1,6 @@
 import {
   MessageActionRow,
   MessageSelectMenu,
-  MessageSelectOption,
   MessageSelectOptionData,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
@@ -9,7 +8,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
-  description: 'Adds a role dropdown or additional role to existing dropdown',
+  description: 'Remove role from CirillaRoles dropdown',
   permissions: ['MANAGE_ROLES'],
   // requireRoles: true,
   slash: true,
@@ -18,19 +17,19 @@ export default {
   options: [
     {
       name: 'channel',
-      description: 'Channel the role message is in',
+      description: 'Message channel',
       type: 7,
       required: true,
     },
     {
       name: 'message',
-      description: 'Id of the role message',
+      description: 'MessageId',
       type: 3,
       required: true,
     },
     {
       name: 'role',
-      description: 'Role to remove',
+      description: 'Role',
       type: 8,
       required: true,
     },

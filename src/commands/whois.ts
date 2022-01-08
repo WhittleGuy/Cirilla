@@ -5,7 +5,7 @@ import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Information',
-  description: 'Lookup a userId',
+  description: 'Search a userId',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: true,
@@ -14,7 +14,7 @@ export default {
   options: [
     {
       name: 'id',
-      description: 'The userId you want to lookup',
+      description: 'UserId',
       type: 3,
       required: true,
     },
