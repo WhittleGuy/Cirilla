@@ -50,6 +50,8 @@ export default {
     const title = interaction.options.getString('title')
     const options = interaction.options.getString('options')
     const color = interaction.options.getString('color') as ColorResolvable
+    const user = interaction.user
+
     const optionArray = options.split('|')
     const emoteArray: string[] = []
     await interaction.deferReply({ ephemeral: true })
@@ -82,6 +84,8 @@ export default {
           color: ColorCheck(color),
           title: title,
           description: optionArray.join('\n'),
+          footer: { text: user.id },
+          timestamp: new Date(),
         },
       ],
     })
