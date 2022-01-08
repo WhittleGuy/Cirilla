@@ -6,8 +6,8 @@ export default {
   description: 'Send a message from Cirilla',
   permissions: ['MANAGE_MESSAGES'],
   requireRoles: false,
-  slash: true,
-  testOnly: false,
+  slash: 'both',
+  testOnly: true,
   guildOnly: true,
   options: [
     {
@@ -24,22 +24,40 @@ export default {
     },
   ],
 
-  callback: ({ interaction }) => {
-    const channel = interaction.options.getChannel('channel')
-    if (channel.type !== 'GUILD_TEXT')
-      return FailureEmbed(interaction, 'Please tag a text channel')
-    const message = interaction.options.getString('message')
-
-    const sendMessage = async (channel, msg) => {
-      await channel.send(msg)
+  callback: async ({ guild, message, interaction }) => {
+    let channel, content
+    // Normal command
+    if (message) {
+      const idReg = /\d{18}/
+      const text = message.content.split(' ').slice(1)
+      channel = guild.channels.cache.get(idReg.exec(text[0])[0])
+      content = text.slice(1).join(' ')
+    }
+    //Slash command
+    else {
+      await interaction.deferReply()
+      channel = interaction.options.getChannel('channel')
+      content = interaction.options.getString('message')
     }
 
-    if (!sendMessage(channel, message)) {
+    if (channel.type !== 'GUILD_TEXT') {
+      if (message) return 'Please tag a text channel'
+      return FailureEmbed(interaction, 'Please tag a text channel')
+    }
+
+    const sendMessage = await channel.send(content)
+
+    if (!sendMessage) {
+      if (message) return 'Error sending message'
       return FailureEmbed(interaction)
     }
-    return SuccessEmbed(
-      interaction,
-      `Message sent in ${channel.toString()}\n\`\`\`${message}\n\`\`\``
-    )
+
+    if (message) {
+      const reply = await message.reply('Message sent')
+      await message.delete()
+      setTimeout(() => reply.delete(), 3000)
+      return
+    }
+    return SuccessEmbed(interaction, 'Message sent')
   },
 } as ICommand
