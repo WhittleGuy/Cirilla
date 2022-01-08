@@ -1,4 +1,3 @@
-import { model, models } from 'mongoose'
 import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
 import afkSchema from '../models/afk-schema'
