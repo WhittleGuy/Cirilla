@@ -104,7 +104,8 @@ export default {
               },
               {
                 name: 'Owner',
-                value: guild.members.cache.get(guild.ownerId)?.user.tag,
+                value:
+                  guild.members.cache.get(guild.ownerId)?.user.tag || 'None',
                 inline: true,
               },
               {
