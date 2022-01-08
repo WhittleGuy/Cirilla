@@ -30,7 +30,10 @@ export default {
     if (message) {
       const idReg = /\d{18}/
       const text = message.content.split(' ').slice(1)
-      channel = guild.channels.cache.get(idReg.exec(text[0])[0])
+      const channelId = idReg.exec(text[0])[0] || null
+      if (channelId === null)
+        return await message.reply('Please tag a text channel')
+      channel = guild.channels.cache.get(channelId)
       content = text.slice(1).join(' ')
     }
     //Slash command
