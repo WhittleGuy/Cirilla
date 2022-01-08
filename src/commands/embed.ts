@@ -45,6 +45,7 @@ export default {
     const title = interaction.options.getString('title')
     const description = interaction.options.getString('description')
     const color = interaction.options.getString('color') as ColorResolvable
+    const user = interaction.user
 
     const postEmbed = await channel
       .send({
@@ -53,6 +54,8 @@ export default {
             color: ColorCheck(color),
             title: title,
             description: `${description ? description : ''}`,
+            footer: { text: user.id },
+            timestamp: new Date(),
           },
         ],
       })
