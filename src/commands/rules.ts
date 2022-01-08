@@ -1,6 +1,7 @@
 import { ICommand } from 'wokcommands'
 import { RULES } from '../constants/RULES'
 import { FailureEmbed } from '../helpers'
+import { ColorCheck } from '../helpers/ColorCheck'
 
 interface RULE_CATEGORY {
   name: string
@@ -54,7 +55,7 @@ export default {
       .reply({
         embeds: [
           {
-            color: 0xff9ed7,
+            color: ColorCheck(),
             title: 'Rules', //@ts-ignore
             fields: [rulesEmbedFields],
           },

@@ -1,5 +1,6 @@
 import { ICommand } from 'wokcommands'
 import { FailureEmbed } from '../helpers'
+import { ColorCheck } from '../helpers/ColorCheck'
 
 interface COMMAND_CATEGORY {
   name: string
@@ -13,7 +14,7 @@ export default {
   requireRoles: false,
   slash: true,
   testOnly: false,
-  guildOnly: false,
+  guildOnly: true,
   options: [
     {
       name: 'command',
@@ -45,7 +46,7 @@ export default {
       await interaction.editReply({
         embeds: [
           {
-            color: 0xff9ed7,
+            color: ColorCheck(),
             title: match.names[0],
             description: `Description: ${match.description}`,
           },
@@ -80,14 +81,14 @@ export default {
       for (const category of sortedCommands) {
         commandEmbedFields.push({
           name: category.name,
-          value: `\`\`\`Yaml\n-${category.commands.join('\n-')}\n\`\`\``,
+          value: `\`\`\`\n-${category.commands.join('\n-')}\n\`\`\``,
           inline: true,
         })
       }
       interaction.editReply({
         embeds: [
           {
-            color: 0xff9ed7,
+            color: ColorCheck(),
             title: 'Cirilla Commands',
             thumbnail: { url: client.user.displayAvatarURL() },
             timestamp: new Date(),

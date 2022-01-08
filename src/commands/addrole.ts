@@ -89,7 +89,7 @@ export default {
       return FailureEmbed(
         interaction,
         `Invalid message. Message author must be <@${client.user.id}>.\
-         Consider using \`/embed\``
+         Try using \`/embed\` or \`/say\``
       )
 
     let row = targetMessage.components[0] as MessageActionRow

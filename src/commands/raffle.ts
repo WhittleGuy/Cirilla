@@ -1,6 +1,7 @@
-import { Message } from 'discord.js'
+import { ColorResolvable, GuildTextBasedChannel, Message } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
+import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Utility',
@@ -31,6 +32,12 @@ export default {
         {
           name: 'description',
           description: 'Raffle description',
+          type: 3,
+          required: false,
+        },
+        {
+          name: 'color',
+          description: 'Embed hex color (#ff9ed7)',
           type: 3,
           required: false,
         },
@@ -65,14 +72,19 @@ export default {
         return FailureEmbed(interaction, 'Please tag a text channel')
       const title = interaction.options.getString('title')
       const description = interaction.options.getString('description')
+      const color = interaction.options.getString('color') as ColorResolvable
 
-      const postRaffle = async (channel, title, description) => {
+      const postRaffle = async (
+        channel: GuildTextBasedChannel,
+        title: string,
+        description: string
+      ) => {
         await interaction.deferReply({ ephemeral: true })
         const post = await channel
           .send({
             embeds: [
               {
-                color: 0xff9ed7,
+                color: ColorCheck(color),
                 title: title,
                 description: description || null,
               },

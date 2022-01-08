@@ -1,7 +1,7 @@
 import { ICommand } from 'wokcommands'
 import Canvas from 'canvas'
-import { MessageAttachment } from 'discord.js'
-import { FailureEmbed } from '../helpers'
+import { ColorResolvable, MessageAttachment } from 'discord.js'
+import { ColorCheck } from '../helpers/ColorCheck'
 
 const hexToRGB = (
   hex: string
@@ -92,7 +92,8 @@ const rgbToCMYK = (
 
 export default {
   category: 'Utility',
-  description: 'Set/Enable/Disable an afk message',
+  description:
+    'Display a hex color swatch and convert to RGB, HSL, and CMYK (#ff9ed7)',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: true,
@@ -111,15 +112,11 @@ export default {
     await interaction.deferReply()
     const WIDTH = 80
     const RADIUS = 20
-    let hex = interaction.options.getString('hex') || '#ff9ed7'
-    if (hex.charAt(0) !== '#') hex = '#' + hex
-    const hexRegEx = /^#([a-f\d]{3}){1,2}$/i
-    if (!hex.match(hexRegEx))
-      return FailureEmbed(interaction, 'Invalid hex value')
-
+    let hex = interaction.options.getString('hex') as ColorResolvable
+    hex = ColorCheck(hex)
     const canvas = Canvas.createCanvas(WIDTH, WIDTH)
     const ctx = canvas.getContext('2d')
-    ctx.fillStyle = hex
+    ctx.fillStyle = hex.toString()
     ctx.beginPath()
     ctx.moveTo(0, RADIUS / 2)
     ctx.lineTo(0, WIDTH - RADIUS / 2)
@@ -132,7 +129,7 @@ export default {
     ctx.closePath()
     ctx.fill()
 
-    const { r, g, b } = hexToRGB(hex)
+    const { r, g, b } = hexToRGB(hex.toString())
     const { h, s, l } = rgbToHSL(r, g, b)
     const { c, m, y, k } = rgbToCMYK(r, g, b)
 
@@ -140,13 +137,12 @@ export default {
     interaction.editReply({
       embeds: [
         {
-          // @ts-ignore
           color: hex,
           thumbnail: { url: `attachment://ciri.png` },
           fields: [
             {
               name: 'Hex',
-              value: hex,
+              value: hex.toString(),
             },
             {
               name: 'RGB',

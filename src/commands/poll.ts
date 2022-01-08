@@ -1,5 +1,7 @@
+import { ColorResolvable } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
+import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Utility',
@@ -28,6 +30,12 @@ export default {
       type: 3,
       required: true,
     },
+    {
+      name: 'color',
+      description: 'Embed hex color (#ff9ed7)',
+      type: 3,
+      required: false,
+    },
   ],
 
   callback: async ({ interaction }) => {
@@ -41,6 +49,7 @@ export default {
       return FailureEmbed(interaction, 'Please tag a text channel')
     const title = interaction.options.getString('title')
     const options = interaction.options.getString('options')
+    const color = interaction.options.getString('color') as ColorResolvable
     const optionArray = options.split('|')
     const emoteArray: string[] = []
     await interaction.deferReply({ ephemeral: true })
@@ -70,7 +79,7 @@ export default {
     const poll = await channel.send({
       embeds: [
         {
-          color: 0xff9ed7,
+          color: ColorCheck(color),
           title: title,
           description: optionArray.join('\n'),
         },

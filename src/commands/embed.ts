@@ -1,6 +1,7 @@
-import { TextChannel } from 'discord.js'
+import { ColorResolvable } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
+import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Utility',
@@ -19,28 +20,37 @@ export default {
     },
     {
       name: 'title',
-      description: 'The title of the embed',
+      description: 'Embed title',
       type: 3,
       required: true,
     },
     {
       name: 'description',
-      description: 'The description for the embed',
+      description: 'Embed description',
+      type: 3,
+      required: false,
+    },
+    {
+      name: 'color',
+      description: 'Embed hex color (#ff9ed7)',
       type: 3,
       required: false,
     },
   ],
 
   callback: async ({ interaction }) => {
-    const channel = interaction.options.getChannel('channel') as TextChannel
+    const channel = interaction.options.getChannel('channel')
+    if (channel.type !== 'GUILD_TEXT')
+      return FailureEmbed(interaction, 'Please tag a text channel')
     const title = interaction.options.getString('title')
     const description = interaction.options.getString('description')
+    const color = interaction.options.getString('color') as ColorResolvable
 
     const postEmbed = await channel
       .send({
         embeds: [
           {
-            color: 0xff9ed7,
+            color: ColorCheck(color),
             title: title,
             description: `${description ? description : ''}`,
           },

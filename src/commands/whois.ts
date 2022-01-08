@@ -1,6 +1,7 @@
 import { User } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureEmbed } from '../helpers'
+import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Information',
@@ -29,7 +30,7 @@ export default {
       interaction.editReply({
         embeds: [
           {
-            color: 0xffee8f,
+            color: ColorCheck(),
             title: user.tag,
             thumbnail: { url: user.displayAvatarURL() },
             footer: { text: `ID: ${user.id}` },

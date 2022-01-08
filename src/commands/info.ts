@@ -1,5 +1,12 @@
-import { GuildMember, Role, User } from 'discord.js'
+import {
+  ColorResolvable,
+  GuildMember,
+  MessageEmbed,
+  Role,
+  User,
+} from 'discord.js'
 import { ICommand } from 'wokcommands'
+import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Information',
@@ -40,7 +47,7 @@ export default {
       return interaction.reply({
         embeds: [
           {
-            color: 0xffee8f,
+            color: ColorCheck().valueOf() as number,
             title: user.tag,
             thumbnail: { url: user.displayAvatarURL() },
             footer: { text: `Id: ${user.id}` },
@@ -83,7 +90,7 @@ export default {
       return interaction.reply({
         embeds: [
           {
-            color: 0xffee8f,
+            color: ColorCheck(),
             title: guild.name,
             thumbnail: { url: guild.iconURL() },
             fields: [
