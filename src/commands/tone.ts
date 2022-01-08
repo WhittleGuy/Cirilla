@@ -1,6 +1,7 @@
 import { ICommand } from 'wokcommands'
 import { TONE_INDICATORS, TONE } from '../constants/TONE_INDICATORS'
 import { FailureEmbed } from '../helpers'
+import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Information',
@@ -33,7 +34,7 @@ export default {
         )
       }
       const toneEmbed = {
-        color: 0xff9ed7,
+        color: ColorCheck(),
         description: match.name + ' | ' + match.shortDesc,
       }
       return interaction.reply({ embeds: [toneEmbed], ephemeral: true })
@@ -45,7 +46,7 @@ export default {
         inline: true,
       }
     })
-    const toneEmbed = { color: 0xff9ed7, fields: indicators }
+    const toneEmbed = { color: ColorCheck(), fields: indicators }
     return interaction.reply({ embeds: [toneEmbed], ephemeral: true })
   },
 } as ICommand
