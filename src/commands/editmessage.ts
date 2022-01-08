@@ -35,7 +35,10 @@ export default {
     let channel, messageId, content
     if (message) {
       const text = message.content.split(' ').slice(1)
-      channel = guild.channels.cache.get(idReg.exec(text[0])[0])
+      const channelId = idReg.exec(text[0])[0] || null
+      if (channelId === null)
+        return await message.reply('Please tag a text channel')
+      channel = guild.channels.cache.get(channelId)
       messageId = text[1]
       content = text.slice(2).join(' ')
     } else {
@@ -47,8 +50,10 @@ export default {
       content = interaction.options.getString('content')
     }
     // Validate channel
-    if (channel.type !== 'GUILD_TEXT')
+    if (channel.type !== 'GUILD_TEXT') {
+      if (message) return await message.reply('Invalid channel')
       return FailureEmbed(interaction, 'Invalid channel')
+    }
 
     // Get message
     const targetMessage = await channel.messages.fetch(messageId, {
@@ -57,24 +62,29 @@ export default {
     })
 
     // Validate message
-    if (!targetMessage) return 'Something went wrong'
+    if (!targetMessage) {
+      if (message) return await message.reply('Invalid messageId')
+      return FailureEmbed(interaction, 'Invalid messageId')
+    }
     if (targetMessage.author.id !== client.user.id) {
-      if (interaction) FailureEmbed(interaction)
-      else return 'Invalid messageId'
+      if (message) return await message.reply('Invalid message')
+      return FailureEmbed(interaction, 'Invalid message')
     }
 
     // Edit message
-    await targetMessage.edit({ content: content }).catch(() => {
-      if (interaction) FailureEmbed(interaction)
-      else return 'Error editing message'
+    await targetMessage.edit({ content: content }).catch(async () => {
+      if (message) return await message.reply('Something went wrong')
+      return FailureEmbed(interaction, 'Something went wrong')
     })
 
-    if (interaction) SuccessEmbed(interaction)
-    else {
-      message.reply({ content: 'Message updated' }).then((reply) => {
-        message.delete()
-        setTimeout(() => reply.delete(), 3000)
-      })
+    if (message) {
+      return await message
+        .reply({ content: 'Message updated' })
+        .then((reply) => {
+          message.delete()
+          setTimeout(() => reply.delete(), 3000)
+        })
     }
+    SuccessEmbed(interaction)
   },
 } as ICommand
