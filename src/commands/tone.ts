@@ -5,7 +5,7 @@ import { ColorCheck } from '../helpers/ColorCheck'
 
 export default {
   category: 'Information',
-  description: 'Get a list of tone indicator meanings',
+  description: 'List common tone indicators and their meanings',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: true,
@@ -14,14 +14,22 @@ export default {
   options: [
     {
       name: 'indicator',
-      description: 'The tone indicator you want a definition for',
+      description: 'Specific tone indicator',
       type: 3,
+      required: false,
+    },
+    {
+      name: 'show',
+      description: 'Display response for all users',
+      type: 5,
       required: false,
     },
   ],
 
-  callback: ({ interaction }) => {
+  callback: async ({ interaction }) => {
     const indicator = interaction.options.getString('indicator')
+    const show = interaction.options.getBoolean('show') || false
+    await interaction.deferReply({ ephemeral: !show })
 
     if (indicator) {
       const match: TONE = TONE_INDICATORS.find(
@@ -37,7 +45,8 @@ export default {
         color: ColorCheck(),
         description: match.name + ' | ' + match.shortDesc,
       }
-      return interaction.reply({ embeds: [toneEmbed], ephemeral: true })
+      await interaction.editReply({ embeds: [toneEmbed] })
+      return
     }
     const indicators = TONE_INDICATORS.map((tone) => {
       return {
@@ -47,6 +56,7 @@ export default {
       }
     })
     const toneEmbed = { color: ColorCheck(), fields: indicators }
-    return interaction.reply({ embeds: [toneEmbed], ephemeral: true })
+    await interaction.editReply({ embeds: [toneEmbed] })
+    return
   },
 } as ICommand
