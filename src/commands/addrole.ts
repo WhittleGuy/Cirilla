@@ -139,7 +139,7 @@ export default {
 
   // Listen for menu use and add/remove roles
   init: (client: Client) => {
-    client.on('interactionCreate', (interaction) => {
+    client.on('interactionCreate', async (interaction) => {
       if (!interaction.isSelectMenu()) {
         return
       }
@@ -155,11 +155,11 @@ export default {
         })
 
         for (const id of values) {
-          member.roles.add(id)
+          await member.roles.add(id)
         }
 
         for (const id of removed) {
-          member.roles.remove(id.value)
+          await member.roles.remove(id.value)
         }
 
         SuccessEmbed(interaction, 'Roles updated!')
