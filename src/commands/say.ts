@@ -7,7 +7,7 @@ export default {
   permissions: ['MANAGE_MESSAGES'],
   requireRoles: false,
   slash: 'both',
-  testOnly: true,
+  testOnly: false,
   guildOnly: true,
   options: [
     {
