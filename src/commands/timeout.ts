@@ -4,7 +4,7 @@ import { FailureEmbed, SuccessEmbed } from '../helpers'
 
 export default {
   category: 'Moderation',
-  description: 'Times out a user',
+  description: 'Timeout a user',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: true,
   slash: true,
@@ -13,20 +13,19 @@ export default {
   options: [
     {
       name: 'user',
-      description: 'The user you want to timeout',
+      description: 'User to timeout',
       type: 6,
       required: true,
     },
     {
       name: 'length',
-      description:
-        'Length of time in seconds to time out the user (defaults to 300)',
+      description: 'Length of time (minutes) (default: 5)',
       type: 10,
       required: false,
     },
     {
       name: 'reason',
-      description: 'Explain why you are timing out this user',
+      description: 'Reason for timeout',
       type: 3,
       required: false,
     },
@@ -35,7 +34,7 @@ export default {
   callback: async ({ interaction }) => {
     const member = interaction.options.getMember('user') as GuildMember
     const reason = interaction.options.getString('reason')
-    let length = interaction.options.getNumber('length') * 1000
+    let length = interaction.options.getNumber('length') * 1000 * 60
     length < 1 ? (length = 300000) : length
     if (!member) return FailureEmbed(interaction, 'Tag a valid user')
 
@@ -45,7 +44,7 @@ export default {
     if (timed)
       SuccessEmbed(
         interaction,
-        `${member.user.tag} has been timed out for ${length / 1000}s`
+        `${member.user.tag} has been timed out for ${length / 60000}m`
       )
   },
 } as ICommand
