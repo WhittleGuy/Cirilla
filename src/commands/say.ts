@@ -1,4 +1,3 @@
-import { TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
 
@@ -19,7 +18,7 @@ export default {
     },
     {
       name: 'message',
-      description: 'What you want the Cirilla to say',
+      description: 'What Cirilla will say',
       type: 3,
       required: true,
     },
