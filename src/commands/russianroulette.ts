@@ -24,7 +24,7 @@ const timeoutLength = 3
 const sexyChance = 100
 
 export default {
-  category: 'Utility',
+  category: 'Fun',
   description: 'Play russian roulette',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
