@@ -36,8 +36,7 @@ export default {
     if (message) {
       const text = message.content.split(' ').slice(1)
       const channelId = idReg.exec(text[0])[0] || null
-      if (channelId === null)
-        return await message.reply('Please tag a text channel')
+      if (channelId === null) return await message.reply('Tag a text channel')
       channel = guild.channels.cache.get(channelId)
       messageId = text[1]
       content = text.slice(2).join(' ')
