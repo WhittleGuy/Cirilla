@@ -7,7 +7,7 @@ export default {
   permissions: ['MANAGE_CHANNELS'],
   requireRoles: false,
   slash: true,
-  testOnly: true,
+  testOnly: false,
   guildOnly: true,
   options: [
     {
