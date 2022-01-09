@@ -90,7 +90,7 @@ export default {
     if (message) {
       const reply = await message.reply('Embed sent')
       await message.delete()
-      setTimeout(() => reply.delete(), 3000)
+      setTimeout(() => reply.delete().catch((err) => console.log(err)), 3000)
       return
     }
     return SuccessEmbed(interaction, 'Embed sent')
