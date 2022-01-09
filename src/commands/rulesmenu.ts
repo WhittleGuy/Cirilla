@@ -92,14 +92,14 @@ export default {
           return !values.includes(option.value)
         })
         if (values.includes('kick')) {
-          await member.kick('Disagreed to Cirilla rule menu').catch((err) => {
-            console.log(err)
-          })
           for (const id of removed) {
             await member.roles.remove(id.value).catch((err) => {
               console.log(`Role Remove Error: ${err}`)
             })
           }
+          await member.kick('Disagreed to Cirilla rule menu').catch((err) => {
+            console.log(err)
+          })
         } else if (values.includes('live')) {
           for (const id of removed) {
             await member.roles.remove(id.value).catch((err) => {
