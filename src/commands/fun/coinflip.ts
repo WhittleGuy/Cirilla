@@ -3,7 +3,7 @@ import { SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Fun',
-  description: 'Roll di(c)e',
+  description: 'Flip a coin',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
   slash: 'both',
