@@ -87,15 +87,20 @@ export default {
 
       const { customId, values, member } = interaction
       if (customId === 'cirilla-rules-menu' && member instanceof GuildMember) {
+        const component = interaction.component as MessageSelectMenu
+        const removed = component.options.filter((option) => {
+          return !values.includes(option.value)
+        })
         if (values.includes('kick')) {
           await member.kick('Disagreed to Cirilla rule menu').catch((err) => {
             console.log(err)
           })
+          for (const id of removed) {
+            await member.roles.remove(id.value).catch((err) => {
+              console.log(`Role Remove Error: ${err}`)
+            })
+          }
         } else if (values.includes('live')) {
-          const component = interaction.component as MessageSelectMenu
-          const removed = component.options.filter((option) => {
-            return !values.includes(option.value)
-          })
           for (const id of removed) {
             await member.roles.remove(id.value).catch((err) => {
               console.log(`Role Remove Error: ${err}`)
