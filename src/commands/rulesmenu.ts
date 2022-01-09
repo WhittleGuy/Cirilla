@@ -97,13 +97,13 @@ export default {
             return !values.includes(option.value)
           })
           for (const id of removed) {
-            await member.roles.remove(id.value).catch(() => {
-              return
+            await member.roles.remove(id.value).catch((err) => {
+              console.log(`Role Remove Error: ${err}`)
             })
           }
         } else {
-          await member.roles.add(values).catch(() => {
-            return
+          await member.roles.add(values).catch((err) => {
+            console.log(`Role Add Error: ${err}`)
           })
         }
         return SuccessEmbed(interaction, 'Roles updated')
