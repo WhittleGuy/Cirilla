@@ -69,6 +69,6 @@ export default {
         ],
         ephemeral: hide,
       })
-      .catch((err) => FailureEmbed(interaction, 'Output embed too large'))
+      .catch(() => FailureEmbed(interaction, 'Output embed too large'))
   },
 } as ICommand
