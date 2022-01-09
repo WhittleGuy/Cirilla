@@ -2,6 +2,7 @@ import { ICommand } from 'wokcommands'
 import { FailureEmbed, SuccessEmbed } from '../helpers'
 import { ColorCheck } from '../helpers/ColorCheck'
 import warnSchema from '../models/warn-schema'
+import mongoose from 'mongoose'
 
 export default {
   category: 'Moderation',
@@ -9,7 +10,7 @@ export default {
   permissions: ['BAN_MEMBERS'],
   // requireRoles: true,
   slash: true,
-  testOnly: true,
+  testOnly: false,
   guildOnly: true,
   options: [
     {
@@ -31,25 +32,25 @@ export default {
         },
       ],
     },
-    {
-      name: 'remove',
-      description: 'Remove a warning from a user',
-      type: 1,
-      options: [
-        {
-          name: 'user',
-          description: 'User to warn',
-          type: 6,
-          required: true,
-        },
-        {
-          name: 'id',
-          description: 'WarningId',
-          type: 3,
-          required: true,
-        },
-      ],
-    },
+    // {
+    //   name: 'remove',
+    //   description: 'Remove a warning from a user',
+    //   type: 1,
+    //   options: [
+    //     {
+    //       name: 'user',
+    //       description: 'User to warn',
+    //       type: 6,
+    //       required: true,
+    //     },
+    //     {
+    //       name: 'id',
+    //       description: 'WarningId',
+    //       type: 3,
+    //       required: true,
+    //     },
+    //   ],
+    // },
     {
       name: 'list',
       description: 'List all warnings for a user',
@@ -72,6 +73,7 @@ export default {
     const reason = interaction.options.getString('reason')
     const id = interaction.options.getString('id')
 
+    // Add warning
     if (subCommand === 'add') {
       const warning = await warnSchema.create({
         userId: user?.id,
@@ -80,44 +82,50 @@ export default {
         reason,
       })
 
-      if (!warning) return FailureEmbed(interaction, 'Error adding warning')
-      return SuccessEmbed(
-        interaction,
-        `Added warning ${warning.id} to <@${user?.id}>`
-      )
-    } else if (subCommand === 'remove') {
-      const warning = warnSchema.findOneAndDelete(id)
-      if (!warning) return FailureEmbed(interaction, 'Error adding warning')
-      return SuccessEmbed(
-        interaction,
-        `Removed warning ${warning.id} from <@${user?.id}>`
-      )
-    } else if (subCommand === 'list') {
+      if (!warning) FailureEmbed(interaction, 'Error adding warning')
+      SuccessEmbed(interaction, `Added warning ${warning.id} to <@${user?.id}>`) // @ts-ignore
+    }
+
+    // Remove warning
+    // else if (subCommand === 'remove') {
+    //   // @ts-ignore
+    //   const warning = warnSchema.findOneAndDelete(id)
+    //   console.log(warning)
+    //   if (!warning) FailureEmbed(interaction, 'Error removing warning')
+    //   SuccessEmbed(
+    //     interaction, // @ts-ignore
+    //     `Removed warning ${id} from <@${user?.id}>`
+    //   )
+    // }
+
+    // List warnings
+    else if (subCommand === 'list') {
       const warnings = await warnSchema.find({
         userId: user?.id,
         guildId: guild?.id,
       })
 
-      if (!warnings)
-        return FailureEmbed(interaction, 'Error fetching user warnings')
+      if (!warnings) FailureEmbed(interaction, 'Error fetching user warnings')
 
-      let description
+      let description = ''
       for (const warning of warnings) {
-        description += `**Id::** ${warning._id}\n`
+        description += `**Id:** ${warning._id}\n`
         description += `**Date:** ${warning.createdAt.toLocaleString()}\n`
         description += `**Staff:** <@${warning.staffId}>\n`
         description += `**Reason:** ${warning.reason}\n\n`
       }
 
-      return interaction.editReply({
-        embeds: [
-          {
-            color: ColorCheck('#00ff00'),
-            title: `Warnings for <@${user?.id}>:\n\n`,
-            description: description ? description : 'None',
-          },
-        ],
-      })
+      await interaction
+        .editReply({
+          embeds: [
+            {
+              color: ColorCheck('#ff0000'),
+              title: `Warnings for <@${user?.id}>`,
+              description: description ? description : 'None',
+            },
+          ],
+        })
+        .catch((err) => console.log(err))
     }
   },
 } as ICommand
