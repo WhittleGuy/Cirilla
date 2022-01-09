@@ -142,7 +142,7 @@ export default {
       if (!interaction.isSelectMenu()) {
         return
       }
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       const { customId, values, member } = interaction
       if (
         ['cirilla-roles', 'cirilla-roles-exclusive'].includes(customId) &&
