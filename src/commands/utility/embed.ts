@@ -74,8 +74,8 @@ export default {
           color: ColorCheck(color),
           title: `${title ? title : ''}`,
           description: `${description ? description : ''}`,
-          footer: { text: userId },
-          timestamp: new Date(),
+          // footer: { text: userId },
+          // timestamp: new Date(),
         },
       ],
     })
