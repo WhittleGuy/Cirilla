@@ -91,27 +91,31 @@ export default {
         const removed = component.options.filter((option) => {
           return !values.includes(option.value)
         })
+        let complete
         if (values.includes('kick')) {
           for (const id of removed) {
             await member.roles.remove(id.value).catch((err) => {
               console.log(`Role Remove Error: ${err}`)
             })
           }
-          await member.kick('Disagreed to Cirilla rule menu').catch((err) => {
-            console.log(err)
-          })
+          complete = await member
+            .kick('Disagreed to Cirilla rule menu')
+            .catch((err) => {
+              console.log(err)
+            })
         } else if (values.includes('live')) {
           for (const id of removed) {
-            await member.roles.remove(id.value).catch((err) => {
+            complete = member.roles.remove(id.value).catch((err) => {
               console.log(`Role Remove Error: ${err}`)
             })
           }
         } else {
-          await member.roles.add(values).catch((err) => {
+          complete = await member.roles.add(values).catch((err) => {
             console.log(`Role Add Error: ${err}`)
           })
         }
-        return SuccessMessage(interaction, 'Roles updated')
+        if (complete) SuccessMessage(interaction, 'Roles updated')
+        else FailureMessage(interaction)
       }
     })
   },
