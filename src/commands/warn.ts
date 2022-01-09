@@ -71,7 +71,7 @@ export default {
     const subCommand = interaction.options.getSubcommand()
     const user = interaction.options.getUser('user')
     const reason = interaction.options.getString('reason')
-    const id = interaction.options.getString('id')
+    //const id = interaction.options.getString('id')
 
     // Add warning
     if (subCommand === 'add') {

@@ -3,7 +3,6 @@ import {
   GuildMember,
   MessageActionRow,
   MessageSelectMenu,
-  MessageSelectOptionData,
   Role,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'

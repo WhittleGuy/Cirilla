@@ -1,10 +1,4 @@
-import {
-  ColorResolvable,
-  GuildMember,
-  MessageEmbed,
-  Role,
-  User,
-} from 'discord.js'
+import { GuildMember, Role } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { ColorCheck } from '../helpers/ColorCheck'
 
