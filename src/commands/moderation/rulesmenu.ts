@@ -84,7 +84,7 @@ export default {
   init: (client: Client) => {
     client.on('interactionCreate', async (interaction) => {
       if (!interaction.isSelectMenu()) return
-
+      await interaction.deferReply()
       const { customId, values, member } = interaction
       if (customId === 'cirilla-rules-menu' && member instanceof GuildMember) {
         const component = interaction.component as MessageSelectMenu
