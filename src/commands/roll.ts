@@ -57,16 +57,18 @@ export default {
       }
     }
 
-    return interaction.reply({
-      embeds: [
-        {
-          color: ColorCheck(),
-          description: `${scores.join(
-            '\n'
-          )}\n------------------\n**Total:\t${total}**`,
-        },
-      ],
-      ephemeral: hide,
-    })
+    return interaction
+      .reply({
+        embeds: [
+          {
+            color: ColorCheck(),
+            description: `${scores.join(
+              '\n'
+            )}\n------------------\n**Total:\t${total}**`,
+          },
+        ],
+        ephemeral: hide,
+      })
+      .catch((err) => FailureEmbed(interaction, 'Output embed too large'))
   },
 } as ICommand
