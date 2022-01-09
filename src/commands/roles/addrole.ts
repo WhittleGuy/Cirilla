@@ -142,13 +142,12 @@ export default {
       if (!interaction.isSelectMenu()) {
         return
       }
-
+      await interaction.deferReply()
       const { customId, values, member } = interaction
       if (
         ['cirilla-roles', 'cirilla-roles-exclusive'].includes(customId) &&
         member instanceof GuildMember
       ) {
-        await interaction.deferReply()
         const component = interaction.component as MessageSelectMenu
         const removed = component.options.filter((option) => {
           return !values.includes(option.value)
