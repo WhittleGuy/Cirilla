@@ -155,11 +155,15 @@ export default {
         })
 
         for (const id of values) {
-          await member.roles.add(id)
+          await member.roles
+            .add(id)
+            .catch((err) => console.log(`Role Add Error: ${err}`))
         }
 
         for (const id of removed) {
-          await member.roles.remove(id.value)
+          await member.roles
+            .remove(id.value)
+            .catch((err) => console.log(`Role Remove Error: ${err}`))
         }
 
         SuccessEmbed(interaction, 'Roles updated!')

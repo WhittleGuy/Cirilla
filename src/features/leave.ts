@@ -51,10 +51,11 @@ export default (client: Client) => {
             },
             {
               name: 'Roles',
-              value: member.roles.cache
-                .map((role: Role) => role)
-                .slice(0, -1)
-                .join(' '),
+              value:
+                member.roles.cache
+                  .map((role: Role) => role)
+                  .slice(0, -1)
+                  .join(' ') || 'None',
               inline: true,
             },
           ],
