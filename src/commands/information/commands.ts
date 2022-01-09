@@ -61,7 +61,7 @@ export default {
       // Get categories and
       for (const command of commandList) {
         const { category } = command
-        if (!['Configuration', 'Help'].includes(category)) {
+        if (![/*'Configuration',*/ 'Help'].includes(category)) {
           if (!categories.includes(category)) {
             categories.push(category)
             sortedCommands.push({
@@ -75,11 +75,13 @@ export default {
         }
       }
 
+      sortedCommands.sort((a, b) => a.commands.length - b.commands.length)
+
       const commandEmbedFields: Object[] = []
       for (const category of sortedCommands) {
         commandEmbedFields.push({
           name: category.name,
-          value: `\`\`\`\n-${category.commands.join('\n-')}\n\`\`\``,
+          value: `\`\`\`\n/${category.commands.join('\n/')}\n\`\`\``,
           inline: true,
         })
       }

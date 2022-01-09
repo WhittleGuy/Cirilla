@@ -24,7 +24,7 @@ export default {
     },
   ],
 
-  callback: ({ interaction }) => {
+  callback: async ({ interaction }) => {
     const diceString = interaction.options.getString('dice')
     const hide = interaction.options.getBoolean('hide')
 
@@ -56,7 +56,7 @@ export default {
       }
     }
 
-    return interaction
+    await interaction
       .reply({
         embeds: [
           {

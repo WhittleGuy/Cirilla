@@ -1,4 +1,5 @@
 import { ICommand } from 'wokcommands'
+import { FailureMessage, SuccessMessage } from '../../helpers'
 import leaveSchema from '../../models/leave-schema'
 
 export default {
@@ -19,10 +20,12 @@ export default {
   ],
 
   callback: async ({ guild, interaction }) => {
+    await interaction.deferReply()
     const channel = interaction.options.getChannel('channel')
-    if (channel.type !== 'GUILD_TEXT') return 'Please tag a text channel'
+    if (channel.type !== 'GUILD_TEXT')
+      return FailureMessage(interaction, 'Please tag a text channel')
 
-    await leaveSchema.findOneAndUpdate(
+    const set = await leaveSchema.findOneAndUpdate(
       {
         _id: guild.id,
       },
@@ -33,6 +36,7 @@ export default {
       { upsert: true }
     )
 
-    return 'Leave channel set'
+    if (!set) return FailureMessage(interaction)
+    return SuccessMessage(interaction)
   },
 } as ICommand

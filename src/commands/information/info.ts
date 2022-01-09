@@ -87,13 +87,46 @@ export default {
             color: ColorCheck(),
             title: guild.name,
             thumbnail: { url: guild.iconURL() },
+            footer: { text: `Id: ${guild.id}` },
+            timestamp: new Date(),
             fields: [
               {
-                name: 'Created',
-                value:
-                  new Date(guild.createdTimestamp).toLocaleDateString() +
-                  '\n' +
-                  new Date(guild.createdTimestamp).toLocaleTimeString(),
+                name: 'Categories',
+                value: guild.channels.cache
+                  .filter((ch) => ch.type === 'GUILD_CATEGORY')
+                  .size.toString(),
+                inline: true,
+              },
+              {
+                name: 'Text Channels',
+                value: guild.channels.cache
+                  .filter((ch) => ch.type === 'GUILD_TEXT')
+                  .size.toString(),
+                inline: true,
+              },
+              {
+                name: 'Voice Channels',
+                value: guild.channels.cache
+                  .filter((ch) => ch.type === 'GUILD_VOICE')
+                  .size.toString(),
+                inline: true,
+              },
+              {
+                name: 'Roles',
+                value: (
+                  guild.roles.cache.filter((r) => !r.managed).size - 1
+                ).toString(),
+                inline: true,
+              },
+
+              {
+                name: 'Members',
+                value: `${guild.memberCount}`,
+                inline: true,
+              },
+              {
+                name: 'Emotes',
+                value: `${guild.emojis.cache.size}`,
                 inline: true,
               },
               {
@@ -103,13 +136,8 @@ export default {
                 inline: true,
               },
               {
-                name: 'Members',
-                value: `${guild.memberCount}`,
-                inline: true,
-              },
-              {
-                name: 'Emotes',
-                value: `${guild.emojis.cache.size}`,
+                name: 'Created',
+                value: new Date(guild.createdTimestamp).toLocaleString(),
                 inline: true,
               },
             ],

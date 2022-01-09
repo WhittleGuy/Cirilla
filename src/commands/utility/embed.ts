@@ -45,7 +45,7 @@ export default {
       let text = message.content.split(' ').slice(1)
       const channelId = idReg.exec(text[0])[0] || null
       if (channelId === null)
-        return await message.reply('Please tag a text channel')
+        return FailureMessage(message, 'Tag a text channel')
       channel = guild.channels.cache.get(channelId)
       text.shift()
       text = text.join(' ').split('|')
@@ -61,8 +61,7 @@ export default {
     }
 
     if (channel.type !== 'GUILD_TEXT') {
-      if (message) return await message.reply('Please tag a text channel')
-      return FailureMessage(interaction, 'Please tag a text channel')
+      return FailureMessage(message || interaction, 'Invalid channel')
     }
 
     const userId = message
@@ -82,16 +81,9 @@ export default {
     })
 
     if (!postEmbed) {
-      if (message) return await message.reply('Error sending embed')
-      return FailureMessage(interaction)
+      return FailureMessage(message || interaction)
     }
 
-    if (message) {
-      const reply = await message.reply('Embed sent')
-      await message.delete()
-      setTimeout(() => reply.delete().catch((err) => console.log(err)), 3000)
-      return
-    }
-    return SuccessMessage(interaction, 'Embed sent')
+    return SuccessMessage(message || interaction, 'Embed sent')
   },
 } as ICommand

@@ -32,7 +32,7 @@ export default {
       const text = message.content.split(' ').slice(1)
       const channelId = idReg.exec(text[0])[0] || null
       if (channelId === null)
-        return await message.reply('Please tag a text channel')
+        return FailureMessage(message, 'Tag a text channel')
       channel = guild.channels.cache.get(channelId)
       content = text.slice(1).join(' ')
     }
@@ -44,23 +44,17 @@ export default {
     }
 
     if (channel.type !== 'GUILD_TEXT') {
-      if (message) return 'Please tag a text channel'
-      return FailureMessage(interaction, 'Please tag a text channel')
+      return FailureMessage(message || interaction, 'Please tag a text channel')
     }
 
-    const sendMessage = await channel.send(content)
+    const sendMessage = await channel
+      .send(content)
+      .catch((err) => console.error(err))
 
     if (!sendMessage) {
-      if (message) return 'Error sending message'
-      return FailureMessage(interaction)
+      return FailureMessage(message || interaction)
     }
 
-    if (message) {
-      const reply = await message.reply('Message sent')
-      await message.delete()
-      setTimeout(() => reply.delete(), 3000)
-      return
-    }
-    return SuccessMessage(interaction, 'Message sent')
+    return SuccessMessage(message || interaction)
   },
 } as ICommand

@@ -36,7 +36,8 @@ export default {
     if (message) {
       const text = message.content.split(' ').slice(1)
       const channelId = idReg.exec(text[0])[0] || null
-      if (channelId === null) return await message.reply('Tag a text channel')
+      if (channelId === null)
+        return FailureMessage(message, 'Tag a text channel')
       channel = guild.channels.cache.get(channelId)
       messageId = text[1]
       content = text.slice(2).join(' ')
@@ -50,8 +51,7 @@ export default {
     }
     // Validate channel
     if (channel.type !== 'GUILD_TEXT') {
-      if (message) return await message.reply('Invalid channel')
-      return FailureMessage(interaction, 'Invalid channel')
+      return FailureMessage(message || interaction, 'Invalid channel')
     }
 
     // Get message
@@ -62,28 +62,17 @@ export default {
 
     // Validate message
     if (!targetMessage) {
-      if (message) return await message.reply('Invalid messageId')
-      return FailureMessage(interaction, 'Invalid messageId')
+      return FailureMessage(message || interaction, 'Invalid messageId')
     }
     if (targetMessage.author.id !== client.user.id) {
-      if (message) return await message.reply('Invalid message')
-      return FailureMessage(interaction, 'Invalid message')
+      return FailureMessage(message || interaction, 'Invalid message')
     }
 
     // Edit message
     await targetMessage.edit({ content: content }).catch(async () => {
-      if (message) return await message.reply('Something went wrong')
-      return FailureMessage(interaction, 'Something went wrong')
+      return FailureMessage(message || interaction)
     })
 
-    if (message) {
-      return await message
-        .reply({ content: 'Message updated' })
-        .then((reply) => {
-          message.delete()
-          setTimeout(() => reply.delete(), 3000)
-        })
-    }
-    SuccessMessage(interaction)
+    SuccessMessage(message || interaction)
   },
 } as ICommand

@@ -21,6 +21,7 @@ const SuccessMessage = async (
   // Message
   if (input instanceof Message) {
     const post = await input.channel.send({ embeds: [successEmbed] })
+    await input.delete().catch((err) => console.error(err))
     if (!post) return console.error('ERROR: Failure message could not post')
     return
   }
