@@ -1,6 +1,6 @@
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../helpers'
-import afkSchema from '../models/afk-schema'
+import { FailureEmbed, SuccessEmbed } from '../../helpers'
+import afkSchema from '../../models/afk-schema'
 
 const afkData = {} as {
   // userId: [message, AFK]

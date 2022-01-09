@@ -1,8 +1,6 @@
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../helpers'
-import { ColorCheck } from '../helpers/ColorCheck'
-import warnSchema from '../models/warn-schema'
-import mongoose from 'mongoose'
+import { ColorCheck, FailureEmbed, SuccessEmbed } from '../../helpers'
+import warnSchema from '../../models/warn-schema'
 
 export default {
   category: 'Moderation',

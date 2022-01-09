@@ -1,6 +1,6 @@
 import { GuildMember, Role } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck } from '../helpers/ColorCheck'
+import { ColorCheck } from '../../helpers'
 
 export default {
   category: 'Information',

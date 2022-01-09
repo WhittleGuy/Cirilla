@@ -1,7 +1,7 @@
 import { ICommand } from 'wokcommands'
 import Canvas from 'canvas'
 import { ColorResolvable, MessageAttachment } from 'discord.js'
-import { ColorCheck } from '../helpers/ColorCheck'
+import { ColorCheck } from '../../helpers'
 
 const hexToRGB = (
   hex: string

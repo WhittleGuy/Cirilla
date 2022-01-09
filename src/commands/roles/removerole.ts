@@ -4,10 +4,10 @@ import {
   MessageSelectOptionData,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../helpers'
+import { FailureEmbed, SuccessEmbed } from '../../helpers'
 
 export default {
-  category: 'Moderation',
+  category: 'CirillaRoles',
   description: 'Remove role from CirillaRoles dropdown',
   permissions: ['MANAGE_ROLES'],
   // requireRoles: true,

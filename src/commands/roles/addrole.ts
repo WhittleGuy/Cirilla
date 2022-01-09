@@ -6,7 +6,7 @@ import {
   Role,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../helpers'
+import { FailureEmbed, SuccessEmbed } from '../../helpers'
 
 interface RoleOption {
   label: string
@@ -16,7 +16,7 @@ interface RoleOption {
 }
 
 export default {
-  category: 'Moderation',
+  category: 'CirillaRoles',
   description:
     'Add a role dropdown to a Cirilla embed or message | Add a new role to existing',
   permissions: ['MANAGE_ROLES'],

@@ -1,7 +1,6 @@
 import { ICommand } from 'wokcommands'
-import { RULES } from '../constants/RULES'
-import { FailureEmbed } from '../helpers'
-import { ColorCheck } from '../helpers/ColorCheck'
+import { RULES } from '../../constants/RULES'
+import { ColorCheck, FailureEmbed } from '../../helpers'
 
 interface RULE_CATEGORY {
   name: string

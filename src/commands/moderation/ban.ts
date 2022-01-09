@@ -1,11 +1,11 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../helpers'
+import { FailureEmbed, SuccessEmbed } from '../../helpers'
 
 export default {
   category: 'Moderation',
-  description: 'Kick a user',
-  permissions: ['KICK_MEMBERS'],
+  description: 'Ban a user',
+  permissions: ['BAN_MEMBERS'],
   // requireRoles: true,
   slash: true,
   testOnly: false,
@@ -13,13 +13,13 @@ export default {
   options: [
     {
       name: 'user',
-      description: 'User to kick',
+      description: 'User to ban',
       type: 6,
       required: true,
     },
     {
       name: 'reason',
-      description: 'Reason for kick',
+      description: 'Reason for ban',
       type: 3,
       required: false,
     },
@@ -33,13 +33,20 @@ export default {
       return FailureEmbed(interaction, 'Tag a valid user')
     }
 
-    if (!member.kickable) {
-      return FailureEmbed(interaction, 'Cannot kick that user')
+    if (!member.bannable) {
+      return FailureEmbed(interaction, 'Cannot ban that user')
     }
 
-    const kicked = await member.kick(reason).catch((err) => {
-      return FailureEmbed(interaction, err)
-    })
-    if (kicked) SuccessEmbed(interaction, `${member.user.tag} has been kicked`)
+    member
+      .ban({
+        reason,
+        days: 7,
+      })
+      .then(() => {
+        return SuccessEmbed(interaction, `${member.user.tag} has been banned`)
+      })
+      .catch((err) => {
+        return FailureEmbed(interaction, err)
+      })
   },
 } as ICommand

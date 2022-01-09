@@ -1,13 +1,7 @@
-import { GuildMember, MessageEmbed } from 'discord.js'
+import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck } from '../helpers/ColorCheck'
-import revolverSchema from '../models/revolver-schema'
-
-// const revolverSchema = new Schema({
-//   // Guild Id
-//   _id: { type: String, required: true },
-//   chambers: [{ type: Number, required: true }],
-// })
+import { ColorCheck } from '../../helpers'
+import revolverSchema from '../../models/revolver-schema'
 
 const revolverData = {} as {
   // guildId: number[]

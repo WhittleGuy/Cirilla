@@ -1,6 +1,6 @@
 import { ColorResolvable } from 'discord.js'
 
-export const ColorCheck = (color?: ColorResolvable): ColorResolvable => {
+const ColorCheck = (color?: ColorResolvable): ColorResolvable => {
   const DEFAULT = '#ff9ed7'
   if (!color) return DEFAULT
   let colorString = color.toString()
@@ -9,3 +9,5 @@ export const ColorCheck = (color?: ColorResolvable): ColorResolvable => {
   }
   return DEFAULT
 }
+
+export default ColorCheck

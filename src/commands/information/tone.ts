@@ -1,7 +1,6 @@
 import { ICommand } from 'wokcommands'
-import { TONE_INDICATORS, TONE } from '../constants/TONE_INDICATORS'
-import { FailureEmbed } from '../helpers'
-import { ColorCheck } from '../helpers/ColorCheck'
+import { TONE_INDICATORS, TONE } from '../../constants/TONE_INDICATORS'
+import { ColorCheck, FailureEmbed } from '../../helpers'
 
 export default {
   category: 'Information',

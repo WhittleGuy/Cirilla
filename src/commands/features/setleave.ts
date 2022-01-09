@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import leaveSchema from '../models/leave-schema'
+import leaveSchema from '../../models/leave-schema'
 
 export default {
   category: 'Configuration',

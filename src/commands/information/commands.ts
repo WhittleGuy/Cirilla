@@ -1,6 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureEmbed } from '../helpers'
-import { ColorCheck } from '../helpers/ColorCheck'
+import { ColorCheck, FailureEmbed } from '../../helpers'
 
 interface COMMAND_CATEGORY {
   name: string

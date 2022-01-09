@@ -1,7 +1,6 @@
 import { ColorResolvable, GuildTextBasedChannel, Message } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../helpers'
-import { ColorCheck } from '../helpers/ColorCheck'
+import { ColorCheck, FailureEmbed, SuccessEmbed } from '../../helpers'
 
 export default {
   category: 'Utility',

@@ -5,7 +5,7 @@ import {
   MessageSelectMenu,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../helpers'
+import { FailureEmbed, SuccessEmbed } from '../../helpers'
 
 export default {
   category: 'Moderation',

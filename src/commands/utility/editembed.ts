@@ -1,6 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../helpers'
-import { ColorCheck } from '../helpers/ColorCheck'
+import { FailureEmbed, SuccessEmbed } from '../../helpers'
 
 export default {
   category: 'Utility',

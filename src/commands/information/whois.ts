@@ -1,7 +1,6 @@
 import { User } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed } from '../helpers'
-import { ColorCheck } from '../helpers/ColorCheck'
+import { ColorCheck, FailureEmbed } from '../../helpers'
 
 export default {
   category: 'Information',
