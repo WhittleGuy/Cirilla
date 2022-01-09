@@ -26,6 +26,7 @@
   },
   "scripts": {
     "dev": "nodemon --config nodemon.json src/index.ts",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "tsc": "tsc -w --skipLibCheck --outDir dist/"
   }
 }
