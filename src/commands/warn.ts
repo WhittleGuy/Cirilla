@@ -1,0 +1,123 @@
+import { ICommand } from 'wokcommands'
+import { FailureEmbed, SuccessEmbed } from '../helpers'
+import { ColorCheck } from '../helpers/ColorCheck'
+import warnSchema from '../models/warn-schema'
+
+export default {
+  category: 'Moderation',
+  description: 'Warn a user',
+  permissions: ['BAN_MEMBERS'],
+  // requireRoles: true,
+  slash: true,
+  testOnly: true,
+  guildOnly: true,
+  options: [
+    {
+      name: 'add',
+      description: 'Add a warning to a user',
+      type: 1,
+      options: [
+        {
+          name: 'user',
+          description: 'User to warn',
+          type: 6,
+          required: true,
+        },
+        {
+          name: 'reason',
+          description: 'Reason for warning',
+          type: 3,
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'remove',
+      description: 'Remove a warning from a user',
+      type: 1,
+      options: [
+        {
+          name: 'user',
+          description: 'User to warn',
+          type: 6,
+          required: true,
+        },
+        {
+          name: 'id',
+          description: 'WarningId',
+          type: 3,
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'list',
+      description: 'List all warnings for a user',
+      type: 1,
+      options: [
+        {
+          name: 'user',
+          description: 'User to search',
+          type: 6,
+          required: true,
+        },
+      ],
+    },
+  ],
+
+  callback: async ({ guild, member: staff, interaction }) => {
+    await interaction.deferReply({ ephemeral: true })
+    const subCommand = interaction.options.getSubcommand()
+    const user = interaction.options.getUser('user')
+    const reason = interaction.options.getString('reason')
+    const id = interaction.options.getString('id')
+
+    if (subCommand === 'add') {
+      const warning = await warnSchema.create({
+        userId: user?.id,
+        staffId: staff.id,
+        guildId: guild?.id,
+        reason,
+      })
+
+      if (!warning) return FailureEmbed(interaction, 'Error adding warning')
+      return SuccessEmbed(
+        interaction,
+        `Added warning ${warning.id} to <@${user?.id}>`
+      )
+    } else if (subCommand === 'remove') {
+      const warning = warnSchema.findOneAndDelete(id)
+      if (!warning) return FailureEmbed(interaction, 'Error adding warning')
+      return SuccessEmbed(
+        interaction,
+        `Removed warning ${warning.id} from <@${user?.id}>`
+      )
+    } else if (subCommand === 'list') {
+      const warnings = await warnSchema.find({
+        userId: user?.id,
+        guildId: guild?.id,
+      })
+
+      if (!warnings)
+        return FailureEmbed(interaction, 'Error fetching user warnings')
+
+      let description
+      for (const warning of warnings) {
+        description += `**Id::** ${warning._id}\n`
+        description += `**Date:** ${warning.createdAt.toLocaleString()}\n`
+        description += `**Staff:** <@${warning.staffId}>\n`
+        description += `**Reason:** ${warning.reason}\n\n`
+      }
+
+      return interaction.editReply({
+        embeds: [
+          {
+            color: ColorCheck('#00ff00'),
+            title: `Warnings for <@${user?.id}>:\n\n`,
+            description: description ? description : 'None',
+          },
+        ],
+      })
+    }
+  },
+} as ICommand
