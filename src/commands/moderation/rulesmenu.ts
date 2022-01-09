@@ -5,7 +5,7 @@ import {
   MessageSelectMenu,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../../helpers'
+import { FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Moderation',
@@ -111,7 +111,7 @@ export default {
             console.log(`Role Add Error: ${err}`)
           })
         }
-        return SuccessEmbed(interaction, 'Roles updated')
+        return SuccessMessage(interaction, 'Roles updated')
       }
     })
   },
@@ -131,7 +131,7 @@ export default {
     const dEmote = interaction.options.getString('disagree_emote')
 
     if (channel.type !== 'GUILD_TEXT')
-      return FailureEmbed(interaction, 'Invalid channel')
+      return FailureMessage(interaction, 'Invalid channel')
 
     // Get message
     const targetMessage = await channel.messages.fetch(messageId, {
@@ -139,9 +139,9 @@ export default {
       force: true,
     })
     // Validate message exists and was written by the bot
-    if (!targetMessage) return FailureEmbed(interaction, 'Invalid message Id')
+    if (!targetMessage) return FailureMessage(interaction, 'Invalid message Id')
     if (targetMessage.author.id !== client.user.id) {
-      return FailureEmbed(
+      return FailureMessage(
         interaction,
         `Invalid message. Message author must be <@${client.user.id}>.\
          Try using \`/embed\` or \`/say\``
@@ -182,7 +182,7 @@ export default {
       components: [row],
     })
 
-    if (!sent) return FailureEmbed(interaction)
-    return SuccessEmbed(interaction, `Dropdown posted in #${channel.name}`)
+    if (!sent) return FailureMessage(interaction)
+    return SuccessMessage(interaction, `Dropdown posted in #${channel.name}`)
   },
 } as ICommand

@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureEmbed, SuccessEmbed } from '../../helpers'
+import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Fun',
@@ -34,7 +34,7 @@ export default {
     const dice: string[] = diceString.split(SEPARATOR)
     const dieArray: string[][] = []
     for (const die of dice) {
-      if (!die.match(DIE)) return FailureEmbed(interaction, 'Invalid format')
+      if (!die.match(DIE)) return FailureMessage(interaction, 'Invalid format')
       dieArray.push(die.split('d'))
     }
 
@@ -42,7 +42,7 @@ export default {
     let scores: string[] = []
 
     for (const die of dieArray) {
-      if (die[0] === '0') return SuccessEmbed(interaction, `Natural 0`, false)
+      if (die[0] === '0') return SuccessMessage(interaction, `Natural 0`)
       for (let i = 0; i < parseInt(die[0]); i++) {
         const roll = Math.floor(Math.random() * parseInt(die[1]) + 1)
         total += roll
@@ -68,6 +68,6 @@ export default {
         ],
         ephemeral: hide,
       })
-      .catch(() => FailureEmbed(interaction, 'Output embed too large'))
+      .catch(() => FailureMessage(interaction, 'Output embed too large'))
   },
 } as ICommand

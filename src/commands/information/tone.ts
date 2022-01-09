@@ -1,6 +1,6 @@
 import { ICommand } from 'wokcommands'
 import { TONE_INDICATORS, TONE } from '../../constants/TONE_INDICATORS'
-import { ColorCheck, FailureEmbed } from '../../helpers'
+import { ColorCheck, FailureMessage } from '../../helpers'
 
 export default {
   category: 'Information',
@@ -35,7 +35,7 @@ export default {
         (item) => item.name.replace('/', '') === indicator.replace('/', '')
       )
       if (!match) {
-        return FailureEmbed(
+        return FailureMessage(
           interaction,
           `No indicator matching ${indicator} found`
         )

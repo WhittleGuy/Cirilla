@@ -1,6 +1,6 @@
 import { ColorResolvable } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureEmbed, SuccessEmbed } from '../../helpers'
+import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Utility',
@@ -62,7 +62,7 @@ export default {
 
     if (channel.type !== 'GUILD_TEXT') {
       if (message) return await message.reply('Please tag a text channel')
-      return FailureEmbed(interaction, 'Please tag a text channel')
+      return FailureMessage(interaction, 'Please tag a text channel')
     }
 
     const userId = message
@@ -83,7 +83,7 @@ export default {
 
     if (!postEmbed) {
       if (message) return await message.reply('Error sending embed')
-      return FailureEmbed(interaction)
+      return FailureMessage(interaction)
     }
 
     if (message) {
@@ -92,6 +92,6 @@ export default {
       setTimeout(() => reply.delete().catch((err) => console.log(err)), 3000)
       return
     }
-    return SuccessEmbed(interaction, 'Embed sent')
+    return SuccessMessage(interaction, 'Embed sent')
   },
 } as ICommand

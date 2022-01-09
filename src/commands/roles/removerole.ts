@@ -4,7 +4,7 @@ import {
   MessageSelectOptionData,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../../helpers'
+import { FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'CirillaRoles',
@@ -39,7 +39,7 @@ export default {
     await interaction.deferReply({ ephemeral: true })
     const channel = interaction.options.getChannel('channel')
     if (channel.type !== 'GUILD_TEXT')
-      return FailureEmbed(interaction, 'Invalid channel')
+      return FailureMessage(interaction, 'Invalid channel')
     const messageId = interaction.options.getString('message')
     const role = interaction.options.getRole('role')
 
@@ -47,11 +47,11 @@ export default {
       cache: true,
       force: true,
     })
-    if (!targetMessage) return FailureEmbed(interaction, 'Invalid message Id')
+    if (!targetMessage) return FailureMessage(interaction, 'Invalid message Id')
 
     let row = targetMessage.components[0] as MessageActionRow
     if (!row) {
-      return FailureEmbed(interaction, 'Invalid message.')
+      return FailureMessage(interaction, 'Invalid message.')
     }
 
     const menu = row.components[0] as MessageSelectMenu
@@ -59,9 +59,9 @@ export default {
       if (
         !['cirilla-roles', 'cirilla-roles-exclusive'].includes(menu.customId)
       ) {
-        return FailureEmbed(interaction, 'Invalid message.')
+        return FailureMessage(interaction, 'Invalid message.')
       } else if (!menu.options.map((o) => o.value).includes(role.id))
-        return FailureEmbed(interaction, `[${role.name}] not in that menu`)
+        return FailureMessage(interaction, `[${role.name}] not in that menu`)
 
       const newOpts = menu.options.filter(
         (o) => o.value !== role.id
@@ -79,7 +79,7 @@ export default {
         })
       }
 
-      return SuccessEmbed(
+      return SuccessMessage(
         interaction,
         `[${role.name}] removed from ${targetMessage.id}`
       )

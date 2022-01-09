@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureEmbed, SuccessEmbed } from '../../helpers'
+import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
 import warnSchema from '../../models/warn-schema'
 
 export default {
@@ -80,8 +80,11 @@ export default {
         reason,
       })
 
-      if (!warning) FailureEmbed(interaction, 'Error adding warning')
-      SuccessEmbed(interaction, `Added warning ${warning.id} to <@${user?.id}>`) // @ts-ignore
+      if (!warning) FailureMessage(interaction, 'Error adding warning')
+      SuccessMessage(
+        interaction,
+        `Added warning ${warning.id} to <@${user?.id}>`
+      ) // @ts-ignore
     }
 
     // Remove warning
@@ -103,7 +106,7 @@ export default {
         guildId: guild?.id,
       })
 
-      if (!warnings) FailureEmbed(interaction, 'Error fetching user warnings')
+      if (!warnings) FailureMessage(interaction, 'Error fetching user warnings')
 
       let description = ''
       for (const warning of warnings) {

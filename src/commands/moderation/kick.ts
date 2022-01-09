@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../../helpers'
+import { FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Moderation',
@@ -30,16 +30,17 @@ export default {
     const reason = interaction.options.getString('reason')
 
     if (!member) {
-      return FailureEmbed(interaction, 'Tag a valid user')
+      return FailureMessage(interaction, 'Tag a valid user')
     }
 
     if (!member.kickable) {
-      return FailureEmbed(interaction, 'Cannot kick that user')
+      return FailureMessage(interaction, 'Cannot kick that user')
     }
 
     const kicked = await member.kick(reason).catch((err) => {
-      return FailureEmbed(interaction, err)
+      return FailureMessage(interaction, err)
     })
-    if (kicked) SuccessEmbed(interaction, `${member.user.tag} has been kicked`)
+    if (kicked)
+      SuccessMessage(interaction, `${member.user.tag} has been kicked`)
   },
 } as ICommand

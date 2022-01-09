@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../../helpers'
+import { FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Utility',
@@ -64,7 +64,7 @@ export default {
     // Validate channel
     if (channel.type !== 'GUILD_TEXT') {
       if (message) return await message.reply('Invalid channel')
-      return FailureEmbed(interaction, 'Invalid channel')
+      return FailureMessage(interaction, 'Invalid channel')
     }
 
     // Get message
@@ -76,11 +76,11 @@ export default {
     // Validate message
     if (!targetMessage) {
       if (message) return await message.reply('Invalid messageId')
-      return FailureEmbed(interaction, 'Invalid messageId')
+      return FailureMessage(interaction, 'Invalid messageId')
     }
     if (targetMessage.author.id !== client.user.id) {
       if (message) return await message.reply('Invalid message')
-      return FailureEmbed(interaction, 'Invalid message')
+      return FailureMessage(interaction, 'Invalid message')
     }
 
     // Get user for footer
@@ -91,7 +91,7 @@ export default {
     if (!targetMessage.embeds.length) {
       {
         if (message) return await message.reply('Invalid embed')
-        return FailureEmbed(interaction, 'Invalid embed')
+        return FailureMessage(interaction, 'Invalid embed')
       }
     }
 
@@ -110,7 +110,7 @@ export default {
 
     if (!editEmbed) {
       if (message) return await message.reply('Something went wrong')
-      return FailureEmbed(interaction, 'Something went wrong')
+      return FailureMessage(interaction, 'Something went wrong')
     }
 
     if (message) {
@@ -119,6 +119,6 @@ export default {
       setTimeout(() => reply.delete(), 3000)
       return
     }
-    return SuccessEmbed(interaction, 'Embed sent')
+    return SuccessMessage(interaction, 'Embed sent')
   },
 } as ICommand

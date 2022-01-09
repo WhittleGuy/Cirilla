@@ -1,6 +1,6 @@
 import { ICommand } from 'wokcommands'
 import { RULES } from '../../constants/RULES'
-import { ColorCheck, FailureEmbed } from '../../helpers'
+import { ColorCheck, FailureMessage } from '../../helpers'
 
 interface RULE_CATEGORY {
   name: string
@@ -61,7 +61,7 @@ export default {
         ephemeral: !show,
       })
       .catch((err) => {
-        return FailureEmbed(interaction, err)
+        return FailureMessage(interaction, err)
       })
   },
 } as ICommand

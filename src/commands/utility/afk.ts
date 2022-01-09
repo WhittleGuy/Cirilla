@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../../helpers'
+import { FailureMessage, SuccessMessage } from '../../helpers'
 import afkSchema from '../../models/afk-schema'
 
 const afkData = {} as {
@@ -57,10 +57,10 @@ export default {
           }
         )
         .catch((err) => {
-          return FailureEmbed(interaction, err)
+          return FailureMessage(interaction, err)
         })
       afkData[user.id] = [afkMessage, true]
-      return SuccessEmbed(
+      return SuccessMessage(
         interaction,
         `AFK message for ${user.tag} has been set and is \`ENABLED\``
       )
@@ -73,7 +73,7 @@ export default {
       if (!data) {
         const results = await afkSchema.findById(user.id)
         if (!results)
-          return FailureEmbed(interaction, 'Use `/afk set` and try again')
+          return FailureMessage(interaction, 'Use `/afk set` and try again')
 
         const { text, afk } = results
 
@@ -92,10 +92,10 @@ export default {
           }
         )
         .catch((err) => {
-          return FailureEmbed(interaction, err)
+          return FailureMessage(interaction, err)
         })
       afkData[user.id] = [data[0], !data[1]]
-      return SuccessEmbed(
+      return SuccessMessage(
         interaction,
         `AFK message for ${user.tag} is now \`${
           !data[1] ? 'ENABLED' : 'DISABLED'

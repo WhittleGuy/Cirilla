@@ -6,7 +6,7 @@ import {
   Role,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../../helpers'
+import { FailureMessage, SuccessMessage } from '../../helpers'
 
 interface RoleOption {
   label: string
@@ -165,7 +165,7 @@ export default {
             .catch((err) => console.log(`Role Remove Error: ${err}`))
         }
 
-        SuccessEmbed(interaction, 'Roles updated!')
+        SuccessMessage(interaction, 'Roles updated!')
       }
     })
   },
@@ -178,7 +178,7 @@ export default {
     // Get channel and validate
     const channel = interaction.options.getChannel('channel')
     if (channel.type !== 'GUILD_TEXT')
-      return FailureEmbed(interaction, 'Invalid channel')
+      return FailureMessage(interaction, 'Invalid channel')
 
     // Get message
     const messageId = interaction.options.getString('message')
@@ -187,9 +187,9 @@ export default {
       force: true,
     })
     // Validate message exists and was written by the bot
-    if (!targetMessage) return FailureEmbed(interaction, 'Invalid message Id')
+    if (!targetMessage) return FailureMessage(interaction, 'Invalid message Id')
     if (targetMessage.author.id !== client.user.id) {
-      return FailureEmbed(
+      return FailureMessage(
         interaction,
         `Invalid message. Message author must be <@${client.user.id}>.\
          Try using \`/embed\` or \`/say\``

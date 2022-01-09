@@ -1,6 +1,6 @@
 import { ColorResolvable } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureEmbed, SuccessEmbed } from '../../helpers'
+import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Utility',
@@ -45,7 +45,7 @@ export default {
 
     const channel = interaction.options.getChannel('channel')
     if (channel.type !== 'GUILD_TEXT')
-      return FailureEmbed(interaction, 'Please tag a text channel')
+      return FailureMessage(interaction, 'Please tag a text channel')
     const title = interaction.options.getString('title')
     const options = interaction.options.getString('options')
     const color = interaction.options.getString('color') as ColorResolvable
@@ -64,13 +64,13 @@ export default {
       } else if (emoteCandidate.match(EMOJI)) {
         emote = emoteCandidate
       } else {
-        return FailureEmbed(
+        return FailureMessage(
           interaction,
           `I don't have access to ${emoteCandidate}`
         )
       }
       if (emoteArray.includes(emote))
-        return FailureEmbed(interaction, 'Duplicate emote used')
+        return FailureMessage(interaction, 'Duplicate emote used')
       else {
         emoteArray.push(emote)
       }
@@ -89,7 +89,7 @@ export default {
       ],
     })
 
-    if (!poll) return FailureEmbed(interaction)
+    if (!poll) return FailureMessage(interaction)
 
     const addReactions = async (emotes: string[]) => {
       for (const emote of emotes) {
@@ -97,7 +97,7 @@ export default {
           return
         })
         if (!reaction) {
-          FailureEmbed(interaction, "I don't have access to that emote")
+          FailureMessage(interaction, "I don't have access to that emote")
           poll.delete()
           return false
         }
@@ -106,6 +106,6 @@ export default {
     }
 
     if (await addReactions(emoteArray))
-      return SuccessEmbed(interaction, 'Poll has been created')
+      return SuccessMessage(interaction, 'Poll has been created')
   },
 } as ICommand

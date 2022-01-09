@@ -1,6 +1,6 @@
 import { ColorResolvable, GuildTextBasedChannel, Message } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureEmbed, SuccessEmbed } from '../../helpers'
+import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Utility',
@@ -74,7 +74,7 @@ export default {
     if (interaction.options.getSubcommand() === 'start') {
       const channel = interaction.options.getChannel('channel')
       if (channel.type !== 'GUILD_TEXT')
-        return FailureEmbed(interaction, 'Please tag a text channel')
+        return FailureMessage(interaction, 'Please tag a text channel')
       const title = interaction.options.getString('title')
       const description = interaction.options.getString('description')
       const emote = interaction.options.getString('emote')
@@ -97,14 +97,14 @@ export default {
             ],
           })
           .catch((err) => {
-            return FailureEmbed(interaction, err)
+            return FailureMessage(interaction, err)
           })
         if (post) {
           const reaction = await post.react(emote ? emote : '❤').catch(() => {
             return
           })
           if (!reaction) {
-            FailureEmbed(interaction, "I don't have access to that emote")
+            FailureMessage(interaction, "I don't have access to that emote")
             return false
           }
         }
@@ -112,7 +112,7 @@ export default {
       }
 
       if (await postRaffle(channel, title, description)) {
-        SuccessEmbed(
+        SuccessMessage(
           interaction,
           `Raffle post has been created in <#${channel.id}>`
         )
@@ -122,7 +122,7 @@ export default {
     } else if (interaction.options.getSubcommand() === 'draw') {
       const channel = interaction.options.getChannel('channel')
       if (channel.type !== 'GUILD_TEXT')
-        return FailureEmbed(interaction, 'Please tag a text channel')
+        return FailureMessage(interaction, 'Please tag a text channel')
       const message = interaction.options.getString('message')
 
       const pickWinner = async (channel, message) => {
@@ -130,18 +130,18 @@ export default {
         const msg: Message = await channel.messages.fetch(message)
 
         if (!msg) {
-          FailureEmbed(interaction, 'Invalid message Id')
+          FailureMessage(interaction, 'Invalid message Id')
           return false
         }
         if (msg.author.id !== client.user.id) {
-          FailureEmbed(
+          FailureMessage(
             interaction,
             `Invalid message. Message author must be <@${client.user.id}>`
           )
           return false
         }
         if (msg.reactions.cache.size < 1) {
-          FailureEmbed(interaction)
+          FailureMessage(interaction)
           return false
         }
 
@@ -167,7 +167,7 @@ export default {
               ],
             })
             .catch((err) => {
-              return FailureEmbed(interaction, err)
+              return FailureMessage(interaction, err)
             })
           return winner
         }
@@ -175,7 +175,7 @@ export default {
 
       const winner = await pickWinner(channel, message)
       if (!winner) return
-      return SuccessEmbed(interaction, `${winner.tag} has won the raffle`)
+      return SuccessMessage(interaction, `${winner.tag} has won the raffle`)
     }
   },
 } as ICommand

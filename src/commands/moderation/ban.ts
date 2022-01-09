@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../../helpers'
+import { FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Moderation',
@@ -30,11 +30,11 @@ export default {
     const reason = interaction.options.getString('reason')
 
     if (!member) {
-      return FailureEmbed(interaction, 'Tag a valid user')
+      return FailureMessage(interaction, 'Tag a valid user')
     }
 
     if (!member.bannable) {
-      return FailureEmbed(interaction, 'Cannot ban that user')
+      return FailureMessage(interaction, 'Cannot ban that user')
     }
 
     member
@@ -43,10 +43,10 @@ export default {
         days: 7,
       })
       .then(() => {
-        return SuccessEmbed(interaction, `${member.user.tag} has been banned`)
+        return SuccessMessage(interaction, `${member.user.tag} has been banned`)
       })
       .catch((err) => {
-        return FailureEmbed(interaction, err)
+        return FailureMessage(interaction, err)
       })
   },
 } as ICommand

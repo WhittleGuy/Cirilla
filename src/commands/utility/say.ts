@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureEmbed, SuccessEmbed } from '../../helpers'
+import { FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Utility',
@@ -45,14 +45,14 @@ export default {
 
     if (channel.type !== 'GUILD_TEXT') {
       if (message) return 'Please tag a text channel'
-      return FailureEmbed(interaction, 'Please tag a text channel')
+      return FailureMessage(interaction, 'Please tag a text channel')
     }
 
     const sendMessage = await channel.send(content)
 
     if (!sendMessage) {
       if (message) return 'Error sending message'
-      return FailureEmbed(interaction)
+      return FailureMessage(interaction)
     }
 
     if (message) {
@@ -61,6 +61,6 @@ export default {
       setTimeout(() => reply.delete(), 3000)
       return
     }
-    return SuccessEmbed(interaction, 'Message sent')
+    return SuccessMessage(interaction, 'Message sent')
   },
 } as ICommand

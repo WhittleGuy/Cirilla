@@ -1,6 +1,6 @@
 import { User } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureEmbed } from '../../helpers'
+import { ColorCheck, FailureMessage } from '../../helpers'
 
 export default {
   category: 'Information',
@@ -23,7 +23,7 @@ export default {
     await interaction.deferReply()
     const userId = interaction.options.getString('id')
     const user: User | void = await client.users.fetch(userId).catch(() => {
-      FailureEmbed(interaction, 'Invalid userId')
+      FailureMessage(interaction, 'Invalid userId')
     })
     if (user) {
       interaction.editReply({

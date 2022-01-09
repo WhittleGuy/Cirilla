@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureEmbed } from '../../helpers'
+import { ColorCheck, FailureMessage } from '../../helpers'
 
 interface COMMAND_CATEGORY {
   name: string
@@ -39,7 +39,7 @@ export default {
     if (command) {
       const match = commandList.filter((cmd) => cmd.names[0] === command)[0]
       if (!match) {
-        return FailureEmbed(interaction, `Command "${command}" not found`)
+        return FailureMessage(interaction, `Command "${command}" not found`)
       }
       await interaction.editReply({
         embeds: [
