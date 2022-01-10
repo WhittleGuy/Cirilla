@@ -21,7 +21,7 @@ export default {
       name: 'reason',
       description: 'Reason for kick',
       type: 3,
-      required: false,
+      required: true,
     },
   ],
 
@@ -36,6 +36,16 @@ export default {
     if (!member.kickable) {
       return FailureMessage(interaction, 'Cannot kick that user')
     }
+
+    await member.send({
+      embeds: [
+        {
+          color: 0xff0000,
+          title: `${interaction.guild.name} | Kicked`,
+          description: `Reason: ${reason}`,
+        },
+      ],
+    })
 
     const kicked = await member.kick(reason).catch((err) => {
       return FailureMessage(interaction, err)

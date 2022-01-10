@@ -81,6 +81,16 @@ export default {
       })
 
       if (!warning) FailureMessage(interaction, 'Error adding warning')
+      await user.send({
+        embeds: [
+          {
+            color: 0xff6a00,
+            title: `${interaction.guild.name} | Warning`,
+            description: `Reason: ${reason}`,
+          },
+        ],
+      })
+
       SuccessMessage(
         interaction,
         `Added warning ${warning.id} to <@${user?.id}>`
@@ -108,7 +118,7 @@ export default {
 
       if (!warnings) FailureMessage(interaction, 'Error fetching user warnings')
 
-      let description = ''
+      let description = `userId: ${user?.id}\n\n`
       for (const warning of warnings) {
         description += `**Id:** ${warning._id}\n`
         description += `**Date:** ${warning.createdAt.toLocaleString()}\n`
@@ -121,7 +131,7 @@ export default {
           embeds: [
             {
               color: ColorCheck('#ff0000'),
-              title: `Warnings for <@${user?.id}>`,
+              title: `Warnings for <@${user?.tag}>`,
               description: description ? description : 'None',
             },
           ],

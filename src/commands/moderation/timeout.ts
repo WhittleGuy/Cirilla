@@ -38,6 +38,18 @@ export default {
     length < 1 ? (length = 300000) : length
     if (!member) return FailureMessage(interaction, 'Tag a valid user')
 
+    await member.send({
+      embeds: [
+        {
+          color: 0xff0000,
+          title: `${interaction.guild.name} | Timed Out`,
+          description: `**Length**: ${
+            length / 60000
+          } minutes\n**Reason**:\n${reason}`,
+        },
+      ],
+    })
+
     const timed = await member.timeout(length, reason).catch((err) => {
       return FailureMessage(interaction, err)
     })

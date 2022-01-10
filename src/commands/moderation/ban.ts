@@ -43,7 +43,7 @@ export default {
       embeds: [
         {
           color: 0xff0000,
-          title: `Banned from ${interaction.guild.name}`,
+          title: `${interaction.guild.name} | Banned`,
           description: `**Reason**:\n${reason}`,
         },
       ],
