@@ -27,14 +27,18 @@ const FailureMessage = async (
 
   // Interaction
   if (input.replied || input.deferred) {
-    input.editReply({
-      embeds: [failureEmbed],
-    })
+    await input
+      .editReply({
+        embeds: [failureEmbed],
+      })
+      .catch((err) => console.log(err))
   } else {
-    input.reply({
-      embeds: [failureEmbed],
-      ephemeral: true,
-    })
+    await input
+      .reply({
+        embeds: [failureEmbed],
+        ephemeral: true,
+      })
+      .catch((err) => console.log(err))
   }
   return
 }

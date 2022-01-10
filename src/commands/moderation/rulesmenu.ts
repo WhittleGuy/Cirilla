@@ -3,6 +3,8 @@ import {
   GuildMember,
   MessageActionRow,
   MessageSelectMenu,
+  MessageSelectOption,
+  Role,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureMessage, SuccessMessage } from '../../helpers'
@@ -84,38 +86,38 @@ export default {
   init: (client: Client) => {
     client.on('interactionCreate', async (interaction) => {
       if (!interaction.isSelectMenu()) return
-      await interaction.deferReply({ ephemeral: true })
       const { customId, values, member } = interaction
       if (customId === 'cirilla-rules-menu' && member instanceof GuildMember) {
+        await interaction.deferReply({ ephemeral: true })
         const component = interaction.component as MessageSelectMenu
-        const removed = component.options.filter((option) => {
-          return !values.includes(option.value)
-        })
+        const role = [
+          component.options.filter((r) => r.value.match(/\d+/))[0].value,
+        ]
+        const removeRole = async () => {
+          const removed = await member.roles.remove(role).catch((err) => {
+            FailureMessage(interaction, err)
+          })
+          if (removed) return true
+          else return false
+        }
+
         let complete
         if (values.includes('kick')) {
-          for (const id of removed) {
-            await member.roles.remove(id.value).catch((err) => {
-              console.log(`Role Remove Error: ${err}`)
-            })
-          }
+          removeRole()
           complete = await member
             .kick('Disagreed to Cirilla rule menu')
             .catch((err) => {
-              console.log(err)
+              FailureMessage(interaction, err)
             })
         } else if (values.includes('live')) {
-          for (const id of removed) {
-            complete = member.roles.remove(id.value).catch((err) => {
-              console.log(`Role Remove Error: ${err}`)
-            })
-          }
+          complete = await removeRole()
         } else {
-          complete = await member.roles.add(values).catch((err) => {
-            console.log(`Role Add Error: ${err}`)
+          complete = await member.roles.add(role).catch((err) => {
+            FailureMessage(interaction, err)
           })
         }
+
         if (complete) SuccessMessage(interaction, 'Roles updated')
-        else FailureMessage(interaction)
       }
     })
   },
@@ -162,7 +164,7 @@ export default {
             type: 3,
             customId: 'cirilla-rules-menu',
             placeholder: 'Select one...',
-            minValues: 0,
+            minValues: 1,
             maxValues: 1,
             options: [
               {
@@ -176,6 +178,7 @@ export default {
                 value: kick ? 'kick' : 'live',
                 description: dDesc,
                 emoji: dEmote,
+                default: true,
               },
             ],
           },

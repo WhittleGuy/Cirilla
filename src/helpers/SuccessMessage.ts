@@ -20,6 +20,7 @@ const SuccessMessage = async (
 
   // Message
   if (input instanceof Message) {
+    console.log('Message part')
     const post = await input.channel.send({ embeds: [successEmbed] })
     await input.delete().catch((err) => console.error(err))
     if (!post) return console.error('ERROR: Failure message could not post')
@@ -28,14 +29,18 @@ const SuccessMessage = async (
 
   // Interaction
   if (input.replied || input.deferred) {
-    input.editReply({
-      embeds: [successEmbed],
-    })
+    await input
+      .editReply({
+        embeds: [successEmbed],
+      })
+      .catch((err) => console.log(err))
   } else {
-    input.reply({
-      embeds: [successEmbed],
-      ephemeral: true,
-    })
+    await input
+      .reply({
+        embeds: [successEmbed],
+        ephemeral: true,
+      })
+      .catch((err) => console.log(err))
   }
   return
 }

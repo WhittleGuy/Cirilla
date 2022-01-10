@@ -139,15 +139,14 @@ export default {
   // Listen for menu use and add/remove roles
   init: (client: Client) => {
     client.on('interactionCreate', async (interaction) => {
-      if (!interaction.isSelectMenu()) {
-        return
-      }
-      await interaction.deferReply({ ephemeral: true })
+      if (!interaction.isSelectMenu()) return
+
       const { customId, values, member } = interaction
       if (
         ['cirilla-roles', 'cirilla-roles-exclusive'].includes(customId) &&
         member instanceof GuildMember
       ) {
+        await interaction.deferReply({ ephemeral: true })
         const component = interaction.component as MessageSelectMenu
         const removed = component.options.filter((option) => {
           return !values.includes(option.value)
