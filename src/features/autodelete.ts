@@ -12,7 +12,6 @@ export default async (client: Client) => {
     if (channel.type !== 'GUILD_TEXT') return
 
     let data = autoDeleteData[guild.id]
-    console.log(autoDeleteData)
 
     if (!data) {
       const results = await autoDeleteSchema.findById(guild.id)
