@@ -43,6 +43,7 @@ export default {
     member.send({
       embeds: [
         {
+          color: 0xff0000,
           title: `Softbanned from ${interaction.guild.name}`,
           description: `**Reason**:\n${reason}`,
         },
