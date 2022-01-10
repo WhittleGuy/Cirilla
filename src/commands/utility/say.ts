@@ -38,7 +38,7 @@ export default {
     }
     //Slash command
     else {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       channel = interaction.options.getChannel('channel')
       content = interaction.options.getString('message')
     }
