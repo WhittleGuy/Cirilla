@@ -24,7 +24,7 @@ export default {
     },
   ],
 
-  callback: async ({ interaction }) => {
+  callback: async ({ client, interaction }) => {
     interaction.deferReply({ ephemeral: true })
     const channel = interaction.options.getChannel('channel')
     if (channel.type !== 'GUILD_TEXT')
@@ -35,6 +35,13 @@ export default {
       force: true,
     })
     if (!targetMessage) return FailureMessage(interaction, 'Invalid message Id')
+    if (targetMessage.author.id !== client.user.id) {
+      return FailureMessage(
+        interaction,
+        `Invalid message. Message author must be <@${client.user.id}>.\
+         Try using \`/embed\` or \`/say\``
+      )
+    }
     const removed = await targetMessage.edit({ components: [] })
     if (removed) SuccessMessage(interaction, 'Dropdown removed')
   },
