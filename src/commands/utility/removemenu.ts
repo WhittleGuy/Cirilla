@@ -3,8 +3,8 @@ import { FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'CirillaRoles',
-  description: 'Remove role from CirillaRoles dropdown',
-  permissions: ['MANAGE_ROLES'],
+  description: 'Remove dropdown from Cirilla message',
+  permissions: ['MANAGE_MESSAGES'],
   // requireRoles: true,
   slash: true,
   testOnly: false,
