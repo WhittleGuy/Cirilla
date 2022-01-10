@@ -26,6 +26,7 @@ export default {
   ],
 
   callback: async ({ interaction }) => {
+    await interaction.deferReply({ ephemeral: true })
     const member = interaction.options.getMember('user') as GuildMember
     const reason = interaction.options.getString('reason')
 
@@ -37,6 +38,16 @@ export default {
       return FailureMessage(interaction, 'Cannot ban that user')
     }
 
+    if (!reason) return FailureMessage(interaction, 'Provide a reason')
+
+    member.send({
+      embeds: [
+        {
+          title: `Softbanned from ${interaction.guild.name}`,
+          description: `**Reason**:\n${reason}`,
+        },
+      ],
+    })
     const bannedMember = (await member.ban({ reason, days: 7 }).catch(() => {
       return FailureMessage(interaction, 'Error banning member')
     })) as GuildMember

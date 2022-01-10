@@ -37,16 +37,20 @@ export default {
       return FailureMessage(interaction, 'Cannot ban that user')
     }
 
-    member
-      .ban({
-        reason,
-        days: 7,
-      })
-      .then(() => {
-        return SuccessMessage(interaction, `${member.user.tag} has been banned`)
-      })
-      .catch((err) => {
-        return FailureMessage(interaction, err)
-      })
+    if (!reason) return FailureMessage(interaction, 'Provide a reason')
+
+    await member.send({
+      embeds: [
+        {
+          title: `Banned from ${interaction.guild.name}`,
+          description: `**Reason**:\n${reason}`,
+        },
+      ],
+    })
+
+    await member.ban({ reason, days: 7 }).catch((err) => {
+      return FailureMessage(interaction, err)
+    })
+    return SuccessMessage(interaction, `${member.user.tag} has been banned`)
   },
 } as ICommand
