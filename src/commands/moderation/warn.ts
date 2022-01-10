@@ -131,8 +131,9 @@ export default {
           embeds: [
             {
               color: ColorCheck('#ff0000'),
-              title: `Warnings for <@${user?.tag}>`,
+              title: `Warnings for ${user?.tag}`,
               description: description ? description : 'None',
+              thumbnail: { url: user.displayAvatarURL() },
             },
           ],
         })
