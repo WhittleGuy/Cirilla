@@ -4,7 +4,7 @@ import { FailureMessage, SuccessMessage } from '../../helpers'
 import autoDeleteSchema from '../../models/auto-delete-schema'
 
 const autoDeleteData = {} as {
-  // guildId: [channel, message]
+  // guildId: [channelId, timeout]
   [key: string]: [string, number]
 }
 
@@ -94,6 +94,7 @@ export default {
         },
         { upsert: true }
       )
+      autoDeleteData[guild.id] = [channel.id, timeout ? timeout * 1000 : 10000]
 
       if (set) return SuccessMessage(interaction)
     }
