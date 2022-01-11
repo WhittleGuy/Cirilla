@@ -71,30 +71,75 @@ export default {
     const reason = interaction.options.getString('reason')
     //const id = interaction.options.getString('id')
 
-    // Add warning
     if (subCommand === 'add') {
-      const warning = await warnSchema.create({
-        userId: user?.id,
-        staffId: staff.id,
-        guildId: guild?.id,
-        reason,
-      })
-
-      if (!warning) FailureMessage(interaction, 'Error adding warning')
-      await user.send({
+      await interaction.editReply({
         embeds: [
           {
-            color: 0xff6a00,
-            title: `${interaction.guild.name} | Warning`,
-            description: `Reason: ${reason}`,
+            color: 0x36393f,
+            title: `Warn ${user.tag}?`,
+            description: `Are you sure you want to warn ${user.tag} for\n> ${reason}?`,
+          },
+        ],
+        components: [
+          {
+            type: 1,
+            components: [
+              {
+                type: 2,
+                label: 'Cancel',
+                style: 2,
+                customId: 'cirilla-cancel',
+              },
+              {
+                type: 2,
+                label: `Warn`,
+                style: 4,
+                customId: 'cirilla-confirm',
+              },
+            ],
           },
         ],
       })
 
-      SuccessMessage(
-        interaction,
-        `Added warning ${warning.id} to <@${user?.id}>`
-      ) // @ts-ignore
+      const filter = (i) => {
+        i.deferUpdate()
+        return i.member.user.id === interaction.member.user.id
+      }
+
+      await interaction.channel
+        .awaitMessageComponent({ filter, componentType: 'BUTTON', time: 30000 })
+        .then(async (button) => {
+          if (button.customId === 'cirilla-confirm') {
+            const warning = await warnSchema.create({
+              userId: user?.id,
+              staffId: staff.id,
+              guildId: guild?.id,
+              reason,
+            })
+
+            if (!warning)
+              return FailureMessage(interaction, 'Error adding warning')
+            await user.send({
+              embeds: [
+                {
+                  color: 0xff6a00,
+                  title: `${interaction.guild.name} | Warning`,
+                  description: `Reason: ${reason}`,
+                },
+              ],
+            })
+
+            return SuccessMessage(
+              interaction,
+              `Added warning ${warning.id} to <@${user?.id}>`
+            )
+          } else if (button.customId === 'cirilla-cancel') {
+            return SuccessMessage(interaction, 'Warning cancelled')
+          }
+        })
+        .catch(() => {
+          return FailureMessage(interaction, 'Confirmation timed out')
+        })
     }
 
     // Remove warning

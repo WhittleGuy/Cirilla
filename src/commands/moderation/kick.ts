@@ -26,6 +26,7 @@ export default {
   ],
 
   callback: async ({ interaction }) => {
+    await interaction.deferReply({ ephemeral: true })
     const member = interaction.options.getMember('user') as GuildMember
     const reason = interaction.options.getString('reason')
 
@@ -37,20 +38,65 @@ export default {
       return FailureMessage(interaction, 'Cannot kick that user')
     }
 
-    await member.send({
+    await interaction.editReply({
       embeds: [
         {
-          color: 0xff0000,
-          title: `${interaction.guild.name} | Kicked`,
-          description: `Reason: ${reason}`,
+          color: 0x36393f,
+          title: `Kick ${member.user.tag}?`,
+          description: `Are you sure you want to kick ${member.user.tag}?`,
+        },
+      ],
+      components: [
+        {
+          type: 1,
+          components: [
+            {
+              type: 2,
+              label: 'Cancel',
+              style: 2,
+              customId: 'cirilla-cancel',
+            },
+            {
+              type: 2,
+              label: 'Kick',
+              style: 4,
+              customId: 'cirilla-confirm',
+            },
+          ],
         },
       ],
     })
 
-    const kicked = await member.kick(reason).catch((err) => {
-      return FailureMessage(interaction, err)
-    })
-    if (kicked)
-      SuccessMessage(interaction, `${member.user.tag} has been kicked`)
+    const filter = (i) => {
+      i.deferUpdate()
+      return i.member.user.id === interaction.member.user.id
+    }
+
+    await interaction.channel
+      .awaitMessageComponent({ filter, componentType: 'BUTTON', time: 30000 })
+      .then(async (button) => {
+        if (button.customId === 'cirilla-confirm') {
+          await member.send({
+            embeds: [
+              {
+                color: 0xff0000,
+                title: `${interaction.guild.name} | Kicked`,
+                description: `Reason: ${reason}`,
+              },
+            ],
+          })
+
+          const kicked = await member.kick(reason).catch((err) => {
+            return FailureMessage(interaction, err)
+          })
+          if (kicked)
+            SuccessMessage(interaction, `${member.user.tag} has been kicked`)
+        } else if (button.customId === 'cirilla-cancel') {
+          return SuccessMessage(interaction, 'Kick cancelled')
+        }
+      })
+      .catch(() => {
+        return FailureMessage(interaction, 'Confirmation timed out')
+      })
   },
 } as ICommand
