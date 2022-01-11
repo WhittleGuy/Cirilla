@@ -83,7 +83,7 @@ export default {
               {
                 color: 0xff0000,
                 title: `${interaction.guild.name} | Softbanned`,
-                description: `**Reason**:\n${reason}`,
+                description: `**Reason**: ${reason}`,
                 footer: {
                   text: 'A softban means that you are effectively only kicked, but the last 7 days of your messages have been purged.',
                 },

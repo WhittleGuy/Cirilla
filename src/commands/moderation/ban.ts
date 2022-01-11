@@ -83,7 +83,7 @@ export default {
               {
                 color: 0xff0000,
                 title: `${interaction.guild.name} | Banned`,
-                description: `**Reason**:\n${reason}`,
+                description: `**Reason**: ${reason}`,
               },
             ],
           })
