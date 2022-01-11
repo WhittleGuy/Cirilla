@@ -3,7 +3,7 @@ import { FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Moderation',
-  description: 'Delete multiple messages',
+  description: 'Delete a channel and create an empty clone of it',
   permissions: ['MANAGE_MESSAGES', 'MANAGE_CHANNELS'],
   requireRoles: false,
   slash: true,
