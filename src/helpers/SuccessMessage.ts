@@ -32,12 +32,14 @@ const SuccessMessage = async (
     await input
       .editReply({
         embeds: [successEmbed],
+        components: [],
       })
       .catch((err) => console.log(err))
   } else {
     await input
       .reply({
         embeds: [successEmbed],
+        components: [],
         ephemeral: true,
       })
       .catch((err) => console.log(err))

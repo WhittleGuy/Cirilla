@@ -30,12 +30,14 @@ const FailureMessage = async (
     await input
       .editReply({
         embeds: [failureEmbed],
+        components: [],
       })
       .catch((err) => console.log(err))
   } else {
     await input
       .reply({
         embeds: [failureEmbed],
+        components: [],
         ephemeral: true,
       })
       .catch((err) => console.log(err))

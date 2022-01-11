@@ -1,6 +1,12 @@
+import { Client } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureMessage, SuccessMessage } from '../../helpers'
 import autoDeleteSchema from '../../models/auto-delete-schema'
+
+const autoDeleteData = {} as {
+  // guildId: [channel, message]
+  [key: string]: [string, number]
+}
 
 export default {
   category: 'Configuration',
@@ -26,7 +32,7 @@ export default {
           name: 'timeout',
           description:
             'Time in seconds to wait before deleting a message (Default: 10)',
-          type: 3,
+          type: 10,
           required: false,
         },
       ],
@@ -38,6 +44,30 @@ export default {
     },
   ],
 
+  init: async (client: Client) => {
+    client.on('messageCreate', async (message) => {
+      const { guild, channel } = message
+      if (channel.type !== 'GUILD_TEXT') return
+
+      let data = autoDeleteData[guild.id]
+
+      if (!data) {
+        const results = await autoDeleteSchema.findById(guild.id)
+        if (!results) return
+
+        const { channelId, timeout } = results
+        data = autoDeleteData[guild.id] = [channelId, timeout]
+      }
+
+      if (channel.id !== data[0]) return
+      else {
+        setTimeout(() => message.delete(), data[1])
+      }
+
+      return
+    })
+  },
+
   callback: async ({ guild, interaction }) => {
     await interaction.deferReply({ ephemeral: true })
     // Enable an autoDelete channel
@@ -47,11 +77,7 @@ export default {
       if (channel.type !== 'GUILD_TEXT')
         return FailureMessage(interaction, 'Tag a text channel')
       // Validate timeout
-      let timeout = interaction.options.getString('timeout') as string | number
-      if (timeout) {
-        if (!Number(timeout))
-          return FailureMessage(interaction, 'Invalid timeout')
-      }
+      let timeout = interaction.options.getNumber('timeout')
 
       // Set in database
       const set = await autoDeleteSchema.findOneAndUpdate(
@@ -61,7 +87,7 @@ export default {
         {
           _id: guild.id,
           channelId: channel.id,
-          timeout: timeout ? Number(timeout) * 1000 : 10000,
+          timeout: timeout ? timeout * 1000 : 10000,
         },
         { upsert: true }
       )
