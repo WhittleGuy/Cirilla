@@ -29,7 +29,7 @@ export default {
         {
           color: 0x36393f,
           title: `Nuke #${channel.name}?`,
-          description: `Are you sure you want to nuke #${channel.name}?`,
+          description: `Are you sure you want to nuke #${channel.name}? This action is irreversible.`,
         },
       ],
       components: [
