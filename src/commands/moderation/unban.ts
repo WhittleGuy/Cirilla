@@ -1,10 +1,10 @@
-import { GuildMember } from 'discord.js'
+import { User } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Moderation',
-  description: 'Ban a user',
+  description: 'Unban a user',
   permissions: ['BAN_MEMBERS'],
   // requireRoles: true,
   slash: true,
@@ -13,39 +13,32 @@ export default {
   options: [
     {
       name: 'user',
-      description: 'User to ban',
+      description: 'User to unban',
       type: 6,
       required: true,
     },
     {
       name: 'reason',
-      description: 'Reason for ban',
+      description: 'Reason for unban',
       type: 3,
       required: true,
     },
   ],
 
-  callback: async ({ interaction }) => {
-    await interaction.deferReply({ ephemeral: true })
-    const member = interaction.options.getMember('user') as GuildMember
+  callback: async ({ guild, interaction }) => {
+    const user = interaction.options.getUser('user') as User
     const reason = interaction.options.getString('reason')
 
-    if (!member) {
+    if (!user) {
       return FailureMessage(interaction, 'Tag a valid user')
     }
 
-    if (!member.bannable) {
-      return FailureMessage(interaction, 'Cannot ban that user')
-    }
-
-    if (!reason) return FailureMessage(interaction, 'Provide a reason')
-
-    await interaction.editReply({
+    await interaction.reply({
       embeds: [
         {
           color: 0x36393f,
-          title: `Ban ${member.user.tag}?`,
-          description: `Are you sure you want to ban ${member.user.tag}?`,
+          title: `Unban ${user.tag}?`,
+          description: `Are you sure you want to unban ${user.tag}?`,
         },
       ],
       components: [
@@ -55,18 +48,19 @@ export default {
             {
               type: 2,
               label: 'Cancel',
-              style: 2,
+              style: 4,
               customId: 'cirilla-cancel',
             },
             {
               type: 2,
-              label: 'Ban',
-              style: 4,
+              label: 'Revoke Ban',
+              style: 3,
               customId: 'cirilla-confirm',
             },
           ],
         },
       ],
+      ephemeral: true,
     })
 
     const filter = (i) => {
@@ -78,27 +72,24 @@ export default {
       .awaitMessageComponent({ filter, componentType: 'BUTTON', time: 30000 })
       .then(async (button) => {
         if (button.customId === 'cirilla-confirm') {
-          await member
+          await user
             .send({
               embeds: [
                 {
-                  color: 0xff0000,
-                  title: `${interaction.guild.name} | Banned`,
-                  description: `**Reason**: ${reason}`,
+                  color: 0x00ff00,
+                  title: `${interaction.guild.name} | Unbanned`,
+                  description: `Reason: ${reason}`,
                 },
               ],
             })
             .catch((err) => console.log(err))
 
-          await member.ban({ reason, days: 7 }).catch((err) => {
+          await guild.bans.remove(user.id).catch((err) => {
             return FailureMessage(interaction, err)
           })
-          return SuccessMessage(
-            interaction,
-            `${member.user.tag} has been banned`
-          )
+          return SuccessMessage(interaction, `${user.tag} has been unbanned`)
         } else if (button.customId === 'cirilla-cancel') {
-          return SuccessMessage(interaction, 'Ban cancelled')
+          return SuccessMessage(interaction, 'Unban cancelled')
         }
       })
       .catch(() => {

@@ -76,15 +76,17 @@ export default {
       .awaitMessageComponent({ filter, componentType: 'BUTTON', time: 30000 })
       .then(async (button) => {
         if (button.customId === 'cirilla-confirm') {
-          await member.send({
-            embeds: [
-              {
-                color: 0xff0000,
-                title: `${interaction.guild.name} | Kicked`,
-                description: `Reason: ${reason}`,
-              },
-            ],
-          })
+          await member
+            .send({
+              embeds: [
+                {
+                  color: 0xff0000,
+                  title: `${interaction.guild.name} | Kicked`,
+                  description: `Reason: ${reason}`,
+                },
+              ],
+            })
+            .catch((err) => console.log(err))
 
           const kicked = await member.kick(reason).catch((err) => {
             return FailureMessage(interaction, err)

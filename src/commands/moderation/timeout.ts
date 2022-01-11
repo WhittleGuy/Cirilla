@@ -81,17 +81,19 @@ export default {
       .awaitMessageComponent({ filter, componentType: 'BUTTON', time: 30000 })
       .then(async (button) => {
         if (button.customId === 'cirilla-confirm') {
-          await member.send({
-            embeds: [
-              {
-                color: 0xff0000,
-                title: `${interaction.guild.name} | Timed Out`,
-                description: `**Length**: ${
-                  length / 60000
-                } minutes\n**Reason**: ${reason}`,
-              },
-            ],
-          })
+          await member
+            .send({
+              embeds: [
+                {
+                  color: 0xff0000,
+                  title: `${interaction.guild.name} | Timed Out`,
+                  description: `**Length**: ${
+                    length / 60000
+                  } minutes\n**Reason**: ${reason}`,
+                },
+              ],
+            })
+            .catch((err) => console.log(err))
 
           const timed = await member.timeout(length, reason).catch((err) => {
             return FailureMessage(interaction, err)

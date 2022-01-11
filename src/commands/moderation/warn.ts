@@ -119,15 +119,17 @@ export default {
 
             if (!warning)
               return FailureMessage(interaction, 'Error adding warning')
-            await user.send({
-              embeds: [
-                {
-                  color: 0xff6a00,
-                  title: `${interaction.guild.name} | Warning`,
-                  description: `Reason: ${reason}`,
-                },
-              ],
-            })
+            await user
+              .send({
+                embeds: [
+                  {
+                    color: 0xff6a00,
+                    title: `${interaction.guild.name} | Warning`,
+                    description: `Reason: ${reason}`,
+                  },
+                ],
+              })
+              .catch((err) => console.log(err))
 
             return SuccessMessage(
               interaction,
