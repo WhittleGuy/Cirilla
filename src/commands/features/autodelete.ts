@@ -61,7 +61,10 @@ export default {
 
       if (channel.id !== data[0]) return
       else {
-        setTimeout(() => message.delete(), data[1])
+        setTimeout(
+          () => message.delete().catch((err) => console.log(err)),
+          data[1]
+        )
       }
 
       return
