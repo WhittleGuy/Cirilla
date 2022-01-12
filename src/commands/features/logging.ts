@@ -242,11 +242,9 @@ export default {
       const m = Math.floor((diff % 3600000) / 60000)
       const s = Math.floor((diff % 60000) / 1000)
 
-      return `${Y ? Y + ' years, ' : ''}${M ? M + ' months, ' : ''}${
+      return `${Y ? Y + ' yrs, ' : ''}${M ? M + ' months, ' : ''}${
         d ? d + ' days, ' : ''
-      }${h ? h + ' hours, ' : ''}${m ? m + ' minutes, ' : ''}${
-        s ? s + ' seconds ' : ''
-      }`
+      }${h ? h + ' hr, ' : ''}${m ? m + ' min, ' : ''}${s ? s + ' sec ' : ''}`
     }
 
     // Invite creation
@@ -433,7 +431,7 @@ export default {
                 },
                 footer: { text: 'Id: ' + oldMsg.author.id },
                 timestamp: new Date(),
-                description: `**Message by ${oldMsg.member.user} edited in ${msgChannel}**
+                description: `**Message by ${oldMsg.member.user} edited in ${msgChannel}**\n
                 **Before**
                 ${oldMsg?.content}\n
                 **After**
@@ -745,7 +743,10 @@ export default {
             embeds: [
               {
                 color: ColorCheck(),
-                thumbnail: { url: oldMember.user.displayAvatarURL() },
+                author: {
+                  name: oldMember.user.tag,
+                  icon_url: oldMember.user.displayAvatarURL(),
+                },
                 description: `${
                   roleGiven
                     ? `${oldMember.user} was given the ${changeRole} role`
@@ -834,18 +835,16 @@ export default {
           .send({
             embeds: [
               {
-                title: 'User Join',
+                // title: 'User Join',
                 color: 0x00ff00,
                 thumbnail: { url: member.user.displayAvatarURL() },
                 author: {
                   name: guild.name,
                   icon_url: guild.iconURL(),
                 },
-                description: `${member.user} **Joined Server**
-                Bot: ${member.user.bot ? 'True' : 'False'}
-                Account Age: ${TimeSince(
-                  new Date(member.user.createdTimestamp).getTime()
-                )}`,
+                description: `${member.user} **Joined Server**\n
+                **Account Age**:
+                ${TimeSince(new Date(member.user.createdTimestamp).getTime())}`,
                 footer: {
                   text: `Id: ${member.id}`,
                 },
