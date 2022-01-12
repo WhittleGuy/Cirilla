@@ -459,14 +459,14 @@ export default {
             embeds: [
               {
                 color: ColorCheck(),
-                title: 'Message Edited',
+                // title: 'Message Edited',
                 author: {
                   name: oldMsg.member.user.tag,
                   icon_url: oldMsg.member.user.displayAvatarURL(),
                 },
-                footer: { text: 'Id: ' + oldMsg.author.id },
+                footer: { text: `Id: ${oldMsg.id}` },
                 timestamp: new Date(),
-                description: `**Message by ${oldMsg.member.user} edited in ${msgChannel}**`,
+                description: `**[Message](${newMsg.url}) edited in ${msgChannel}**`,
                 fields: [
                   {
                     name: 'Before',
