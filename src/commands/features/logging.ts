@@ -1157,6 +1157,10 @@ export default {
       }
     }
 
+    const updater = (vari, dat, index, def) => {
+      return vari ? vari : dat ? dat[index] : def
+    }
+
     const set = await loggingSchema
       .findOneAndUpdate(
         {
@@ -1165,35 +1169,27 @@ export default {
         {
           _id: guild.id,
           logChannel: channel.id,
-
-          enabled: enabled !== null ? enabled : data[1] || false,
-          inviteCreate: inviteCreate !== null ? inviteCreate : data[2] || false,
-          inviteDelete: inviteDelete !== null ? inviteDelete : data[3] || false,
-          msgDelete: msgDelete !== null ? msgDelete : data[4] || false,
-          msgBulkDelete: msgDelBulk !== null ? msgDelBulk : data[5] || false,
-          msgUpdate: msgUpdate !== null ? msgUpdate : data[6] || false,
-          roleCreate: roleCreate !== null ? roleCreate : data[7] || false,
-          roleDelete: roleDelete !== null ? roleDelete : data[8] || false,
-          roleUpdate: roleUpdate !== null ? roleUpdate : data[9] || false,
-          threadCreate:
-            threadCreate !== null ? threadCreate : data[10] || false,
-          threadDelete:
-            threadDelete !== null ? threadDelete : data[11] || false,
-          threadUpdate:
-            threadUpdate !== null ? threadUpdate : data[12] || false,
-          voiceUpdate: voiceUpdate !== null ? voiceUpdate : data[13] || false,
-          memberRoleUpdate:
-            memberRoles !== null ? memberRoles : data[14] || false,
-          memberNickUpdate:
-            nickChange !== null ? nickChange : data[15] || false,
-          memberRemove: memberLeave !== null ? memberLeave : data[16] || false,
-          memberAdd: memberJoin !== null ? memberJoin : data[17] || false,
-          banAdd: banAdd !== null ? banAdd : data[18] || false,
-          banRemove: banRemove !== null ? banRemove : data[19] || false,
-          channelCreate:
-            channelCreate !== null ? channelCreate : data[20] || false,
-          channelDelete:
-            channelDelete !== null ? channelDelete : data[21] || false,
+          enabled: updater(enabled, data, 1, false),
+          inviteCreate: updater(inviteCreate, data, 2, false),
+          inviteDelete: updater(inviteDelete, data, 3, false),
+          msgDelete: updater(msgDelete, data, 4, false),
+          msgBulkDelete: updater(msgDelBulk, data, 5, false),
+          msgUpdate: updater(msgUpdate, data, 6, false),
+          roleCreate: updater(roleCreate, data, 7, false),
+          roleDelete: updater(roleDelete, data, 8, false),
+          roleUpdate: updater(roleUpdate, data, 9, false),
+          threadCreate: updater(threadCreate, data, 10, false),
+          threadDelete: updater(threadDelete, data, 11, false),
+          threadUpdate: updater(threadUpdate, data, 12, false),
+          voiceUpdate: updater(voiceUpdate, data, 13, false),
+          memberRoleUpdate: updater(memberRoles, data, 14, false),
+          memberNickUpdate: updater(nickChange, data, 15, false),
+          memberRemove: updater(memberLeave, data, 16, false),
+          memberAdd: updater(memberJoin, data, 17, false),
+          banAdd: updater(banAdd, data, 18, false),
+          banRemove: updater(banRemove, data, 19, false),
+          channelCreate: updater(channelCreate, data, 20, false),
+          channelDelete: updater(channelDelete, data, 21, false),
         },
         { upsert: true }
       )
