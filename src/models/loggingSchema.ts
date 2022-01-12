@@ -19,6 +19,7 @@ const loggingSchema = new Schema({
   voiceUpdate: { type: Boolean, required: true },
   memberRoleUpdate: { type: Boolean, required: true },
   memberNickUpdate: { type: Boolean, required: true },
+  memberTimeout: { type: Boolean, required: true },
   memberRemove: { type: Boolean, required: true },
   memberAdd: { type: Boolean, required: true },
   banRemove: { type: Boolean, required: true },

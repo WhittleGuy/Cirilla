@@ -33,6 +33,7 @@ const loggingData = {} as {
     boolean,
     boolean,
     boolean,
+    boolean,
     boolean
   ]
 }
@@ -143,6 +144,12 @@ export default {
       required: false,
     },
     {
+      name: 'timeouts',
+      description: 'Log when a user is timed-out, or a timeout is removed',
+      type: 5,
+      required: false,
+    },
+    {
       name: 'leaves',
       description: 'Log when members leave the server',
       type: 5,
@@ -204,6 +211,7 @@ export default {
         voiceUpdate,
         memberRoleUpdate,
         memberNickUpdate,
+        memberTimeout,
         memberRemove,
         memberAdd,
         banAdd,
@@ -228,6 +236,7 @@ export default {
         voiceUpdate,
         memberRoleUpdate,
         memberNickUpdate,
+        memberTimeout,
         memberRemove,
         memberAdd,
         banAdd,
@@ -250,7 +259,7 @@ export default {
 
       return `${Y ? Y + ' yrs, ' : ''}${M ? M + ' months, ' : ''}${
         d ? d + ' days, ' : ''
-      }${h ? h + ' hr, ' : ''}${m ? m + ' min, ' : ''}${s ? s + ' sec ' : ''}`
+      }${h ? h + ' hr, ' : ''}${m ? m + ' min, ' : ''}${s ? s + ' sec' : ''}`
     }
 
     // Invite creation
@@ -350,7 +359,7 @@ export default {
             embeds: [
               {
                 color: 0xff0000,
-                title: 'Message Delete',
+                // title: 'Message Delete',
                 author: {
                   name: msg.member.user.tag,
                   icon_url: msg.member.user.displayAvatarURL(),
@@ -377,7 +386,7 @@ export default {
                 embeds: [
                   {
                     color: 0xff0000,
-                    title: 'Image Delete',
+                    // title: 'Image Delete',
                     author: {
                       name: msg.member.user.tag,
                       icon_url: msg.member.user.displayAvatarURL(),
@@ -492,7 +501,7 @@ export default {
             embeds: [
               {
                 color: 0x00ff00,
-                title: 'Role Created',
+                title: 'Role Create',
                 author: {
                   name: role.guild.name,
                   icon_url: role.guild.iconURL(),
@@ -525,7 +534,7 @@ export default {
             embeds: [
               {
                 color: 0xff0000,
-                title: 'Role Deleted',
+                title: 'Role Delete',
                 author: {
                   name: role.guild.name,
                   icon_url: role.guild.iconURL(),
@@ -742,6 +751,7 @@ export default {
                       name: oldState.member.user.tag,
                       icon_url: oldState.member.user.displayAvatarURL(),
                     },
+                    // description: `${oldState.member.user} switched channels`,
                     fields: [
                       {
                         name: 'Before',
@@ -794,8 +804,8 @@ export default {
           .send({
             embeds: [
               {
-                color: ColorCheck(),
-                title: `${roleGiven ? 'Role Added' : 'Role Removed'}`,
+                color: ColorCheck(roleGiven ? '#00ff00' : '#ff0000'),
+                // title: `${roleGiven ? 'Role Added' : 'Role Removed'}`,
                 author: {
                   name: oldMember.user.tag,
                   icon_url: oldMember.user.displayAvatarURL(),
@@ -813,12 +823,13 @@ export default {
             ],
           })
           .catch(console.log)
-      } else if (
+      }
+      // Nick Change
+      else if (
         data[1] &&
         data[15] &&
         oldMember.nickname !== newMember.nickname
       ) {
-        // Nick Change
         const logChannel = (await oldMember.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
@@ -830,10 +841,68 @@ export default {
                 title: `Nickname Changed`,
                 color: ColorCheck(),
                 thumbnail: { url: oldMember.user.displayAvatarURL() },
-                description: `**Before**
-              ${oldMember.nickname || 'None'}\n
-              **After**
-              ${newMember.nickname || 'None'}`,
+                description: `**${newMember.user.tag} nickname changed**`,
+                fields: [
+                  {
+                    name: 'Before',
+                    value: oldMember.nickname,
+                    inline: false,
+                  },
+                  {
+                    name: 'After',
+                    value: newMember.nickname,
+                    inline: false,
+                  },
+                ],
+                footer: {
+                  text: `Id: ${newMember.id}`,
+                },
+                timestamp: new Date(),
+              },
+            ],
+          })
+          .catch(console.log)
+      }
+      // Timeout
+      else if (
+        data[1] &&
+        data[16] &&
+        oldMember.communicationDisabledUntilTimestamp !==
+          newMember.communicationDisabledUntilTimestamp
+      ) {
+        const logChannel = (await oldMember.guild.channels
+          .fetch(data[0])
+          .catch(console.log)) as NonThreadGuildBasedChannel
+        if (logChannel.type !== 'GUILD_TEXT') return
+        const timeoutAdded = newMember.communicationDisabledUntilTimestamp
+          ? true
+          : false
+        const fields = timeoutAdded
+          ? [
+              {
+                name: 'Until',
+                value: new Date(
+                  newMember.communicationDisabledUntilTimestamp
+                ).toLocaleString(),
+                inline: false,
+              },
+            ]
+          : []
+        await logChannel
+          .send({
+            embeds: [
+              {
+                // title: `Timeout ${timeoutAdded ? 'Added' : 'Removed'}`,
+                color: ColorCheck(timeoutAdded ? '#ff0000' : '#00ff00'),
+                author: {
+                  name: oldMember.user.tag,
+                  icon_url: oldMember.user.displayAvatarURL(),
+                },
+                // thumbnail: { url: oldMember.user.displayAvatarURL() },
+                description: `**Timeout ${
+                  timeoutAdded ? 'added to' : 'removed from'
+                } ${newMember.user}**`,
+                fields: fields,
                 footer: {
                   text: `Id: ${newMember.id}`,
                 },
@@ -849,7 +918,7 @@ export default {
     client.on('guildMemberRemove', async (member) => {
       const data = loggingData[member.guild.id]
       if (!data) return
-      if (!(data[1] && data[16])) return
+      if (!(data[1] && data[17])) return
       else {
         const logChannel = (await member.guild.channels
           .fetch(data[0])
@@ -883,7 +952,7 @@ export default {
     client.on('guildMemberAdd', async (member) => {
       const data = loggingData[member.guild.id]
       if (!data) return
-      if (!(data[1] && data[17])) return
+      if (!(data[1] && data[18])) return
       else {
         const logChannel = (await member.guild.channels
           .fetch(data[0])
@@ -921,7 +990,7 @@ export default {
     client.on('guildBanAdd', async (ban) => {
       const data = loggingData[ban.guild.id]
       if (!data) return
-      if (!(data[1] && data[18])) return
+      if (!(data[1] && data[19])) return
       else {
         const logChannel = (await ban.guild.channels
           .fetch(data[0])
@@ -958,7 +1027,7 @@ export default {
     client.on('guildBanRemove', async (ban) => {
       const data = loggingData[ban.guild.id]
       if (!data) return
-      if (!(data[1] && data[19])) return
+      if (!(data[1] && data[20])) return
       else {
         const logChannel = (await ban.guild.channels
           .fetch(data[0])
@@ -995,7 +1064,7 @@ export default {
     client.on('channelCreate', async (chan) => {
       const data = loggingData[chan.guild.id]
       if (!data) return
-      if (!(data[1] && data[20])) return
+      if (!(data[1] && data[21])) return
       else {
         const logChannel = (await chan.guild.channels
           .fetch(data[0])
@@ -1025,7 +1094,7 @@ export default {
       const chan = ch as GuildTextBasedChannel
       const data = loggingData[chan.guild.id]
       if (!data) return
-      if (!(data[1] && data[21])) return
+      if (!(data[1] && data[22])) return
       else {
         const logChannel = (await chan.guild.channels
           .fetch(data[0])
@@ -1070,6 +1139,7 @@ export default {
     const voiceUpdate = interaction.options.getBoolean('voice-update')
     const memberRoles = interaction.options.getBoolean('member-roles')
     const nickChange = interaction.options.getBoolean('nickname-change')
+    const timeouts = interaction.options.getBoolean('timeouts')
     const memberLeave = interaction.options.getBoolean('leaves')
     const memberJoin = interaction.options.getBoolean('joins')
     const banAdd = interaction.options.getBoolean('bans')
@@ -1102,6 +1172,7 @@ export default {
           _voiceUpdate,
           _memberRoleUpdate,
           _memberNickUpdate,
+          _timeouts,
           _memberRemove,
           _memberAdd,
           _banRemove,
@@ -1126,6 +1197,7 @@ export default {
           _voiceUpdate,
           _memberRoleUpdate,
           _memberNickUpdate,
+          _timeouts,
           _memberRemove,
           _memberAdd,
           _banRemove,
@@ -1163,12 +1235,13 @@ export default {
           voiceUpdate: updater(voiceUpdate, data, 13, false),
           memberRoleUpdate: updater(memberRoles, data, 14, false),
           memberNickUpdate: updater(nickChange, data, 15, false),
-          memberRemove: updater(memberLeave, data, 16, false),
-          memberAdd: updater(memberJoin, data, 17, false),
-          banAdd: updater(banAdd, data, 18, false),
-          banRemove: updater(banRemove, data, 19, false),
-          channelCreate: updater(channelCreate, data, 20, false),
-          channelDelete: updater(channelDelete, data, 21, false),
+          memberTimeout: updater(timeouts, data, 16, false),
+          memberRemove: updater(memberLeave, data, 17, false),
+          memberAdd: updater(memberJoin, data, 18, false),
+          banAdd: updater(banAdd, data, 19, false),
+          banRemove: updater(banRemove, data, 20, false),
+          channelCreate: updater(channelCreate, data, 21, false),
+          channelDelete: updater(channelDelete, data, 22, false),
         },
         { upsert: true }
       )
@@ -1193,12 +1266,13 @@ export default {
       voiceUpdate !== null ? voiceUpdate : data[13] || false,
       memberRoles !== null ? memberRoles : data[14] || false,
       nickChange !== null ? nickChange : data[15] || false,
-      memberLeave !== null ? memberLeave : data[16] || false,
-      memberJoin !== null ? memberJoin : data[17] || false,
-      banAdd !== null ? banAdd : data[18] || false,
-      banRemove !== null ? banRemove : data[19] || false,
-      channelCreate !== null ? channelCreate : data[20] || false,
-      channelDelete !== null ? channelDelete : data[21] || false,
+      timeouts !== null ? timeouts : data[16] || false,
+      memberLeave !== null ? memberLeave : data[17] || false,
+      memberJoin !== null ? memberJoin : data[18] || false,
+      banAdd !== null ? banAdd : data[19] || false,
+      banRemove !== null ? banRemove : data[20] || false,
+      channelCreate !== null ? channelCreate : data[21] || false,
+      channelDelete !== null ? channelDelete : data[22] || false,
     ]
 
     console.log(loggingData[guild.id])
