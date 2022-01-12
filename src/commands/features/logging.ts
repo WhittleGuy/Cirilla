@@ -474,7 +474,7 @@ export default {
                     inline: false,
                   },
                   {
-                    name: 'Before',
+                    name: 'After',
                     value: `${newMsg?.content}`,
                     inline: false,
                   },
