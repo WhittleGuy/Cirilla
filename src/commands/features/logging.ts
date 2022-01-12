@@ -268,7 +268,7 @@ export default {
                   name: inv.inviter.tag,
                   icon_url: inv.inviter.displayAvatarURL(),
                 },
-                footer: { text: `userId: ${inv.inviter.id}` },
+                footer: { text: `Id: ${inv.inviter.id}` },
                 timestamp: new Date(),
                 description: `Channel: ${inv.channel}
                 Code: ${inv.code}
@@ -323,6 +323,8 @@ export default {
         if (msg.author.bot) return
         if (logChannel.type !== 'GUILD_TEXT') return
         const msgChannel = msg.guild.channels.cache.get(msg.channel.id)
+        let url
+        if (msg.attachments) url = msg.attachments.first().url
         await logChannel
           .send({
             embeds: [
@@ -333,15 +335,47 @@ export default {
                   name: msg.member.user.tag,
                   icon_url: msg.member.user.displayAvatarURL(),
                 },
-                footer: { text: `userId: ${msg.member.user.id} ` },
+                image: { url: url ? url : '' },
+                footer: {
+                  text: `Id: ${msg.member.user.id}`,
+                },
                 timestamp: new Date(),
-                description: `**Message from ${msg.member.user} deleted in ${msgChannel}**
+                description: `**Message deleted in ${msgChannel}**\n
                 ${msg?.content}`,
               },
             ],
           })
           .catch(console.log)
+        if (msg.attachments?.size > 1) {
+          msg.attachments = msg.attachments.filter(
+            (a) => a.id !== msg.attachments.first().id
+          )
+          msg.attachments.forEach(async (a) => {
+            a.url = a.url
+            await logChannel
+              .send({
+                embeds: [
+                  {
+                    color: 0xff0000,
+                    // title: 'Message Delete',
+                    author: {
+                      name: msg.member.user.tag,
+                      icon_url: msg.member.user.displayAvatarURL(),
+                    },
+                    image: { url: url ? url : '' },
+                    footer: {
+                      text: `Id: ${msg.member.user.id}`,
+                    },
+                    timestamp: new Date(),
+                    description: `**Image deleted in ${msgChannel}**`,
+                  },
+                ],
+              })
+              .catch(console.log)
+          })
+        }
       }
+
       return
     })
     // Message Bulk Delete
@@ -378,6 +412,7 @@ export default {
     client.on('messageUpdate', async (oldMsg, newMsg) => {
       if (oldMsg.type === 'THREAD_CREATED') return
       if (oldMsg.author.bot) return
+      if (oldMsg.content === newMsg.content) return
       const data = loggingData[oldMsg.guild.id]
       if (!data) return
       const { guild } = oldMsg
@@ -396,7 +431,7 @@ export default {
                   name: oldMsg.member.user.tag,
                   icon_url: oldMsg.member.user.displayAvatarURL(),
                 },
-                footer: { text: 'userId: ' + oldMsg.author.id },
+                footer: { text: 'Id: ' + oldMsg.author.id },
                 timestamp: new Date(),
                 description: `**Message by ${oldMsg.member.user} edited in ${msgChannel}**
                 **Before**
@@ -812,7 +847,7 @@ export default {
                   new Date(member.user.createdTimestamp).getTime()
                 )}`,
                 footer: {
-                  text: `userId: ${member.id}`,
+                  text: `Id: ${member.id}`,
                 },
                 timestamp: new Date(),
               },
@@ -847,7 +882,7 @@ export default {
                 )}
                 Reason: ${ban.reason}`,
                 footer: {
-                  text: `userId: ${ban.user.id}`,
+                  text: `Id: ${ban.user.id}`,
                 },
                 timestamp: new Date(),
               },
@@ -881,7 +916,7 @@ export default {
                 )}
                 Reason: ${ban.reason}`,
                 footer: {
-                  text: `userId: ${ban.user.id}`,
+                  text: `Id: ${ban.user.id}`,
                 },
                 timestamp: new Date(),
               },
