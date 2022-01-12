@@ -250,12 +250,12 @@ export default {
                   name: inv.inviter.tag,
                   icon_url: inv.inviter.displayAvatarURL(),
                 },
-                footer: { text: `Creator: ${inv.inviter.id}` },
+                footer: { text: `userId: ${inv.inviter.id}` },
                 timestamp: new Date(),
                 fields: [
                   {
                     name: 'Channel',
-                    value: '#' + inv.channel.name,
+                    value: `${inv.channel}`,
                     inline: true,
                   },
 
@@ -266,7 +266,7 @@ export default {
                   },
                   {
                     name: 'Target User',
-                    value: inv.targetUser?.tag || 'None',
+                    value: `${inv.targetUser}` || 'None',
                     inline: true,
                   },
                   {
@@ -311,7 +311,7 @@ export default {
                 fields: [
                   {
                     name: 'Channel',
-                    value: inv.channel.name,
+                    value: `${inv.channel}`,
                     inline: true,
                   },
 
@@ -344,14 +344,14 @@ export default {
             embeds: [
               {
                 color: 0xff0000,
-                title: `Message Deleted in #${msgChannel.name}`,
+                title: 'Message Delete',
                 author: {
                   name: msg.member.user.tag,
                   icon_url: msg.member.user.displayAvatarURL(),
                 },
-                footer: { text: `Author: ${msg.member.user.id}` },
+                footer: { text: `userId: ${msg.member.user.id} ` },
                 timestamp: new Date(),
-                description: `${msg?.content}`,
+                description: `**Message from ${msg.member.user} deleted in ${msgChannel}**\n${msg?.content}`,
               },
             ],
           })
@@ -381,7 +381,7 @@ export default {
                 },
 
                 timestamp: new Date(),
-                description: `${msgs.size} messages deleted in #${msgChannel.name}`,
+                description: `${msgs.size} messages deleted in ${msgChannel}`,
               },
             ],
           })
@@ -406,14 +406,15 @@ export default {
             embeds: [
               {
                 color: ColorCheck(),
-                title: `**Message edited in** #${msgChannel.name}`,
+                title: `Message Edited`,
                 author: {
                   name: oldMsg.member.user.tag,
                   icon_url: oldMsg.member.user.displayAvatarURL(),
                 },
                 footer: { text: 'userId: ' + oldMsg.author.id },
                 timestamp: new Date(),
-                description: `**Before**\n${oldMsg?.content}\n\n**After**\n${newMsg?.content}`,
+                description: `**Channel** ${msgChannel}\n
+                **Before**\n${oldMsg?.content}\n\n**After**\n${newMsg?.content}`,
               },
             ],
           })
@@ -444,7 +445,7 @@ export default {
                 fields: [
                   {
                     name: 'Name',
-                    value: role.name,
+                    value: `${role}`,
                     inline: true,
                   },
                   {
@@ -493,7 +494,7 @@ export default {
                 fields: [
                   {
                     name: 'Name',
-                    value: role.name || 'None',
+                    value: `${role}` || 'None',
                     inline: true,
                   },
                   {
@@ -580,12 +581,12 @@ export default {
                   },
                   {
                     name: 'Parent',
-                    value: '#' + thread.parent.name || 'None',
+                    value: `${thread.parent}` || 'None',
                     inline: true,
                   },
                   {
                     name: 'Owner',
-                    value: (await thread.fetchOwner()).user.tag || 'None',
+                    value: `${(await thread.fetchOwner()).user}` || 'None',
                     inline: true,
                   },
                   {
@@ -628,7 +629,7 @@ export default {
                   },
                   {
                     name: 'Parent',
-                    value: '#' + thread.parent.name || 'None',
+                    value: `${thread.parent}` || 'None',
                     inline: true,
                   },
                 ],
@@ -659,7 +660,7 @@ export default {
                 },
                 timestamp: new Date(),
                 description: `Name: ${newThread.name}
-              Parent: #${newThread.parent.name}
+              Parent: ${newThread.parent}
               Archive After: ${
                 parseInt(
                   newThread.autoArchiveDuration
@@ -696,7 +697,7 @@ export default {
                       name: oldState.member.user.tag,
                       icon_url: oldState.member.user.displayAvatarURL(),
                     },
-                    description: newState.channel.name,
+                    description: `${newState.channel}`,
                   },
                 ],
               })
@@ -712,7 +713,7 @@ export default {
                       name: oldState.member.user.tag,
                       icon_url: oldState.member.user.displayAvatarURL(),
                     },
-                    description: oldState.channel.name,
+                    description: `${oldState.channel}`,
                   },
                 ],
               })
@@ -731,12 +732,12 @@ export default {
                     fields: [
                       {
                         name: 'Before',
-                        value: oldState.channel.name,
+                        value: `${oldState.channel}`,
                         inline: true,
                       },
                       {
                         name: 'After',
-                        value: newState.channel.name,
+                        value: `${newState.channel}`,
                         inline: true,
                       },
                     ],
@@ -783,13 +784,8 @@ export default {
                 thumbnail: { url: oldMember.user.displayAvatarURL() },
                 description: `${
                   roleGiven
-                    ? oldMember.user.tag +
-                      ' was given the ' +
-                      changeRole.name +
-                      ' role'
-                    : changeRole.name +
-                      ' role removed from ' +
-                      oldMember.user.tag
+                    ? `${oldMember.user} was given the ${changeRole} role`
+                    : `${changeRole} was removed from ${oldMember.user}`
                 }`,
                 footer: {
                   text: `Id: ${newMember.id}`,
@@ -841,9 +837,10 @@ export default {
           .send({
             embeds: [
               {
-                title: `${member.user.tag} left the server`,
+                title: 'User Leave',
                 color: 0xff0000,
                 thumbnail: { url: member.user.displayAvatarURL() },
+                description: `${member.user.tag} left the server`,
                 fields: [
                   {
                     name: 'Bot',
@@ -901,13 +898,14 @@ export default {
           .send({
             embeds: [
               {
-                title: `${member.user.tag} joined the server`,
+                title: 'User Join',
                 color: 0x00ff00,
                 thumbnail: { url: member.user.displayAvatarURL() },
                 author: {
                   name: guild.name,
                   icon_url: guild.iconURL(),
                 },
+                description: `${member.user} joined the server`,
                 fields: [
                   {
                     name: 'Bot',
@@ -944,13 +942,14 @@ export default {
           .send({
             embeds: [
               {
-                title: `${ban.user.tag} has been banned`,
+                title: 'Ban',
                 color: 0xff0000,
                 thumbnail: { url: ban.user.displayAvatarURL() },
                 author: {
                   name: ban.guild.name,
                   icon_url: ban.guild.iconURL(),
                 },
+                description: `${ban.user} has been banned`,
                 fields: [
                   {
                     name: 'Account Created',
@@ -986,13 +985,14 @@ export default {
           .send({
             embeds: [
               {
-                title: `${ban.user.tag} has been unabnned`,
+                title: `Unban`,
                 color: 0x00ff00,
                 thumbnail: { url: ban.user.displayAvatarURL() },
                 author: {
                   name: ban.guild.name,
                   icon_url: ban.guild.iconURL(),
                 },
+                description: `${ban.user} has been unabnned`,
                 fields: [
                   {
                     name: 'Account Created',
@@ -1034,7 +1034,7 @@ export default {
                   name: chan.guild.name,
                   icon_url: chan.guild.iconURL(),
                 },
-                description: `**Channel Created: #${chan.name}`,
+                description: `**Channel Created:** ${chan}`,
                 timestamp: new Date(),
               },
             ],
@@ -1062,7 +1062,7 @@ export default {
                   name: chan.guild.name,
                   icon_url: chan.guild.iconURL(),
                 },
-                description: `**Channel Deleted: #${chan.name}`,
+                description: `**Channel Deleted:** ${chan}`,
                 timestamp: new Date(),
               },
             ],
