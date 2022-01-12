@@ -457,11 +457,19 @@ export default {
                 },
                 footer: { text: 'Id: ' + oldMsg.author.id },
                 timestamp: new Date(),
-                description: `**Message by ${oldMsg.member.user} edited in ${msgChannel}**\n
-                **Before**
-                ${oldMsg?.content}\n
-                **After**
-                ${newMsg?.content}`,
+                description: `**Message by ${oldMsg.member.user} edited in ${msgChannel}**`,
+                fields: [
+                  {
+                    name: 'Before',
+                    value: `${oldMsg?.content}`,
+                    inline: false,
+                  },
+                  {
+                    name: 'Before',
+                    value: `${newMsg?.content}`,
+                    inline: false,
+                  },
+                ],
               },
             ],
           })
