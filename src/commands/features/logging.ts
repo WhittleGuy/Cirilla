@@ -221,48 +221,50 @@ export default {
         const guild = inv.guild as Guild
         const logChannel = await guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              color: 0x00ff00,
-              title: `Invite Created`,
-              author: {
-                name: inv.inviter.tag,
-                icon_url: inv.inviter.displayAvatarURL(),
-              },
-              footer: { text: `Creator: ${inv.inviter.id}` },
-              timestamp: new Date(),
-              fields: [
-                {
-                  name: 'Channel',
-                  value: '#' + inv.channel.name,
-                  inline: true,
+        await logChannel
+          .send({
+            embeds: [
+              {
+                color: 0x00ff00,
+                title: `Invite Created`,
+                author: {
+                  name: inv.inviter.tag,
+                  icon_url: inv.inviter.displayAvatarURL(),
                 },
+                footer: { text: `Creator: ${inv.inviter.id}` },
+                timestamp: new Date(),
+                fields: [
+                  {
+                    name: 'Channel',
+                    value: '#' + inv.channel.name,
+                    inline: true,
+                  },
 
-                {
-                  name: 'Max Uses',
-                  value: inv.maxUses.toString(),
-                  inline: true,
-                },
-                {
-                  name: 'Target User',
-                  value: inv.targetUser?.tag || 'None',
-                  inline: true,
-                },
-                {
-                  name: 'Expires',
-                  value: inv.expiresAt.toLocaleString(),
-                  inline: true,
-                },
-                {
-                  name: 'Id',
-                  value: inv.code,
-                  inline: true,
-                },
-              ],
-            },
-          ],
-        })
+                  {
+                    name: 'Max Uses',
+                    value: inv.maxUses.toString(),
+                    inline: true,
+                  },
+                  {
+                    name: 'Target User',
+                    value: inv.targetUser?.tag || 'None',
+                    inline: true,
+                  },
+                  {
+                    name: 'Expires',
+                    value: inv.expiresAt.toLocaleString(),
+                    inline: true,
+                  },
+                  {
+                    name: 'Id',
+                    value: inv.code,
+                    inline: true,
+                  },
+                ],
+              },
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -275,32 +277,34 @@ export default {
         const guild = inv.guild as Guild
         const logChannel = await guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              color: 0xff0000,
-              title: `Invite Deleted`,
-              author: {
-                name: guild.name,
-                icon_url: guild.iconURL(),
-              },
-              timestamp: new Date(),
-              fields: [
-                {
-                  name: 'Channel',
-                  value: inv.channel.name,
-                  inline: true,
+        await logChannel
+          .send({
+            embeds: [
+              {
+                color: 0xff0000,
+                title: `Invite Deleted`,
+                author: {
+                  name: guild.name,
+                  icon_url: guild.iconURL(),
                 },
+                timestamp: new Date(),
+                fields: [
+                  {
+                    name: 'Channel',
+                    value: inv.channel.name,
+                    inline: true,
+                  },
 
-                {
-                  name: 'Id',
-                  value: inv.code,
-                  inline: true,
-                },
-              ],
-            },
-          ],
-        })
+                  {
+                    name: 'Id',
+                    value: inv.code,
+                    inline: true,
+                  },
+                ],
+              },
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -314,21 +318,23 @@ export default {
         if (msg.author.bot) return
         if (logChannel.type !== 'GUILD_TEXT') return
         const msgChannel = msg.guild.channels.cache.get(msg.channel.id)
-        await logChannel.send({
-          embeds: [
-            {
-              color: 0xff0000,
-              title: `Message Deleted in #${msgChannel.name}`,
-              author: {
-                name: msg.member.user.tag,
-                icon_url: msg.member.user.displayAvatarURL(),
+        await logChannel
+          .send({
+            embeds: [
+              {
+                color: 0xff0000,
+                title: `Message Deleted in #${msgChannel.name}`,
+                author: {
+                  name: msg.member.user.tag,
+                  icon_url: msg.member.user.displayAvatarURL(),
+                },
+                footer: { text: `Author: ${msg.member.user.id}` },
+                timestamp: new Date(),
+                description: `${msg?.content}`,
               },
-              footer: { text: `Author: ${msg.member.user.id}` },
-              timestamp: new Date(),
-              description: `${msg?.content}`,
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -341,21 +347,23 @@ export default {
         const logChannel = await guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
         const msgChannel = guild.channels.cache.get(msgs.first().channel.id)
-        await logChannel.send({
-          embeds: [
-            {
-              color: 0xff0000,
-              title: 'Bulk Delete',
-              author: {
-                name: guild.name,
-                icon_url: guild.iconURL(),
-              },
+        await logChannel
+          .send({
+            embeds: [
+              {
+                color: 0xff0000,
+                title: 'Bulk Delete',
+                author: {
+                  name: guild.name,
+                  icon_url: guild.iconURL(),
+                },
 
-              timestamp: new Date(),
-              description: `${msgs.size} messages deleted in #${msgChannel.name}`,
-            },
-          ],
-        })
+                timestamp: new Date(),
+                description: `${msgs.size} messages deleted in #${msgChannel.name}`,
+              },
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -370,21 +378,23 @@ export default {
         const logChannel = await guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
         const msgChannel = guild.channels.cache.get(oldMsg.channel.id)
-        await logChannel.send({
-          embeds: [
-            {
-              color: ColorCheck(),
-              title: `**Message edited in** #${msgChannel.name}`,
-              author: {
-                name: oldMsg.member.user.tag,
-                icon_url: oldMsg.member.user.displayAvatarURL(),
+        await logChannel
+          .send({
+            embeds: [
+              {
+                color: ColorCheck(),
+                title: `**Message edited in** #${msgChannel.name}`,
+                author: {
+                  name: oldMsg.member.user.tag,
+                  icon_url: oldMsg.member.user.displayAvatarURL(),
+                },
+                footer: { text: 'userId: ' + oldMsg.author.id },
+                timestamp: new Date(),
+                description: `**Before**\n${oldMsg?.content}\n\n**After**\n${newMsg?.content}`,
               },
-              footer: { text: 'userId: ' + oldMsg.author.id },
-              timestamp: new Date(),
-              description: `**Before**\n${oldMsg?.content}\n\n**After**\n${newMsg?.content}`,
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -395,42 +405,44 @@ export default {
       else {
         const logChannel = await role.guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              color: 0x00ff00,
-              title: 'Role Created',
-              author: {
-                name: role.guild.name,
-                icon_url: role.guild.iconURL(),
+        await logChannel
+          .send({
+            embeds: [
+              {
+                color: 0x00ff00,
+                title: 'Role Created',
+                author: {
+                  name: role.guild.name,
+                  icon_url: role.guild.iconURL(),
+                },
+                thumbnail: { url: role.iconURL() },
+                timestamp: new Date(),
+                fields: [
+                  {
+                    name: 'Name',
+                    value: role.name,
+                    inline: true,
+                  },
+                  {
+                    name: 'Color',
+                    value: role.hexColor,
+                    inline: true,
+                  },
+                  {
+                    name: 'Position',
+                    value: role.position.toString(),
+                    inline: true,
+                  },
+                  {
+                    name: 'Permissions',
+                    value: role.permissions.toArray().join(', '),
+                    inline: false,
+                  },
+                ],
               },
-              thumbnail: { url: role.iconURL() },
-              timestamp: new Date(),
-              fields: [
-                {
-                  name: 'Name',
-                  value: role.name,
-                  inline: true,
-                },
-                {
-                  name: 'Color',
-                  value: role.hexColor,
-                  inline: true,
-                },
-                {
-                  name: 'Position',
-                  value: role.position.toString(),
-                  inline: true,
-                },
-                {
-                  name: 'Permissions',
-                  value: role.permissions.toArray().join(', '),
-                  inline: false,
-                },
-              ],
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -441,42 +453,44 @@ export default {
       else {
         const logChannel = await role.guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              color: 0xff0000,
-              title: 'Role Deleted',
-              author: {
-                name: role.guild.name,
-                icon_url: role.guild.iconURL(),
+        await logChannel
+          .send({
+            embeds: [
+              {
+                color: 0xff0000,
+                title: 'Role Deleted',
+                author: {
+                  name: role.guild.name,
+                  icon_url: role.guild.iconURL(),
+                },
+                thumbnail: { url: role.iconURL() },
+                timestamp: new Date(),
+                fields: [
+                  {
+                    name: 'Name',
+                    value: role.name || 'None',
+                    inline: true,
+                  },
+                  {
+                    name: 'Color',
+                    value: role.hexColor || 'None',
+                    inline: true,
+                  },
+                  {
+                    name: 'Position',
+                    value: role.position.toString() || 'None',
+                    inline: true,
+                  },
+                  {
+                    name: 'Permissions',
+                    value: role.permissions.toArray().join(', ') || 'None',
+                    inline: false,
+                  },
+                ],
               },
-              thumbnail: { url: role.iconURL() },
-              timestamp: new Date(),
-              fields: [
-                {
-                  name: 'Name',
-                  value: role.name || 'None',
-                  inline: true,
-                },
-                {
-                  name: 'Color',
-                  value: role.hexColor || 'None',
-                  inline: true,
-                },
-                {
-                  name: 'Position',
-                  value: role.position.toString() || 'None',
-                  inline: true,
-                },
-                {
-                  name: 'Permissions',
-                  value: role.permissions.toArray().join(', ') || 'None',
-                  inline: false,
-                },
-              ],
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -521,41 +535,43 @@ export default {
       else {
         const logChannel = await thread.guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              color: 0x00ff00,
-              title: 'Thread Created',
-              author: {
-                name: thread.guild.name,
-                icon_url: thread.guild.iconURL(),
+        await logChannel
+          .send({
+            embeds: [
+              {
+                color: 0x00ff00,
+                title: 'Thread Created',
+                author: {
+                  name: thread.guild.name,
+                  icon_url: thread.guild.iconURL(),
+                },
+                timestamp: new Date(),
+                fields: [
+                  {
+                    name: 'Name',
+                    value: thread.name || 'None',
+                    inline: true,
+                  },
+                  {
+                    name: 'Parent',
+                    value: '#' + thread.parent.name || 'None',
+                    inline: true,
+                  },
+                  {
+                    name: 'Owner',
+                    value: (await thread.fetchOwner()).user.tag || 'None',
+                    inline: true,
+                  },
+                  {
+                    name: 'Message',
+                    value: thread.messages.cache.first()?.content || 'None',
+                    inline: false,
+                  },
+                ],
               },
-              timestamp: new Date(),
-              fields: [
-                {
-                  name: 'Name',
-                  value: thread.name || 'None',
-                  inline: true,
-                },
-                {
-                  name: 'Parent',
-                  value: '#' + thread.parent.name || 'None',
-                  inline: true,
-                },
-                {
-                  name: 'Owner',
-                  value: (await thread.fetchOwner()).user.tag || 'None',
-                  inline: true,
-                },
-                {
-                  name: 'Message',
-                  value: thread.messages.cache.first()?.content || 'None',
-                  inline: false,
-                },
-              ],
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -566,31 +582,33 @@ export default {
       else {
         const logChannel = await thread.guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              color: 0xff0000,
-              title: 'Thread Deleted',
-              author: {
-                name: thread.guild.name,
-                icon_url: thread.guild.iconURL(),
+        await logChannel
+          .send({
+            embeds: [
+              {
+                color: 0xff0000,
+                title: 'Thread Deleted',
+                author: {
+                  name: thread.guild.name,
+                  icon_url: thread.guild.iconURL(),
+                },
+                timestamp: new Date(),
+                fields: [
+                  {
+                    name: 'Name',
+                    value: thread.name || 'None',
+                    inline: true,
+                  },
+                  {
+                    name: 'Parent',
+                    value: '#' + thread.parent.name || 'None',
+                    inline: true,
+                  },
+                ],
               },
-              timestamp: new Date(),
-              fields: [
-                {
-                  name: 'Name',
-                  value: thread.name || 'None',
-                  inline: true,
-                },
-                {
-                  name: 'Parent',
-                  value: '#' + thread.parent.name || 'None',
-                  inline: true,
-                },
-              ],
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -601,17 +619,18 @@ export default {
       else {
         const logChannel = await oldThread.guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              color: ColorCheck(),
-              title: 'Thread Updated',
-              author: {
-                name: oldThread.guild.name,
-                icon_url: oldThread.guild.iconURL(),
-              },
-              timestamp: new Date(),
-              description: `Name: ${newThread.name}
+        await logChannel
+          .send({
+            embeds: [
+              {
+                color: ColorCheck(),
+                title: 'Thread Updated',
+                author: {
+                  name: oldThread.guild.name,
+                  icon_url: oldThread.guild.iconURL(),
+                },
+                timestamp: new Date(),
+                description: `Name: ${newThread.name}
               Parent: #${newThread.parent.name}
               Archive After: ${
                 parseInt(
@@ -621,9 +640,10 @@ export default {
                 ) / 60
               } hour(s)
               RateLimit: ${newThread.rateLimitPerUser.toString()}s`,
-            },
-          ],
-        })
+              },
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -637,62 +657,67 @@ export default {
         // channel shift
         if (oldState.channel !== newState.channel) {
           if (oldState.channel === null) {
-            await logChannel.send({
-              embeds: [
-                {
-                  title: 'User Joined Voice Channel',
-                  color: 0x00ff00,
-                  author: {
-                    name: oldState.member.user.tag,
-                    icon_url: oldState.member.user.displayAvatarURL(),
+            await logChannel
+              .send({
+                embeds: [
+                  {
+                    title: 'User Joined Voice Channel',
+                    color: 0x00ff00,
+                    author: {
+                      name: oldState.member.user.tag,
+                      icon_url: oldState.member.user.displayAvatarURL(),
+                    },
+                    description: newState.channel.name,
                   },
-                  description: newState.channel.name,
-                },
-              ],
-            })
+                ],
+              })
+              .catch(console.log)
           } else if (newState.channel === null) {
-            await logChannel.send({
-              embeds: [
-                {
-                  title: 'User Left Voice Channel',
-                  color: 0xff0000,
-                  author: {
-                    name: oldState.member.user.tag,
-                    icon_url: oldState.member.user.displayAvatarURL(),
+            await logChannel
+              .send({
+                embeds: [
+                  {
+                    title: 'User Left Voice Channel',
+                    color: 0xff0000,
+                    author: {
+                      name: oldState.member.user.tag,
+                      icon_url: oldState.member.user.displayAvatarURL(),
+                    },
+                    description: oldState.channel.name,
                   },
-                  description: oldState.channel.name,
-                },
-              ],
-            })
+                ],
+              })
+              .catch(console.log)
           } else {
-            await logChannel.send({
-              embeds: [
-                {
-                  title: 'User Switched Voice Channels',
-                  color: ColorCheck(),
-                  author: {
-                    name: oldState.member.user.tag,
-                    icon_url: oldState.member.user.displayAvatarURL(),
+            await logChannel
+              .send({
+                embeds: [
+                  {
+                    title: 'User Switched Voice Channels',
+                    color: ColorCheck(),
+                    author: {
+                      name: oldState.member.user.tag,
+                      icon_url: oldState.member.user.displayAvatarURL(),
+                    },
+                    fields: [
+                      {
+                        name: 'Before',
+                        value: oldState.channel.name,
+                        inline: true,
+                      },
+                      {
+                        name: 'After',
+                        value: newState.channel.name,
+                        inline: true,
+                      },
+                    ],
                   },
-                  fields: [
-                    {
-                      name: 'Before',
-                      value: oldState.channel.name,
-                      inline: true,
-                    },
-                    {
-                      name: 'After',
-                      value: newState.channel.name,
-                      inline: true,
-                    },
-                  ],
-                },
-              ],
-            })
+                ],
+              })
+              .catch(console.log)
           }
         }
       }
-
       return
     })
     // Member nickname change & role update
@@ -719,27 +744,31 @@ export default {
           : oldMember.roles.cache
               .filter((r) => !newMember.roles.cache.has(r.id))
               .first()
-        await logChannel.send({
-          embeds: [
-            {
-              title: `Member Role Update`,
-              color: ColorCheck(),
-              thumbnail: { url: oldMember.user.displayAvatarURL() },
-              description: `${
-                roleGiven
-                  ? oldMember.user.tag +
-                    ' was given the ' +
-                    changeRole.name +
-                    ' role'
-                  : changeRole.name + ' role removed from ' + oldMember.user.tag
-              }`,
-              footer: {
-                text: `Id: ${newMember.id}`,
+        await logChannel
+          .send({
+            embeds: [
+              {
+                title: `Member Role Update`,
+                color: ColorCheck(),
+                thumbnail: { url: oldMember.user.displayAvatarURL() },
+                description: `${
+                  roleGiven
+                    ? oldMember.user.tag +
+                      ' was given the ' +
+                      changeRole.name +
+                      ' role'
+                    : changeRole.name +
+                      ' role removed from ' +
+                      oldMember.user.tag
+                }`,
+                footer: {
+                  text: `Id: ${newMember.id}`,
+                },
+                timestamp: new Date(),
               },
-              timestamp: new Date(),
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       } else if (
         data[1] &&
         data[15] &&
@@ -748,23 +777,25 @@ export default {
         // Nick Change
         const logChannel = await oldMember.guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              title: `Nickname Changed`,
-              color: ColorCheck(),
-              thumbnail: { url: oldMember.user.displayAvatarURL() },
-              description: `**Before**
+        await logChannel
+          .send({
+            embeds: [
+              {
+                title: `Nickname Changed`,
+                color: ColorCheck(),
+                thumbnail: { url: oldMember.user.displayAvatarURL() },
+                description: `**Before**
               ${oldMember.nickname || 'None'}\n
               **After**
               ${newMember.nickname || 'None'}`,
-              footer: {
-                text: `Id: ${newMember.id}`,
+                footer: {
+                  text: `Id: ${newMember.id}`,
+                },
+                timestamp: new Date(),
               },
-              timestamp: new Date(),
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -775,52 +806,54 @@ export default {
       else {
         const logChannel = await member.guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              title: `${member.user.tag} left the server`,
-              color: 0xff0000,
-              thumbnail: { url: member.user.displayAvatarURL() },
-              fields: [
-                {
-                  name: 'Bot',
-                  value: member.user.bot ? 'True' : 'False',
-                  inline: true,
+        await logChannel
+          .send({
+            embeds: [
+              {
+                title: `${member.user.tag} left the server`,
+                color: 0xff0000,
+                thumbnail: { url: member.user.displayAvatarURL() },
+                fields: [
+                  {
+                    name: 'Bot',
+                    value: member.user.bot ? 'True' : 'False',
+                    inline: true,
+                  },
+                  {
+                    name: 'Joined',
+                    value:
+                      new Date(member.joinedAt).toLocaleDateString() +
+                      '\n' +
+                      new Date(member.joinedAt).toLocaleTimeString(),
+                    inline: true,
+                  },
+                  {
+                    name: 'Time in Server',
+                    value: `${(
+                      (new Date().getTime() -
+                        new Date(member.joinedAt).getTime()) /
+                      (1000 * 3600 * 24)
+                    ).toFixed(2)} days`,
+                    inline: true,
+                  },
+                  {
+                    name: 'Roles',
+                    value:
+                      member.roles.cache
+                        .map((role: Role) => role)
+                        .slice(0, -1)
+                        .join(' ') || 'None',
+                    inline: true,
+                  },
+                ],
+                footer: {
+                  text: `Id: ${member.id}`,
                 },
-                {
-                  name: 'Joined',
-                  value:
-                    new Date(member.joinedAt).toLocaleDateString() +
-                    '\n' +
-                    new Date(member.joinedAt).toLocaleTimeString(),
-                  inline: true,
-                },
-                {
-                  name: 'Time in Server',
-                  value: `${(
-                    (new Date().getTime() -
-                      new Date(member.joinedAt).getTime()) /
-                    (1000 * 3600 * 24)
-                  ).toFixed(2)} days`,
-                  inline: true,
-                },
-                {
-                  name: 'Roles',
-                  value:
-                    member.roles.cache
-                      .map((role: Role) => role)
-                      .slice(0, -1)
-                      .join(' ') || 'None',
-                  inline: true,
-                },
-              ],
-              footer: {
-                text: `Id: ${member.id}`,
+                timestamp: new Date(),
               },
-              timestamp: new Date(),
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -832,35 +865,37 @@ export default {
         const logChannel = await member.guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
         const { guild } = member
-        await logChannel.send({
-          embeds: [
-            {
-              title: `${member.user.tag} joined the server`,
-              color: 0x00ff00,
-              thumbnail: { url: member.user.displayAvatarURL() },
-              author: {
-                name: guild.name,
-                icon_url: guild.iconURL(),
-              },
-              fields: [
-                {
-                  name: 'Bot',
-                  value: member.user.bot ? 'True' : 'False',
-                  inline: false,
+        await logChannel
+          .send({
+            embeds: [
+              {
+                title: `${member.user.tag} joined the server`,
+                color: 0x00ff00,
+                thumbnail: { url: member.user.displayAvatarURL() },
+                author: {
+                  name: guild.name,
+                  icon_url: guild.iconURL(),
                 },
-                {
-                  name: 'Account Created',
-                  value: member.user.createdAt.toLocaleString(),
-                  inline: false,
+                fields: [
+                  {
+                    name: 'Bot',
+                    value: member.user.bot ? 'True' : 'False',
+                    inline: false,
+                  },
+                  {
+                    name: 'Account Created',
+                    value: member.user.createdAt.toLocaleString(),
+                    inline: false,
+                  },
+                ],
+                footer: {
+                  text: `Id: ${member.id}`,
                 },
-              ],
-              footer: {
-                text: `Id: ${member.id}`,
+                timestamp: new Date(),
               },
-              timestamp: new Date(),
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
 
       return
@@ -872,35 +907,37 @@ export default {
       else {
         const logChannel = await ban.guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              title: `${ban.user.tag} has been banned`,
-              color: 0xff0000,
-              thumbnail: { url: ban.user.displayAvatarURL() },
-              author: {
-                name: ban.guild.name,
-                icon_url: ban.guild.iconURL(),
-              },
-              fields: [
-                {
-                  name: 'Account Created',
-                  value: ban.user.createdAt.toLocaleString(),
-                  inline: false,
+        await logChannel
+          .send({
+            embeds: [
+              {
+                title: `${ban.user.tag} has been banned`,
+                color: 0xff0000,
+                thumbnail: { url: ban.user.displayAvatarURL() },
+                author: {
+                  name: ban.guild.name,
+                  icon_url: ban.guild.iconURL(),
                 },
-                {
-                  name: 'Reason',
-                  value: ban.reason,
-                  inline: false,
+                fields: [
+                  {
+                    name: 'Account Created',
+                    value: ban.user.createdAt.toLocaleString(),
+                    inline: false,
+                  },
+                  {
+                    name: 'Reason',
+                    value: ban.reason,
+                    inline: false,
+                  },
+                ],
+                footer: {
+                  text: `Id: ${ban.user.id}`,
                 },
-              ],
-              footer: {
-                text: `Id: ${ban.user.id}`,
+                timestamp: new Date(),
               },
-              timestamp: new Date(),
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
@@ -911,35 +948,37 @@ export default {
       else {
         const logChannel = await ban.guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        await logChannel.send({
-          embeds: [
-            {
-              title: `${ban.user.tag} has been unabnned`,
-              color: 0x00ff00,
-              thumbnail: { url: ban.user.displayAvatarURL() },
-              author: {
-                name: ban.guild.name,
-                icon_url: ban.guild.iconURL(),
-              },
-              fields: [
-                {
-                  name: 'Account Created',
-                  value: ban.user.createdAt.toLocaleString(),
-                  inline: false,
+        await logChannel
+          .send({
+            embeds: [
+              {
+                title: `${ban.user.tag} has been unabnned`,
+                color: 0x00ff00,
+                thumbnail: { url: ban.user.displayAvatarURL() },
+                author: {
+                  name: ban.guild.name,
+                  icon_url: ban.guild.iconURL(),
                 },
-                {
-                  name: 'Reason',
-                  value: ban.reason,
-                  inline: false,
+                fields: [
+                  {
+                    name: 'Account Created',
+                    value: ban.user.createdAt.toLocaleString(),
+                    inline: false,
+                  },
+                  {
+                    name: 'Reason',
+                    value: ban.reason,
+                    inline: false,
+                  },
+                ],
+                footer: {
+                  text: `Id: ${ban.user.id}`,
                 },
-              ],
-              footer: {
-                text: `Id: ${ban.user.id}`,
+                timestamp: new Date(),
               },
-              timestamp: new Date(),
-            },
-          ],
-        })
+            ],
+          })
+          .catch(console.log)
       }
       return
     })
