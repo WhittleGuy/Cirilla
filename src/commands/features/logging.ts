@@ -398,7 +398,7 @@ export default {
                 },
                 footer: { text: 'userId: ' + oldMsg.author.id },
                 timestamp: new Date(),
-                description: `**Channel** ${msgChannel}
+                description: `**Message by ${oldMsg.member.user} edited in ${msgChannel}**
                 **Before**
                 ${oldMsg?.content}\n
                 **After**
