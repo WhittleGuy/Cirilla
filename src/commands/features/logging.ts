@@ -360,7 +360,7 @@ export default {
                   text: `Id: ${msg.member.user.id}`,
                 },
                 timestamp: new Date(),
-                description: `**Message deleted in ${msgChannel}**\n
+                description: `**Message deleted in ${msgChannel}**
                 ${msg?.content}`,
               },
             ],
