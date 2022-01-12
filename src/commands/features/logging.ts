@@ -810,11 +810,7 @@ export default {
                   },
                   {
                     name: 'Time in Server',
-                    value: `${(
-                      (new Date().getTime() -
-                        new Date(member.joinedAt).getTime()) /
-                      (1000 * 3600 * 24)
-                    ).toFixed(2)} days`,
+                    value: TimeSince(new Date(member.joinedAt).getTime()),
                     inline: true,
                   },
                   {
@@ -860,7 +856,9 @@ export default {
                 },
                 description: `${member.user} **Joined Server**\n
                 Bot: ${member.user.bot ? 'True' : 'False'}
-                Account Created: ${member.user.createdAt.toLocaleString()}`,
+                Account Age: ${TimeSince(
+                  new Date(member.user.createdTimestamp).getTime()
+                )}`,
                 footer: {
                   text: `userId: ${member.id}`,
                 },
@@ -892,7 +890,9 @@ export default {
                   icon_url: ban.guild.iconURL(),
                 },
                 description: `${ban.user} **Banned**\n
-                Account Created: ${ban.user.createdAt.toLocaleString()}
+                Account Age: ${TimeSince(
+                  new Date(ban.user.createdTimestamp).getTime()
+                )}
                 Reason: ${ban.reason}`,
                 footer: {
                   text: `userId: ${ban.user.id}`,
@@ -924,7 +924,9 @@ export default {
                   icon_url: ban.guild.iconURL(),
                 },
                 description: `${ban.user} **Unbanned**\n
-                Account Created: ${ban.user.createdAt.toLocaleString()}
+                Account Age: ${TimeSince(
+                  new Date(ban.user.createdTimestamp).getTime()
+                )}
                 Reason: ${ban.reason}`,
                 footer: {
                   text: `userId: ${ban.user.id}`,
