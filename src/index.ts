@@ -8,9 +8,11 @@ dotenv.config()
 const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_BANS,
+    Intents.FLAGS.GUILD_INVITES,
     Intents.FLAGS.GUILD_MEMBERS,
     Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Intents.FLAGS.GUILD_VOICE_STATES,
   ],
 })
 
@@ -18,7 +20,7 @@ client.on('ready', async () => {
   console.log(`[+] Connected to Discord as ${client.user.tag}`)
   client.user.setPresence({
     activities: [{ name: '/commands', type: 0 }],
-    status: 'dnd',
+    status: 'online',
   })
 
   new WOKCommands(client, {
