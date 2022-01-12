@@ -216,6 +216,7 @@ export default {
     // Invite creation
     client.on('inviteCreate', async (inv) => {
       const data = loggingData[inv.guild.id]
+      if (!data) return
       if (!(data[1] && data[2])) return
       else {
         const guild = inv.guild as Guild
@@ -272,6 +273,7 @@ export default {
     // Invite deletion
     client.on('inviteDelete', async (inv) => {
       const data = loggingData[inv.guild.id]
+      if (!data) return
       if (!(data[1] && data[3])) return
       else {
         const guild = inv.guild as Guild
@@ -311,6 +313,7 @@ export default {
     // Message Deletion
     client.on('messageDelete', async (msg) => {
       const data = loggingData[msg.guild.id]
+      if (!data) return
       if (!(data[1] && data[4])) return
       else {
         const guild = msg.guild as Guild
@@ -341,6 +344,7 @@ export default {
     // Message Bulk Delete
     client.on('messageDeleteBulk', async (msgs) => {
       const data = loggingData[msgs.first().guild.id]
+      if (!data) return
       if (!(data[1] && data[5])) return
       else {
         const guild = msgs.first().guild as Guild
@@ -372,6 +376,7 @@ export default {
       if (oldMsg.type === 'THREAD_CREATED') return
       if (oldMsg.author.bot) return
       const data = loggingData[oldMsg.guild.id]
+      if (!data) return
       const { guild } = oldMsg
       if (!(data[1] && data[6])) return
       else {
@@ -401,6 +406,7 @@ export default {
     // Role create
     client.on('roleCreate', async (role) => {
       const data = loggingData[role.guild.id]
+      if (!data) return
       if (!(data[1] && data[7])) return
       else {
         const logChannel = await role.guild.channels.fetch(data[0])
@@ -449,6 +455,7 @@ export default {
     // Role delete
     client.on('roleDelete', async (role) => {
       const data = loggingData[role.guild.id]
+      if (!data) return
       if (!(data[1] && data[8])) return
       else {
         const logChannel = await role.guild.channels.fetch(data[0])
@@ -531,6 +538,7 @@ export default {
     // Thread create
     client.on('threadCreate', async (thread) => {
       const data = loggingData[thread.guild.id]
+      if (!data) return
       if (!(data[1] && data[10])) return
       else {
         const logChannel = await thread.guild.channels.fetch(data[0])
@@ -578,6 +586,7 @@ export default {
     // Thread delete
     client.on('threadDelete', async (thread) => {
       const data = loggingData[thread.guild.id]
+      if (!data) return
       if (!(data[1] && data[11])) return
       else {
         const logChannel = await thread.guild.channels.fetch(data[0])
@@ -615,6 +624,7 @@ export default {
     // Thread update
     client.on('threadUpdate', async (oldThread, newThread) => {
       const data = loggingData[oldThread.guild.id]
+      if (!data) return
       if (!(data[1] && data[12])) return
       else {
         const logChannel = await oldThread.guild.channels.fetch(data[0])
@@ -650,6 +660,7 @@ export default {
     // Voice status update
     client.on('voiceStateUpdate', async (oldState, newState) => {
       const data = loggingData[oldState.guild.id]
+      if (!data) return
       if (!(data[1] && data[13])) return
       const logChannel = await oldState.guild.channels.fetch(data[0])
       if (logChannel.type !== 'GUILD_TEXT') return
@@ -723,6 +734,7 @@ export default {
     // Member nickname change & role update
     client.on('guildMemberUpdate', async (oldMember, newMember) => {
       const data = loggingData[oldMember.guild.id]
+      if (!data) return
       if (
         data[1] &&
         data[14] &&
@@ -802,6 +814,7 @@ export default {
     // Guild member remove
     client.on('guildMemberRemove', async (member) => {
       const data = loggingData[member.guild.id]
+      if (!data) return
       if (!(data[1] && data[16])) return
       else {
         const logChannel = await member.guild.channels.fetch(data[0])
@@ -860,6 +873,7 @@ export default {
     // Guild member add
     client.on('guildMemberAdd', async (member) => {
       const data = loggingData[member.guild.id]
+      if (!data) return
       if (!(data[1] && data[17])) return
       else {
         const logChannel = await member.guild.channels.fetch(data[0])
@@ -903,6 +917,7 @@ export default {
     // Guild ban add
     client.on('guildBanAdd', async (ban) => {
       const data = loggingData[ban.guild.id]
+      if (!data) return
       if (!(data[1] && data[18])) return
       else {
         const logChannel = await ban.guild.channels.fetch(data[0])
@@ -944,6 +959,7 @@ export default {
     // Guild ban remove
     client.on('guildBanRemove', async (ban) => {
       const data = loggingData[ban.guild.id]
+      if (!data) return
       if (!(data[1] && data[19])) return
       else {
         const logChannel = await ban.guild.channels.fetch(data[0])
