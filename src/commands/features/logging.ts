@@ -270,34 +270,11 @@ export default {
                 },
                 footer: { text: `userId: ${inv.inviter.id}` },
                 timestamp: new Date(),
-                fields: [
-                  {
-                    name: 'Channel',
-                    value: `${inv.channel}`,
-                    inline: true,
-                  },
-
-                  {
-                    name: 'Max Uses',
-                    value: inv.maxUses.toString(),
-                    inline: true,
-                  },
-                  {
-                    name: 'Target User',
-                    value: `${inv.targetUser}` || 'None',
-                    inline: true,
-                  },
-                  {
-                    name: 'Expires',
-                    value: inv.expiresAt.toLocaleString(),
-                    inline: true,
-                  },
-                  {
-                    name: 'Id',
-                    value: inv.code,
-                    inline: true,
-                  },
-                ],
+                description: `Channel: ${inv.channel}
+                Code: ${inv.code}
+                Max Uses: ${inv.maxUses.toString() || 'None'}
+                Target User: ${inv.targetUser || 'None'}
+                Expires: ${inv.expiresAt.toLocaleString()}`,
               },
             ],
           })
@@ -421,8 +398,11 @@ export default {
                 },
                 footer: { text: 'userId: ' + oldMsg.author.id },
                 timestamp: new Date(),
-                description: `**Channel** ${msgChannel}\n
-                **Before**\n${oldMsg?.content}\n\n**After**\n${newMsg?.content}`,
+                description: `**Channel** ${msgChannel}
+                **Before**
+                ${oldMsg?.content}\n
+                **After**
+                ${newMsg?.content}`,
               },
             ],
           })
@@ -450,9 +430,9 @@ export default {
                 },
                 thumbnail: { url: role.iconURL() },
                 timestamp: new Date(),
-                description: `${role} **Created**\n\
-              Color: ${role.hexColor}\n\
-              Position: ${role.position}\n\
+                description: `${role} **Created**
+              Color: ${role.hexColor}
+              Position: ${role.position}
               Permissions: ${role.permissions.toArray().join(', ')}`,
               },
             ],
@@ -481,9 +461,9 @@ export default {
                 },
                 thumbnail: { url: role.iconURL() },
                 timestamp: new Date(),
-                description: `${role} **Deleted**\n\
-              Color: ${role.hexColor}\n\
-              Position: ${role.position}\n\
+                description: `@${role.name} **Deleted**
+              Color: ${role.hexColor}
+              Position: ${role.position}
               Permissions: ${role.permissions.toArray().join(', ')}`,
               },
             ],
@@ -517,15 +497,15 @@ export default {
               },
               thumbnail: { url: newRole.iconURL() },
               timestamp: new Date(),
-              description: `**Before**\n\
-              Role: @${oldRole.name}\n\
-              Color: ${oldRole.hexColor}\n\
-              Position: ${oldRole.position}\n\
-              Permissions: ${oldRole.permissions.toArray().join(', ')}\n\n\
-              **After**\n\
-              Role: ${newRole}\n\
-              Color: ${newRole.hexColor}\n\
-              Position: ${newRole.position}\n\
+              description: `**Before**
+              Role: @${oldRole.name}
+              Color: ${oldRole.hexColor}
+              Position: ${oldRole.position}
+              Permissions: ${oldRole.permissions.toArray().join(', ')}\n
+              **After**
+              Role: ${newRole}
+              Color: ${newRole.hexColor}
+              Position: ${newRole.position}
               Permissions: ${newRole.permissions.toArray().join(', ')}`,
             },
           ],
@@ -552,12 +532,11 @@ export default {
                   icon_url: thread.guild.iconURL(),
                 },
                 timestamp: new Date(),
-                description: `${thread} **Created**\n
-                **Parent**: ${thread.parent || 'None'}
-                **Owner**: ${(await thread.fetchOwner()).user || 'None'}
-                **Message**\n${
-                  thread.messages.cache?.first()?.content || 'None'
-                }`,
+                description: `${thread} **Created**
+                Parent: ${thread.parent || 'None'}
+                Owner: ${(await thread.fetchOwner()).user || 'None'}
+                Message
+                ${thread.messages.cache?.first()?.content || 'None'}`,
               },
             ],
           })
@@ -584,7 +563,7 @@ export default {
                   icon_url: thread.guild.iconURL(),
                 },
                 timestamp: new Date(),
-                description: `${thread.name} **Deleted**\n
+                description: `${thread.name} **Deleted**
                 Parent: ${thread.parent}`,
               },
             ],
@@ -612,7 +591,7 @@ export default {
                   icon_url: oldThread.guild.iconURL(),
                 },
                 timestamp: new Date(),
-                description: `${newThread.name} **Updated**\n
+                description: `${newThread.name} **Updated**
               Parent: ${newThread.parent}
               Archive After: ${
                 parseInt(
@@ -790,39 +769,12 @@ export default {
                 title: 'User Leave',
                 color: 0xff0000,
                 thumbnail: { url: member.user.displayAvatarURL() },
-                description: `${member.user} **Left Server**\n
+                description: `${member.user} **Left Server**
                 Bot: ${member.user.bot ? 'True' : 'False'}
                 Account Created: ${member.user.createdAt.toLocaleString()}
-                Time in Server: ${TimeSince(0)}`,
-                fields: [
-                  {
-                    name: 'Bot',
-                    value: member.user.bot ? 'True' : 'False',
-                    inline: true,
-                  },
-                  {
-                    name: 'Joined',
-                    value:
-                      new Date(member.joinedAt).toLocaleDateString() +
-                      '\n' +
-                      new Date(member.joinedAt).toLocaleTimeString(),
-                    inline: true,
-                  },
-                  {
-                    name: 'Time in Server',
-                    value: TimeSince(new Date(member.joinedAt).getTime()),
-                    inline: true,
-                  },
-                  {
-                    name: 'Roles',
-                    value:
-                      member.roles.cache
-                        .map((role: Role) => role)
-                        .slice(0, -1)
-                        .join(' ') || 'None',
-                    inline: true,
-                  },
-                ],
+                Time in Server: ${TimeSince(
+                  new Date(member.joinedTimestamp).getTime()
+                )}`,
                 footer: {
                   text: `Id: ${member.id}`,
                 },
@@ -854,7 +806,7 @@ export default {
                   name: guild.name,
                   icon_url: guild.iconURL(),
                 },
-                description: `${member.user} **Joined Server**\n
+                description: `${member.user} **Joined Server**
                 Bot: ${member.user.bot ? 'True' : 'False'}
                 Account Age: ${TimeSince(
                   new Date(member.user.createdTimestamp).getTime()
@@ -889,7 +841,7 @@ export default {
                   name: ban.guild.name,
                   icon_url: ban.guild.iconURL(),
                 },
-                description: `${ban.user} **Banned**\n
+                description: `${ban.user} **Banned**
                 Account Age: ${TimeSince(
                   new Date(ban.user.createdTimestamp).getTime()
                 )}
@@ -923,7 +875,7 @@ export default {
                   name: ban.guild.name,
                   icon_url: ban.guild.iconURL(),
                 },
-                description: `${ban.user} **Unbanned**\n
+                description: `${ban.user} **Unbanned**
                 Account Age: ${TimeSince(
                   new Date(ban.user.createdTimestamp).getTime()
                 )}
