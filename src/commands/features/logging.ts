@@ -221,7 +221,7 @@ export default {
         const guild = inv.guild as Guild
         const logChannel = await guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        logChannel.send({
+        await logChannel.send({
           embeds: [
             {
               color: 0x00ff00,
@@ -275,7 +275,7 @@ export default {
         const guild = inv.guild as Guild
         const logChannel = await guild.channels.fetch(data[0])
         if (logChannel.type !== 'GUILD_TEXT') return
-        logChannel.send({
+        await logChannel.send({
           embeds: [
             {
               color: 0xff0000,
@@ -637,7 +637,7 @@ export default {
         // channel shift
         if (oldState.channel !== newState.channel) {
           if (oldState.channel === null) {
-            logChannel.send({
+            await logChannel.send({
               embeds: [
                 {
                   title: 'User Joined Voice Channel',
@@ -651,7 +651,7 @@ export default {
               ],
             })
           } else if (newState.channel === null) {
-            logChannel.send({
+            await logChannel.send({
               embeds: [
                 {
                   title: 'User Left Voice Channel',
@@ -665,7 +665,7 @@ export default {
               ],
             })
           } else {
-            logChannel.send({
+            await logChannel.send({
               embeds: [
                 {
                   title: 'User Switched Voice Channels',
