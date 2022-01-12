@@ -23,6 +23,8 @@ const loggingSchema = new Schema({
   memberAdd: { type: Boolean, required: true },
   banRemove: { type: Boolean, required: true },
   banAdd: { type: Boolean, required: true },
+  channelCreate: { type: Boolean, required: true },
+  channelDelete: { type: Boolean, required: true },
 })
 
 const name = 'logging'

@@ -1,4 +1,4 @@
-import { Client, Guild, Role } from 'discord.js'
+import { Client, Guild, GuildTextBasedChannel, Role } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
 import loggingSchema from '../../models/loggingSchema'
@@ -7,6 +7,8 @@ const loggingData = {} as {
   // guildId: [channel, enabled, ...options]
   [key: string]: [
     string,
+    boolean,
+    boolean,
     boolean,
     boolean,
     boolean,
@@ -158,6 +160,18 @@ export default {
       type: 5,
       required: false,
     },
+    {
+      name: 'channel-create',
+      description: 'Log when a channel is created',
+      type: 5,
+      required: false,
+    },
+    {
+      name: 'channel-delete',
+      description: 'Log when a channel is deleted',
+      type: 5,
+      required: false,
+    },
   ],
 
   init: async (client: Client) => {
@@ -188,6 +202,8 @@ export default {
         memberAdd,
         banAdd,
         banRemove,
+        channelCreate,
+        channelDelete,
       } = res
       loggingData[res._id] = [
         logChannel,
@@ -210,6 +226,8 @@ export default {
         memberAdd,
         banAdd,
         banRemove,
+        channelCreate,
+        channelDelete,
       ]
     }
 
@@ -998,6 +1016,61 @@ export default {
       }
       return
     })
+    // Channel create
+    client.on('channelCreate', async (chan) => {
+      const data = loggingData[chan.guild.id]
+      if (!data) return
+      if (!(data[1] && data[20])) return
+      else {
+        const logChannel = await chan.guild.channels.fetch(data[0])
+        if (logChannel.type !== 'GUILD_TEXT') return
+        await logChannel
+          .send({
+            embeds: [
+              {
+                title: 'Channel Created',
+                color: 0x00ff00,
+                author: {
+                  name: chan.guild.name,
+                  icon_url: chan.guild.iconURL(),
+                },
+                description: `**Channel Created: #${chan.name}`,
+                timestamp: new Date(),
+              },
+            ],
+          })
+          .catch(console.log)
+      }
+      return
+    })
+    // Channel delete
+    client.on('channelDelete', async (ch) => {
+      const chan = ch as GuildTextBasedChannel
+      const data = loggingData[chan.guild.id]
+      if (!data) return
+      if (!(data[1] && data[21])) return
+      else {
+        const logChannel = await chan.guild.channels.fetch(data[0])
+        if (logChannel.type !== 'GUILD_TEXT') return
+        await logChannel
+          .send({
+            embeds: [
+              {
+                title: 'Channel Deleted',
+                color: 0xff0000,
+                author: {
+                  name: chan.guild.name,
+                  icon_url: chan.guild.iconURL(),
+                },
+                description: `**Channel Deleted: #${chan.name}`,
+                timestamp: new Date(),
+              },
+            ],
+          })
+          .catch(console.log)
+      }
+      return
+    })
   },
 
   callback: async ({ guild, interaction }) => {
@@ -1022,6 +1095,8 @@ export default {
     const memberJoin = interaction.options.getBoolean('joins')
     const banAdd = interaction.options.getBoolean('bans')
     const banRemove = interaction.options.getBoolean('unban')
+    const channelCreate = interaction.options.getBoolean('channel-create')
+    const channelDelete = interaction.options.getBoolean('channel-delete')
 
     if (channel.type !== 'GUILD_TEXT')
       return FailureMessage(interaction, 'Please tag a text channel')
@@ -1052,6 +1127,8 @@ export default {
           _memberAdd,
           _banRemove,
           _banAdd,
+          _channelCreate,
+          _channelDelete,
         } = results
         data = loggingData[guild.id] = [
           _logChannel,
@@ -1074,6 +1151,8 @@ export default {
           _memberAdd,
           _banRemove,
           _banAdd,
+          _channelCreate,
+          _channelDelete,
         ]
       }
     }
@@ -1111,6 +1190,10 @@ export default {
           memberAdd: memberJoin !== null ? memberJoin : data[17] || false,
           banAdd: banAdd !== null ? banAdd : data[18] || false,
           banRemove: banRemove !== null ? banRemove : data[19] || false,
+          channelCreate:
+            channelCreate !== null ? channelCreate : data[20] || false,
+          channelDelete:
+            channelDelete !== null ? channelDelete : data[21] || false,
         },
         { upsert: true }
       )
@@ -1139,6 +1222,8 @@ export default {
       memberJoin !== null ? memberJoin : data[17] || false,
       banAdd !== null ? banAdd : data[18] || false,
       banRemove !== null ? banRemove : data[19] || false,
+      channelCreate !== null ? channelCreate : data[20] || false,
+      channelDelete !== null ? channelDelete : data[21] || false,
     ]
 
     console.log(loggingData[guild.id])
