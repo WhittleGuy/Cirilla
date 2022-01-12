@@ -344,7 +344,7 @@ export default {
         if (logChannel.type !== 'GUILD_TEXT') return
         const msgChannel = msg.guild.channels.cache.get(msg.channel.id)
         let url
-        if (msg.attachments) url = msg.attachments.first().url
+        if (msg.attachments) url = msg.attachments?.first()?.url
         await logChannel
           .send({
             embeds: [
@@ -371,7 +371,7 @@ export default {
             (a) => a.id !== msg.attachments.first().id
           )
           msg.attachments.forEach(async (a) => {
-            a.url = a.url
+            a.url = a?.url
             await logChannel
               .send({
                 embeds: [

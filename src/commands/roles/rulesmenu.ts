@@ -10,7 +10,7 @@ import { ICommand } from 'wokcommands'
 import { FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
-  category: 'Moderation',
+  category: 'CirillaRoles',
   description:
     'Add a two-option dropdown to either give a role or (optionally) kick the user.',
   permissions: ['MANAGE_ROLES', 'KICK_MEMBERS'],
