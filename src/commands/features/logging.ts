@@ -175,7 +175,7 @@ export default {
       data = loggingData[guild.id]
 
       if (!data) {
-        const results = await loggingSchema.findById(guild.id)
+        const results = await loggingSchema.findById({ _id: guild.id })
         if (!results) return
 
         const {
@@ -226,6 +226,7 @@ export default {
 
       logChannel = await msg.guild.channels.fetch(data[0])
       if (logChannel.type !== 'GUILD_TEXT') return
+      console.log(loggingData[guild.id])
     })
 
     // Invite creation
@@ -241,7 +242,8 @@ export default {
     })
     // Message Deletion
     client.on('messageDelete', async (msg) => {
-      if (!(data[1] && data[4])) {
+      if (!(data[1] && data[4])) return
+      else {
         if (msg.author.bot) return
         if (logChannel.type !== 'GUILD_TEXT') return
         const msgChannel = msg.guild.channels.cache.get(msg.channel.id)
@@ -338,7 +340,7 @@ export default {
   callback: async ({ guild, interaction }) => {
     await interaction.deferReply({ ephemeral: true })
     const channel = interaction.options.getChannel('channel')
-    const enabled = interaction.options.getBoolean('enabled')
+    const enabled = interaction.options.getBoolean('enable')
     const inviteCreate = interaction.options.getBoolean('invite-create')
     const inviteDelete = interaction.options.getBoolean('invite-delete')
     const msgDelete = interaction.options.getBoolean('message-delete')
@@ -360,40 +362,6 @@ export default {
 
     if (channel.type !== 'GUILD_TEXT')
       return FailureMessage(interaction, 'Please tag a text channel')
-
-    const set = await loggingSchema
-      .findOneAndUpdate(
-        {
-          _id: guild.id,
-        },
-        {
-          _id: guild.id,
-          logChannel: channel.id,
-          enabled: enabled || loggingData[1] || false,
-          inviteCreate: inviteCreate || loggingData[2] || false,
-          inviteDelete: inviteDelete || loggingData[3] || false,
-          msgDelete: msgDelete || loggingData[4] || false,
-          msgBulkDelete: msgDelBulk || loggingData[5] || false,
-          msgUpdate: msgUpdate || loggingData[6] || false,
-          roleCreate: roleCreate || loggingData[7] || false,
-          roleDelete: roleDelete || loggingData[8] || false,
-          roleUpdate: roleUpdate || loggingData[9] || false,
-          threadCreate: threadCreate || loggingData[10] || false,
-          threadDelete: threadDelete || loggingData[11] || false,
-          threadUpdate: threadUpdate || loggingData[12] || false,
-          voiceUpdate: voiceUpdate || loggingData[13] || false,
-          memberRoleUpdate: memberRoles || loggingData[14] || false,
-          memberNickUpdate: nickChange || loggingData[15] || false,
-          memberRemove: memberLeave || loggingData[16] || false,
-          memberAdd: memberJoin || loggingData[17] || false,
-          banRemove: banAdd || loggingData[18] || false,
-          banAdd: banRemove || loggingData[19] || false,
-        },
-        { upsert: true }
-      )
-      .catch(console.log)
-
-    if (!set) return FailureMessage(interaction)
 
     let data = loggingData[guild.id]
     if (!data) {
@@ -446,28 +414,70 @@ export default {
       }
     }
 
+    const set = await loggingSchema
+      .findOneAndUpdate(
+        {
+          _id: guild.id,
+        },
+        {
+          _id: guild.id,
+          logChannel: channel.id,
+
+          enabled: enabled !== null ? enabled : data[1] || false,
+          inviteCreate: inviteCreate !== null ? inviteCreate : data[2] || false,
+          inviteDelete: inviteDelete !== null ? inviteDelete : data[3] || false,
+          msgDelete: msgDelete !== null ? msgDelete : data[4] || false,
+          msgBulkDelete: msgDelBulk !== null ? msgDelBulk : data[5] || false,
+          msgUpdate: msgUpdate !== null ? msgUpdate : data[6] || false,
+          roleCreate: roleCreate !== null ? roleCreate : data[7] || false,
+          roleDelete: roleDelete !== null ? roleDelete : data[8] || false,
+          roleUpdate: roleUpdate !== null ? roleUpdate : data[9] || false,
+          threadCreate:
+            threadCreate !== null ? threadCreate : data[10] || false,
+          threadDelete:
+            threadDelete !== null ? threadDelete : data[11] || false,
+          threadUpdate:
+            threadUpdate !== null ? threadUpdate : data[12] || false,
+          voiceUpdate: voiceUpdate !== null ? voiceUpdate : data[13] || false,
+          memberRoleUpdate:
+            memberRoles !== null ? memberRoles : data[14] || false,
+          memberNickUpdate:
+            nickChange !== null ? nickChange : data[15] || false,
+          memberRemove: memberLeave !== null ? memberLeave : data[16] || false,
+          memberAdd: memberJoin !== null ? memberJoin : data[17] || false,
+          banAdd: banAdd !== null ? banAdd : data[18] || false,
+          banRemove: banRemove !== null ? banRemove : data[19] || false,
+        },
+        { upsert: true }
+      )
+      .catch(console.log)
+
+    if (!set) return FailureMessage(interaction)
+
     loggingData[guild.id] = [
-      channel?.id || data[0] || '',
-      enabled || data[1] || false,
-      inviteCreate || data[2] || false,
-      inviteDelete || data[3] || false,
-      msgDelete || data[4] || false,
-      msgDelBulk || data[5] || false,
-      msgUpdate || data[6] || false,
-      roleCreate || data[7] || false,
-      roleDelete || data[8] || false,
-      roleUpdate || data[9] || false,
-      threadCreate || data[10] || false,
-      threadDelete || data[11] || false,
-      threadUpdate || data[12] || false,
-      voiceUpdate || data[13] || false,
-      memberRoles || data[14] || false,
-      nickChange || data[15] || false,
-      memberLeave || data[16] || false,
-      memberJoin || data[17] || false,
-      banAdd || data[18] || false,
-      banRemove || data[19] || false,
+      channel.id,
+      enabled !== null ? enabled : data[1] || false,
+      inviteCreate !== null ? inviteCreate : data[2] || false,
+      inviteDelete !== null ? inviteDelete : data[3] || false,
+      msgDelete !== null ? msgDelete : data[4] || false,
+      msgDelBulk !== null ? msgDelBulk : data[5] || false,
+      msgUpdate !== null ? msgUpdate : data[6] || false,
+      roleCreate !== null ? roleCreate : data[7] || false,
+      roleDelete !== null ? roleDelete : data[8] || false,
+      roleUpdate !== null ? roleUpdate : data[9] || false,
+      threadCreate !== null ? threadCreate : data[10] || false,
+      threadDelete !== null ? threadDelete : data[11] || false,
+      threadUpdate !== null ? threadUpdate : data[12] || false,
+      voiceUpdate !== null ? voiceUpdate : data[13] || false,
+      memberRoles !== null ? memberRoles : data[14] || false,
+      nickChange !== null ? nickChange : data[15] || false,
+      memberLeave !== null ? memberLeave : data[16] || false,
+      memberJoin !== null ? memberJoin : data[17] || false,
+      banAdd !== null ? banAdd : data[18] || false,
+      banRemove !== null ? banRemove : data[19] || false,
     ]
+
+    console.log(loggingData[guild.id])
 
     return SuccessMessage(interaction, 'Settings saved')
   },
