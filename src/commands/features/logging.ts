@@ -231,6 +231,24 @@ export default {
       ]
     }
 
+    // Time since
+    const TimeSince = (date0) => {
+      const now = new Date().getTime()
+      const diff = now - date0
+      const Y = Math.floor(diff / 31536000000)
+      const M = Math.floor((diff % 31536000000) / 2629800000)
+      const d = Math.floor((diff % 2629800000) / 86400000)
+      const h = Math.floor((diff % 86400000) / 3600000)
+      const m = Math.floor((diff % 3600000) / 60000)
+      const s = Math.floor((diff % 60000) / 1000)
+
+      return `${Y ? Y + ' years, ' : ''}${M ? M + ' months, ' : ''}${
+        d ? d + ' days, ' : ''
+      }${h ? h + ' hours, ' : ''}${m ? m + ' minutes, ' : ''}${
+        s ? s + ' seconds ' : ''
+      }`
+    }
+
     // Invite creation
     client.on('inviteCreate', async (inv) => {
       const data = loggingData[inv.guild.id]
@@ -308,19 +326,8 @@ export default {
                   icon_url: guild.iconURL(),
                 },
                 timestamp: new Date(),
-                fields: [
-                  {
-                    name: 'Channel',
-                    value: `${inv.channel}`,
-                    inline: true,
-                  },
-
-                  {
-                    name: 'Id',
-                    value: inv.code,
-                    inline: true,
-                  },
-                ],
+                description: `Channel: ${inv.channel}
+                Code: ${inv.code}`,
               },
             ],
           })
@@ -344,14 +351,15 @@ export default {
             embeds: [
               {
                 color: 0xff0000,
-                title: 'Message Delete',
+                // title: 'Message Delete',
                 author: {
                   name: msg.member.user.tag,
                   icon_url: msg.member.user.displayAvatarURL(),
                 },
                 footer: { text: `userId: ${msg.member.user.id} ` },
                 timestamp: new Date(),
-                description: `**Message from ${msg.member.user} deleted in ${msgChannel}**\n${msg?.content}`,
+                description: `**Message from ${msg.member.user} deleted in ${msgChannel}**
+                ${msg?.content}`,
               },
             ],
           })
@@ -374,14 +382,14 @@ export default {
             embeds: [
               {
                 color: 0xff0000,
-                title: 'Bulk Delete',
+                // title: 'Bulk Delete',
                 author: {
                   name: guild.name,
                   icon_url: guild.iconURL(),
                 },
 
                 timestamp: new Date(),
-                description: `${msgs.size} messages deleted in ${msgChannel}`,
+                description: `**${msgs.size} messages deleted in ${msgChannel}**`,
               },
             ],
           })
@@ -406,7 +414,7 @@ export default {
             embeds: [
               {
                 color: ColorCheck(),
-                title: `Message Edited`,
+                // title: `Message Edited`,
                 author: {
                   name: oldMsg.member.user.tag,
                   icon_url: oldMsg.member.user.displayAvatarURL(),
@@ -442,28 +450,10 @@ export default {
                 },
                 thumbnail: { url: role.iconURL() },
                 timestamp: new Date(),
-                fields: [
-                  {
-                    name: 'Name',
-                    value: `${role}`,
-                    inline: true,
-                  },
-                  {
-                    name: 'Color',
-                    value: role.hexColor,
-                    inline: true,
-                  },
-                  {
-                    name: 'Position',
-                    value: role.position.toString(),
-                    inline: true,
-                  },
-                  {
-                    name: 'Permissions',
-                    value: role.permissions.toArray().join(', '),
-                    inline: false,
-                  },
-                ],
+                description: `${role} **Created**\n\
+              Color: ${role.hexColor}\n\
+              Position: ${role.position}\n\
+              Permissions: ${role.permissions.toArray().join(', ')}`,
               },
             ],
           })
@@ -491,28 +481,10 @@ export default {
                 },
                 thumbnail: { url: role.iconURL() },
                 timestamp: new Date(),
-                fields: [
-                  {
-                    name: 'Name',
-                    value: `${role}` || 'None',
-                    inline: true,
-                  },
-                  {
-                    name: 'Color',
-                    value: role.hexColor || 'None',
-                    inline: true,
-                  },
-                  {
-                    name: 'Position',
-                    value: role.position.toString() || 'None',
-                    inline: true,
-                  },
-                  {
-                    name: 'Permissions',
-                    value: role.permissions.toArray().join(', ') || 'None',
-                    inline: false,
-                  },
-                ],
+                description: `${role} **Deleted**\n\
+              Color: ${role.hexColor}\n\
+              Position: ${role.position}\n\
+              Permissions: ${role.permissions.toArray().join(', ')}`,
               },
             ],
           })
@@ -522,36 +494,43 @@ export default {
     })
     // Role update
     client.on('roleUpdate', async (oldRole, newRole) => {
-      // const data = loggingData[oldRole.guild.id]
-      // if (!(data[1] && data[9])) return
-      // else {
-      //   const logChannel = await oldRole.guild.channels.fetch(data[0])
-      //   if (logChannel.type !== 'GUILD_TEXT') return
-      //   await logChannel.send({
-      //     embeds: [
-      //       {
-      //         color: ColorCheck(),
-      //         title: 'Role Updated',
-      //         author: {
-      //           name: oldRole.guild.name,
-      //           icon_url: oldRole.guild.iconURL(),
-      //         },
-      //         thumbnail: { url: newRole.iconURL() },
-      //         timestamp: new Date(),
-      //         description: `**Before**\n\
-      //         Name: ${oldRole.name}\n\
-      //         Color: ${oldRole.hexColor}\n\
-      //         Position: ${oldRole.position}\n\
-      //         Permissions: ${oldRole.permissions.toArray().join(', ')}\n\n\
-      //         **After**\n\
-      //         Name: ${newRole.name}\n\
-      //         Color: ${newRole.hexColor}\n\
-      //         Position: ${newRole.position}\n\
-      //         Permissions: ${newRole.permissions.toArray().join(', ')}`,
-      //       },
-      //     ],
-      //   })
-      // }
+      const data = loggingData[oldRole.guild.id]
+      if (!(data[1] && data[9])) return
+      else {
+        const logChannel = await oldRole.guild.channels.fetch(data[0])
+        if (logChannel.type !== 'GUILD_TEXT') return
+        // Don't log position change only
+        if (
+          oldRole.hexColor === newRole.hexColor &&
+          oldRole.name == newRole.name &&
+          oldRole.permissions === newRole.permissions
+        )
+          return
+        await logChannel.send({
+          embeds: [
+            {
+              color: ColorCheck(),
+              title: 'Role Updated',
+              author: {
+                name: oldRole.guild.name,
+                icon_url: oldRole.guild.iconURL(),
+              },
+              thumbnail: { url: newRole.iconURL() },
+              timestamp: new Date(),
+              description: `**Before**\n\
+              Role: @${oldRole.name}\n\
+              Color: ${oldRole.hexColor}\n\
+              Position: ${oldRole.position}\n\
+              Permissions: ${oldRole.permissions.toArray().join(', ')}\n\n\
+              **After**\n\
+              Role: ${newRole}\n\
+              Color: ${newRole.hexColor}\n\
+              Position: ${newRole.position}\n\
+              Permissions: ${newRole.permissions.toArray().join(', ')}`,
+            },
+          ],
+        })
+      }
       return
     })
     // Thread create
@@ -567,34 +546,18 @@ export default {
             embeds: [
               {
                 color: 0x00ff00,
-                title: 'Thread Created',
+                // title: 'Thread Created',
                 author: {
                   name: thread.guild.name,
                   icon_url: thread.guild.iconURL(),
                 },
                 timestamp: new Date(),
-                fields: [
-                  {
-                    name: 'Name',
-                    value: thread.name || 'None',
-                    inline: true,
-                  },
-                  {
-                    name: 'Parent',
-                    value: `${thread.parent}` || 'None',
-                    inline: true,
-                  },
-                  {
-                    name: 'Owner',
-                    value: `${(await thread.fetchOwner()).user}` || 'None',
-                    inline: true,
-                  },
-                  {
-                    name: 'Message',
-                    value: thread.messages.cache.first()?.content || 'None',
-                    inline: false,
-                  },
-                ],
+                description: `${thread} **Created**\n
+                **Parent**: ${thread.parent || 'None'}
+                **Owner**: ${(await thread.fetchOwner()).user || 'None'}
+                **Message**\n${
+                  thread.messages.cache?.first()?.content || 'None'
+                }`,
               },
             ],
           })
@@ -615,24 +578,14 @@ export default {
             embeds: [
               {
                 color: 0xff0000,
-                title: 'Thread Deleted',
+
                 author: {
                   name: thread.guild.name,
                   icon_url: thread.guild.iconURL(),
                 },
                 timestamp: new Date(),
-                fields: [
-                  {
-                    name: 'Name',
-                    value: thread.name || 'None',
-                    inline: true,
-                  },
-                  {
-                    name: 'Parent',
-                    value: `${thread.parent}` || 'None',
-                    inline: true,
-                  },
-                ],
+                description: `${thread.name} **Deleted**\n
+                Parent: ${thread.parent}`,
               },
             ],
           })
@@ -653,13 +606,13 @@ export default {
             embeds: [
               {
                 color: ColorCheck(),
-                title: 'Thread Updated',
+
                 author: {
                   name: oldThread.guild.name,
                   icon_url: oldThread.guild.iconURL(),
                 },
                 timestamp: new Date(),
-                description: `Name: ${newThread.name}
+                description: `${newThread.name} **Updated**\n
               Parent: ${newThread.parent}
               Archive After: ${
                 parseInt(
@@ -691,13 +644,12 @@ export default {
               .send({
                 embeds: [
                   {
-                    title: 'User Joined Voice Channel',
                     color: 0x00ff00,
                     author: {
                       name: oldState.member.user.tag,
                       icon_url: oldState.member.user.displayAvatarURL(),
                     },
-                    description: `${newState.channel}`,
+                    description: `User Joined Voice Channel ${newState.channel}`,
                   },
                 ],
               })
@@ -707,13 +659,12 @@ export default {
               .send({
                 embeds: [
                   {
-                    title: 'User Left Voice Channel',
                     color: 0xff0000,
                     author: {
                       name: oldState.member.user.tag,
                       icon_url: oldState.member.user.displayAvatarURL(),
                     },
-                    description: `${oldState.channel}`,
+                    description: `User Left Voice Channel ${oldState.channel}`,
                   },
                 ],
               })
@@ -779,7 +730,6 @@ export default {
           .send({
             embeds: [
               {
-                title: `Member Role Update`,
                 color: ColorCheck(),
                 thumbnail: { url: oldMember.user.displayAvatarURL() },
                 description: `${
@@ -840,7 +790,10 @@ export default {
                 title: 'User Leave',
                 color: 0xff0000,
                 thumbnail: { url: member.user.displayAvatarURL() },
-                description: `${member.user.tag} left the server`,
+                description: `${member.user} **Left Server**\n
+                Bot: ${member.user.bot ? 'True' : 'False'}
+                Account Created: ${member.user.createdAt.toLocaleString()}
+                Time in Server: ${TimeSince(0)}`,
                 fields: [
                   {
                     name: 'Bot',
@@ -905,21 +858,11 @@ export default {
                   name: guild.name,
                   icon_url: guild.iconURL(),
                 },
-                description: `${member.user} joined the server`,
-                fields: [
-                  {
-                    name: 'Bot',
-                    value: member.user.bot ? 'True' : 'False',
-                    inline: false,
-                  },
-                  {
-                    name: 'Account Created',
-                    value: member.user.createdAt.toLocaleString(),
-                    inline: false,
-                  },
-                ],
+                description: `${member.user} **Joined Server**\n
+                Bot: ${member.user.bot ? 'True' : 'False'}
+                Account Created: ${member.user.createdAt.toLocaleString()}`,
                 footer: {
-                  text: `Id: ${member.id}`,
+                  text: `userId: ${member.id}`,
                 },
                 timestamp: new Date(),
               },
@@ -942,28 +885,17 @@ export default {
           .send({
             embeds: [
               {
-                title: 'Ban',
                 color: 0xff0000,
                 thumbnail: { url: ban.user.displayAvatarURL() },
                 author: {
                   name: ban.guild.name,
                   icon_url: ban.guild.iconURL(),
                 },
-                description: `${ban.user} has been banned`,
-                fields: [
-                  {
-                    name: 'Account Created',
-                    value: ban.user.createdAt.toLocaleString(),
-                    inline: false,
-                  },
-                  {
-                    name: 'Reason',
-                    value: ban.reason,
-                    inline: false,
-                  },
-                ],
+                description: `${ban.user} **Banned**\n
+                Account Created: ${ban.user.createdAt.toLocaleString()}
+                Reason: ${ban.reason}`,
                 footer: {
-                  text: `Id: ${ban.user.id}`,
+                  text: `userId: ${ban.user.id}`,
                 },
                 timestamp: new Date(),
               },
@@ -985,28 +917,17 @@ export default {
           .send({
             embeds: [
               {
-                title: `Unban`,
                 color: 0x00ff00,
                 thumbnail: { url: ban.user.displayAvatarURL() },
                 author: {
                   name: ban.guild.name,
                   icon_url: ban.guild.iconURL(),
                 },
-                description: `${ban.user} has been unabnned`,
-                fields: [
-                  {
-                    name: 'Account Created',
-                    value: ban.user.createdAt.toLocaleString(),
-                    inline: false,
-                  },
-                  {
-                    name: 'Reason',
-                    value: ban.reason,
-                    inline: false,
-                  },
-                ],
+                description: `${ban.user} **Unbanned**\n
+                Account Created: ${ban.user.createdAt.toLocaleString()}
+                Reason: ${ban.reason}`,
                 footer: {
-                  text: `Id: ${ban.user.id}`,
+                  text: `userId: ${ban.user.id}`,
                 },
                 timestamp: new Date(),
               },
@@ -1028,7 +949,6 @@ export default {
           .send({
             embeds: [
               {
-                title: 'Channel Created',
                 color: 0x00ff00,
                 author: {
                   name: chan.guild.name,
@@ -1056,13 +976,12 @@ export default {
           .send({
             embeds: [
               {
-                title: 'Channel Deleted',
                 color: 0xff0000,
                 author: {
                   name: chan.guild.name,
                   icon_url: chan.guild.iconURL(),
                 },
-                description: `**Channel Deleted:** ${chan}`,
+                description: `**Channel Deleted:** #${chan.name}`,
                 timestamp: new Date(),
               },
             ],
