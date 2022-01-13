@@ -933,7 +933,11 @@ export default {
                 title: 'User Leave',
                 color: 0xff0000,
                 thumbnail: { url: member.user.displayAvatarURL() },
-                description: `${member.user} **Left Server**`,
+                author: {
+                  name: 'Member Left',
+                  icon_url: member.user.displayAvatarURL(),
+                },
+                description: `${member.user} ${member.user.tag}`,
                 fields: [
                   {
                     name: 'Time in Server',
