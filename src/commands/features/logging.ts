@@ -933,12 +933,24 @@ export default {
                 title: 'User Leave',
                 color: 0xff0000,
                 thumbnail: { url: member.user.displayAvatarURL() },
-                description: `${member.user} **Left Server**\n
-                Bot: ${member.user.bot ? 'True' : 'False'}
-                Account Created: ${member.user.createdAt.toLocaleString()}
-                Time in Server: ${TimeSince(
-                  new Date(member.joinedTimestamp).getTime()
-                )}`,
+                description: `${member.user} **Left Server**`,
+                fields: [
+                  {
+                    name: 'Time in Server',
+                    value: TimeSince(
+                      new Date(member.joinedTimestamp).getTime()
+                    ),
+                    inline: false,
+                  },
+                  {
+                    name: 'Roles',
+                    value: member.roles.cache
+                      .map((role: Role) => role)
+                      .slice(0, -1)
+                      .join(' '),
+                    inline: false,
+                  },
+                ],
                 footer: {
                   text: `Id: ${member.id}`,
                 },
