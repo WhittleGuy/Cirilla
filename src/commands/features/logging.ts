@@ -847,12 +847,12 @@ export default {
                 fields: [
                   {
                     name: 'Before',
-                    value: oldMember.nickname,
+                    value: oldMember.nickname || 'None',
                     inline: false,
                   },
                   {
                     name: 'After',
-                    value: newMember.nickname,
+                    value: newMember.nickname || 'None',
                     inline: false,
                   },
                 ],
