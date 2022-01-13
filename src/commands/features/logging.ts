@@ -841,7 +841,7 @@ export default {
                 title: `Nickname Changed`,
                 color: ColorCheck(),
                 thumbnail: { url: oldMember.user.displayAvatarURL() },
-                description: `**${newMember.user.tag} nickname changed**`,
+                description: `**${newMember.user} nickname changed**`,
                 fields: [
                   {
                     name: 'Before',
