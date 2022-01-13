@@ -343,6 +343,7 @@ export default {
     client.on('messageDelete', async (msg) => {
       const data = loggingData[msg.guild.id]
       if (!data) return
+      if (msg.partial) return
       if (!(data[1] && data[4])) return
       else {
         const guild = msg.guild as Guild
@@ -443,8 +444,9 @@ export default {
     client.on('messageUpdate', async (oldMsg, newMsg) => {
       const data = loggingData[oldMsg.guild.id]
       if (!data) return
-      if (oldMsg.type === 'THREAD_CREATED') return
-      if (oldMsg.author.bot) return
+      if (oldMsg.partial) oldMsg.fetch()
+      if (newMsg.type === 'THREAD_CREATED') return
+      if (newMsg.author.bot) return
       if (oldMsg.content === newMsg.content) return
       const { guild } = oldMsg
       if (!(data[1] && data[6])) return
@@ -461,10 +463,10 @@ export default {
                 color: ColorCheck(),
                 // title: 'Message Edited',
                 author: {
-                  name: oldMsg.member.user.tag,
-                  icon_url: oldMsg.member.user.displayAvatarURL(),
+                  name: newMsg.member.user.tag,
+                  icon_url: newMsg.member.user.displayAvatarURL(),
                 },
-                footer: { text: `Id: ${oldMsg.id}` },
+                footer: { text: `Id: ${newMsg.id}` },
                 timestamp: new Date(),
                 description: `**[Message](${newMsg.url}) edited in ${msgChannel}**`,
                 fields: [
