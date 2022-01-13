@@ -1071,7 +1071,7 @@ export default {
         const logChannel = (await chan.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
