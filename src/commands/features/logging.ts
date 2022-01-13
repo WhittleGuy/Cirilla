@@ -1088,12 +1088,13 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
+        const cat = chan.type === 'GUILD_CATEGORY'
         await logChannel
           .send({
             embeds: [
               {
                 color: 0x00ff00,
-                title: 'Channel Created',
+                title: `${cat ? 'Category' : 'Channel'} Created`,
                 author: {
                   name: chan.guild.name,
                   icon_url: chan.guild.iconURL(),
@@ -1118,12 +1119,13 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
+        const cat = ch.type === 'GUILD_CATEGORY'
         await logChannel
           .send({
             embeds: [
               {
                 color: 0xff0000,
-                title: 'Channel Deleted',
+                title: `${cat ? 'Category' : 'Channel'} Created`,
                 author: {
                   name: chan.guild.name,
                   icon_url: chan.guild.iconURL(),
