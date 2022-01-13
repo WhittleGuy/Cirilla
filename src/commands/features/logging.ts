@@ -935,7 +935,7 @@ export default {
                 thumbnail: { url: member.user.displayAvatarURL() },
                 author: {
                   name: 'Member Left',
-                  icon_url: member.user.displayAvatarURL(),
+                  icon_url: guild.iconURL(),
                 },
                 description: `${member.user} ${member.user.tag}`,
                 fields: [
