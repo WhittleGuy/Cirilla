@@ -272,7 +272,7 @@ export default {
         const logChannel = (await guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -308,7 +308,7 @@ export default {
         const logChannel = (await guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -351,7 +351,7 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (msg.author.bot) return
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         const msgChannel = msg.guild.channels.cache.get(msg.channel.id)
         let url
         if (msg.attachments) url = msg.attachments?.first()?.url
@@ -418,7 +418,7 @@ export default {
         const logChannel = (await guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         const msgChannel = guild.channels.cache.get(msgs.first().channel.id)
         await logChannel
           .send({
@@ -454,7 +454,7 @@ export default {
         const logChannel = (await guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         const msgChannel = guild.channels.cache.get(oldMsg.channel.id)
         await logChannel
           .send({
@@ -497,7 +497,7 @@ export default {
         const logChannel = (await role.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -530,7 +530,7 @@ export default {
         const logChannel = (await role.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -562,7 +562,7 @@ export default {
         const logChannel = (await oldRole.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         // Don't log position change only
         if (
           oldRole.hexColor === newRole.hexColor &&
@@ -606,7 +606,7 @@ export default {
         const logChannel = (await thread.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -639,7 +639,7 @@ export default {
         const logChannel = (await thread.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -669,7 +669,7 @@ export default {
         const logChannel = (await oldThread.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -706,7 +706,7 @@ export default {
       const logChannel = (await oldState.guild.channels
         .fetch(data[0])
         .catch(console.log)) as NonThreadGuildBasedChannel
-      if (logChannel.type !== 'GUILD_TEXT') return
+      if (logChannel?.type !== 'GUILD_TEXT') return
       else {
         // channel shift
         if (oldState.channel !== newState.channel) {
@@ -788,7 +788,7 @@ export default {
         const logChannel = (await oldMember.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         let roleGiven
         if (newMember.roles.cache.size > oldMember.roles.cache.size) {
           roleGiven = true
@@ -835,7 +835,7 @@ export default {
         const logChannel = (await oldMember.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -875,7 +875,7 @@ export default {
         const logChannel = (await oldMember.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         const timeoutAdded = newMember.communicationDisabledUntilTimestamp
           ? true
           : false
@@ -925,7 +925,7 @@ export default {
         const logChannel = (await member.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -959,7 +959,7 @@ export default {
         const logChannel = (await member.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         const { guild } = member
         await logChannel
           .send({
@@ -997,7 +997,7 @@ export default {
         const logChannel = (await ban.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -1034,7 +1034,7 @@ export default {
         const logChannel = (await ban.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
@@ -1101,7 +1101,7 @@ export default {
         const logChannel = (await chan.guild.channels
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel.type !== 'GUILD_TEXT') return
+        if (logChannel?.type !== 'GUILD_TEXT') return
         await logChannel
           .send({
             embeds: [
