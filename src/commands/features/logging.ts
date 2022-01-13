@@ -716,12 +716,14 @@ export default {
                 embeds: [
                   {
                     color: 0x00ff00,
-                    title: 'Voice Channel Connect',
+                    // title: 'Voice Channel Connect',
                     author: {
                       name: oldState.member.user.tag,
-                      icon_url: oldState.member.user.displayAvatarURL(),
+                      icon_url: oldState.member.displayAvatarURL(),
                     },
-                    description: `User Joined Voice Channel ${newState.channel}`,
+                    description: `**User Joined Voice Channel ${newState.channel}**`,
+                    footer: { text: `Id: ${oldState.member.user.id}` },
+                    timestamp: new Date(),
                   },
                 ],
               })
@@ -732,12 +734,14 @@ export default {
                 embeds: [
                   {
                     color: 0xff0000,
-                    title: 'Voice Channel Disconnect',
+                    // title: 'Voice Channel Disconnect',
                     author: {
                       name: oldState.member.user.tag,
-                      icon_url: oldState.member.user.displayAvatarURL(),
+                      icon_url: oldState.member.displayAvatarURL(),
                     },
-                    description: `User Left Voice Channel ${oldState.channel}`,
+                    description: `**User Left Voice Channel ${oldState.channel}**`,
+                    footer: { text: `Id: ${oldState.member.user.id}` },
+                    timestamp: new Date(),
                   },
                 ],
               })
@@ -747,13 +751,13 @@ export default {
               .send({
                 embeds: [
                   {
-                    title: 'Voice Channel Switch',
+                    //    title: 'Voice Channel Switch',
                     color: ColorCheck(),
                     author: {
                       name: oldState.member.user.tag,
                       icon_url: oldState.member.user.displayAvatarURL(),
                     },
-                    // description: `${oldState.member.user} switched channels`,
+                    description: 'User Switched Voice Channels',
                     fields: [
                       {
                         name: 'Before',
