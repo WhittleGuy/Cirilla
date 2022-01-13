@@ -343,6 +343,7 @@ export default {
     client.on('messageDelete', async (msg) => {
       const data = loggingData[msg.guild.id]
       if (!data) return
+      if (msg.partial) msg = await msg.fetch()
       if (!(data[1] && data[4])) return
       else {
         const guild = msg.guild as Guild
@@ -441,11 +442,12 @@ export default {
     })
     // Message update
     client.on('messageUpdate', async (oldMsg, newMsg) => {
+      const data = loggingData[oldMsg.guild.id]
+      if (!data) return
+      if (oldMsg.partial) oldMsg = await oldMsg.fetch()
       if (oldMsg.type === 'THREAD_CREATED') return
       if (oldMsg.author.bot) return
       if (oldMsg.content === newMsg.content) return
-      const data = loggingData[oldMsg.guild.id]
-      if (!data) return
       const { guild } = oldMsg
       if (!(data[1] && data[6])) return
       else {
