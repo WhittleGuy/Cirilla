@@ -363,7 +363,7 @@ export default {
                 // title: 'Message Delete',
                 author: {
                   name: msg.member.user.tag,
-                  icon_url: msg.member.user.displayAvatarURL(),
+                  icon_url: msg.member.displayAvatarURL(),
                 },
                 image: { url: url ? url : '' },
                 footer: {
@@ -390,7 +390,7 @@ export default {
                     // title: 'Image Delete',
                     author: {
                       name: msg.member.user.tag,
-                      icon_url: msg.member.user.displayAvatarURL(),
+                      icon_url: msg.member.displayAvatarURL(),
                     },
                     image: { url: url ? url : '' },
                     footer: {
@@ -464,7 +464,7 @@ export default {
                 // title: 'Message Edited',
                 author: {
                   name: newMsg.member.user.tag,
-                  icon_url: newMsg.member.user.displayAvatarURL(),
+                  icon_url: newMsg.member.displayAvatarURL(),
                 },
                 footer: { text: `Id: ${newMsg.id}` },
                 timestamp: new Date(),
@@ -755,7 +755,7 @@ export default {
                     color: ColorCheck(),
                     author: {
                       name: oldState.member.user.tag,
-                      icon_url: oldState.member.user.displayAvatarURL(),
+                      icon_url: oldState.member.displayAvatarURL(),
                     },
                     description: 'User Switched Voice Channels',
                     fields: [
@@ -814,7 +814,7 @@ export default {
                 // title: `${roleGiven ? 'Role Added' : 'Role Removed'}`,
                 author: {
                   name: oldMember.user.tag,
-                  icon_url: oldMember.user.displayAvatarURL(),
+                  icon_url: oldMember.displayAvatarURL(),
                 },
                 description: `${
                   roleGiven
@@ -846,7 +846,7 @@ export default {
               {
                 title: `Nickname Changed`,
                 color: ColorCheck(),
-                thumbnail: { url: oldMember.user.displayAvatarURL() },
+                thumbnail: { url: oldMember.displayAvatarURL() },
                 description: `**${newMember.user} nickname changed**`,
                 fields: [
                   {
@@ -902,7 +902,7 @@ export default {
                 color: ColorCheck(timeoutAdded ? '#ff0000' : '#00ff00'),
                 author: {
                   name: oldMember.user.tag,
-                  icon_url: oldMember.user.displayAvatarURL(),
+                  icon_url: oldMember.displayAvatarURL(),
                 },
                 // thumbnail: { url: oldMember.user.displayAvatarURL() },
                 description: `**Timeout ${
@@ -988,7 +988,7 @@ export default {
                 // title: 'User Join',
                 color: 0x00ff00,
                 // title: 'User Join',
-                thumbnail: { url: member.user.displayAvatarURL() },
+                thumbnail: { url: member.displayAvatarURL() },
                 author: {
                   name: 'Member Joined',
                   icon_url: guild.iconURL(),
