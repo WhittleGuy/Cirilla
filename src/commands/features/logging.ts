@@ -930,7 +930,7 @@ export default {
           .send({
             embeds: [
               {
-                title: 'User Leave',
+                // title: 'User Leave',
                 color: 0xff0000,
                 thumbnail: { url: member.user.displayAvatarURL() },
                 author: {
@@ -983,15 +983,21 @@ export default {
               {
                 // title: 'User Join',
                 color: 0x00ff00,
-                title: 'User Join',
+                // title: 'User Join',
                 thumbnail: { url: member.user.displayAvatarURL() },
                 author: {
-                  name: guild.name,
+                  name: 'Member Joined',
                   icon_url: guild.iconURL(),
                 },
-                description: `${member.user} **Joined Server**\n
-                **Account Age**:
-                ${TimeSince(new Date(member.user.createdTimestamp).getTime())}`,
+                description: `${member.user} ${member.user.tag}`,
+                fields: [
+                  {
+                    name: 'Account Age',
+                    value: TimeSince(
+                      new Date(member.user.createdTimestamp).getTime()
+                    ),
+                  },
+                ],
                 footer: {
                   text: `Id: ${member.id}`,
                 },
