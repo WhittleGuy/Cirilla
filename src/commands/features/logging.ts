@@ -287,9 +287,9 @@ export default {
                 timestamp: new Date(),
                 description: `Channel: ${inv.channel}
                 Code: ${inv.code}
-                Max Uses: ${inv.maxUses.toString() || 'None'}
+                Max Uses: ${inv.maxUses?.toString() || 'None'}
                 Target User: ${inv.targetUser || 'None'}
-                Expires: ${inv.expiresAt.toLocaleString()}`,
+                Expires: ${inv.expiresAt?.toLocaleString()}`,
               },
             ],
           })
