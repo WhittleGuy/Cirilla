@@ -75,7 +75,7 @@ export default {
       await interaction.editReply({
         embeds: [
           {
-            color: 0x36393f,
+            color: ColorCheck('NONE'),
             title: `Warn ${user.tag}?`,
             description: `Are you sure you want to warn ${user.tag} for\n> ${reason}?`,
           },
@@ -123,7 +123,7 @@ export default {
               .send({
                 embeds: [
                   {
-                    color: 0xff6a00,
+                    color: ColorCheck('WARN'),
                     title: `${interaction.guild.name} | Warning`,
                     description: `Reason: ${reason}`,
                   },
@@ -177,7 +177,7 @@ export default {
         .editReply({
           embeds: [
             {
-              color: ColorCheck('#ff0000'),
+              color: ColorCheck('WARN'),
               title: `Warnings for ${user?.tag}`,
               description: description ? description : 'None',
               thumbnail: { url: user.displayAvatarURL() },

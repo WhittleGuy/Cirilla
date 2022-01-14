@@ -1,6 +1,6 @@
 import { User } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Moderation',
@@ -36,7 +36,7 @@ export default {
     await interaction.reply({
       embeds: [
         {
-          color: 0x36393f,
+          color: ColorCheck('NONE'),
           title: `Unban ${user.tag}?`,
           description: `Are you sure you want to unban ${user.tag}?`,
         },
@@ -76,7 +76,7 @@ export default {
             .send({
               embeds: [
                 {
-                  color: 0x00ff00,
+                  color: ColorCheck('STATUS'),
                   title: `${interaction.guild.name} | Unbanned`,
                   description: `Reason: ${reason}`,
                 },

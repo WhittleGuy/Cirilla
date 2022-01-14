@@ -4,6 +4,7 @@ import {
   SelectMenuInteraction,
   Message,
 } from 'discord.js'
+import { ColorCheck } from '.'
 
 const FailureMessage = async (
   input:
@@ -14,7 +15,7 @@ const FailureMessage = async (
 ): Promise<void> => {
   // Generate failure embed
   const failureEmbed = {
-    color: 0xff0000,
+    color: ColorCheck('REMOVE'),
     description: `${err ? err : 'Error'}`,
   }
 

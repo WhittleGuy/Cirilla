@@ -1,4 +1,5 @@
 import { Client, Role, TextChannel } from 'discord.js'
+import { ColorCheck } from '../helpers'
 import leaveSchema from '../models/leave-schema'
 
 const leaveData = {} as {
@@ -25,7 +26,7 @@ export default (client: Client) => {
       embeds: [
         {
           title: `${member.user.tag} left the server`,
-          color: 0xff0000,
+          color: ColorCheck('REMOVE'),
           thumbnail: { url: member.user.displayAvatarURL() },
           fields: [
             {

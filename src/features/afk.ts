@@ -1,4 +1,5 @@
 import { Client } from 'discord.js'
+import { ColorCheck } from '../helpers'
 import afkSchema from '../models/afk-schema'
 
 export default async (client: Client) => {
@@ -10,7 +11,7 @@ export default async (client: Client) => {
         msg.reply({
           embeds: [
             {
-              color: 0xff9ed7,
+              color: ColorCheck('PLAIN'),
               author: {
                 name: `${member.user.tag} is currently AFK`,
                 iconURL: member.user.displayAvatarURL(),
