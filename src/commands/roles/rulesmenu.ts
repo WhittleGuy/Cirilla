@@ -84,18 +84,20 @@ export default {
 
   // Listen to dropdown
   init: (client: Client) => {
-    client.on('interactionCreate', async (interaction) => {
-      if (!interaction.isSelectMenu()) return
-      const { customId, values, member } = interaction
+    client.on('interactionCreate', async (inter) => {
+      if (!inter.isSelectMenu()) return
+
+      const { customId, values, member } = inter
       if (customId === 'cirilla-rules-menu' && member instanceof GuildMember) {
-        await interaction.deferReply({ ephemeral: true })
-        const component = interaction.component as MessageSelectMenu
+        await inter.deferReply({ ephemeral: true })
+        const component = inter.component as MessageSelectMenu
         const role = [
           component.options.filter((r) => r.value.match(/\d+/))[0].value,
         ]
+
         const removeRole = async () => {
           const removed = await member.roles.remove(role).catch((err) => {
-            FailureMessage(interaction, err)
+            FailureMessage(inter, err)
           })
           if (removed) return true
           else return false
@@ -107,17 +109,17 @@ export default {
           complete = await member
             .kick('Disagreed to Cirilla rule menu')
             .catch((err) => {
-              FailureMessage(interaction, err)
+              FailureMessage(inter, err)
             })
         } else if (values.includes('live')) {
           complete = await removeRole()
         } else {
           complete = await member.roles.add(role).catch((err) => {
-            FailureMessage(interaction, err)
+            FailureMessage(inter, err)
           })
         }
 
-        if (complete) SuccessMessage(interaction, 'Roles updated')
+        if (complete) SuccessMessage(inter, 'Roles updated')
       }
     })
   },
