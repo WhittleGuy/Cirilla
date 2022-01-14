@@ -15,7 +15,7 @@ const spin = (): number[] => {
 }
 
 const timeoutLength = 3
-const sexyChance = 100
+const sexyChance = 2
 
 export default {
   category: 'Fun',
@@ -46,7 +46,7 @@ export default {
     const responseEmbed = {
       color: ColorCheck('REMOVE'),
       //author: { name: user.tag, iconURL: user.displayAvatarURL() },
-      title: 'Misfire',
+      title: `${''}`,
       description: `${''}`,
       footer: { text: user.tag, icon_url: user.displayAvatarURL() },
       timestamp: new Date(),
@@ -77,12 +77,11 @@ export default {
     //  Kill condition
     if (bullet) {
       responseEmbed.color = ColorCheck('REMOVE')
-      responseEmbed.title = 'Bang!'
-      responseEmbed.description = `Timed out for ${timeoutLength} minute(s)`
+      responseEmbed.description = `**Bang! Timed out for ${timeoutLength} minute(s)**`
       await member
         .timeout(timeoutLength * 60000, '/russianroulette')
         .catch(() => {
-          responseEmbed.description = 'Insufficient permissions to timeout'
+          responseEmbed.description = '**Bang!**'
           return
         })
       await interaction.editReply({ embeds: [responseEmbed] })
@@ -94,12 +93,12 @@ export default {
       // Sexy response
       if (sexy === sexyChance) {
         responseEmbed.color = ColorCheck()
-        responseEmbed.title =
-          '<@&:zdripheart:> You are incredibly hot and sexy and everybody wants you.'
+        responseEmbed.description =
+          '**<a:zdripheart:901385907859501056> You are incredibly hot and sexy and everybody wants you <a:zdripheart:901385907859501056>**'
         await interaction.editReply({ embeds: [responseEmbed] })
       } else {
         responseEmbed.color = ColorCheck('ADD')
-        responseEmbed.title = 'You have survived'
+        responseEmbed.description = '**You have survived**'
         await interaction.editReply({ embeds: [responseEmbed] })
       }
     }
