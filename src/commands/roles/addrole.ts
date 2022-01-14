@@ -146,7 +146,7 @@ export default {
         ['cirilla-roles', 'cirilla-roles-exclusive'].includes(customId) &&
         member instanceof GuildMember
       ) {
-        await interaction.deferReply({ ephemeral: true })
+        // await interaction.deferReply({ ephemeral: true })
         const component = interaction.component as MessageSelectMenu
         const removed = component.options.filter((option) => {
           return !values.includes(option.value)
