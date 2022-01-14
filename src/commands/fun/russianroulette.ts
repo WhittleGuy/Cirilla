@@ -15,7 +15,7 @@ const spin = (): number[] => {
 }
 
 const timeoutLength = 3
-const sexyChance = 2
+const sexyChance = 100
 
 export default {
   category: 'Fun',
