@@ -165,7 +165,7 @@ export default {
         }
 
         SuccessMessage(interaction, 'Roles updated!')
-      }
+      } else return
     })
   },
 

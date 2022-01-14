@@ -120,7 +120,7 @@ export default {
         }
 
         if (complete) SuccessMessage(inter, 'Roles updated')
-      }
+      } else return
     })
   },
 
