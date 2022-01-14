@@ -363,7 +363,7 @@ export default {
                 // title: 'Message Delete',
                 author: {
                   name: msg.member.user.tag,
-                  icon_url: msg.member.user.displayAvatarURL(),
+                  icon_url: msg.member.displayAvatarURL(),
                 },
                 image: { url: url ? url : '' },
                 footer: {
@@ -390,7 +390,7 @@ export default {
                     // title: 'Image Delete',
                     author: {
                       name: msg.member.user.tag,
-                      icon_url: msg.member.user.displayAvatarURL(),
+                      icon_url: msg.member.displayAvatarURL(),
                     },
                     image: { url: url ? url : '' },
                     footer: {
@@ -464,7 +464,7 @@ export default {
                 // title: 'Message Edited',
                 author: {
                   name: newMsg.member.user.tag,
-                  icon_url: newMsg.member.user.displayAvatarURL(),
+                  icon_url: newMsg.member.displayAvatarURL(),
                 },
                 footer: { text: `Id: ${newMsg.id}` },
                 timestamp: new Date(),
@@ -716,12 +716,14 @@ export default {
                 embeds: [
                   {
                     color: ColorCheck('ADD'),
-                    title: 'Voice Channel Connect',
+                    // title: 'Voice Channel Connect',
                     author: {
                       name: oldState.member.user.tag,
-                      icon_url: oldState.member.user.displayAvatarURL(),
+                      icon_url: oldState.member.displayAvatarURL(),
                     },
-                    description: `User Joined Voice Channel ${newState.channel}`,
+                    description: `**User Joined Voice Channel ${newState.channel}**`,
+                    footer: { text: `Id: ${oldState.member.user.id}` },
+                    timestamp: new Date(),
                   },
                 ],
               })
@@ -732,12 +734,14 @@ export default {
                 embeds: [
                   {
                     color: ColorCheck('REMOVE'),
-                    title: 'Voice Channel Disconnect',
+                    // title: 'Voice Channel Disconnect',
                     author: {
                       name: oldState.member.user.tag,
-                      icon_url: oldState.member.user.displayAvatarURL(),
+                      icon_url: oldState.member.displayAvatarURL(),
                     },
-                    description: `User Left Voice Channel ${oldState.channel}`,
+                    description: `**User Left Voice Channel ${oldState.channel}**`,
+                    footer: { text: `Id: ${oldState.member.user.id}` },
+                    timestamp: new Date(),
                   },
                 ],
               })
@@ -747,13 +751,13 @@ export default {
               .send({
                 embeds: [
                   {
-                    title: 'Voice Channel Switch',
+                    // title: 'Voice Channel Switch',
                     color: ColorCheck('STATUS'),
                     author: {
                       name: oldState.member.user.tag,
-                      icon_url: oldState.member.user.displayAvatarURL(),
+                      icon_url: oldState.member.displayAvatarURL(),
                     },
-                    // description: `${oldState.member.user} switched channels`,
+                    description: 'User Switched Voice Channels',
                     fields: [
                       {
                         name: 'Before',
@@ -810,7 +814,7 @@ export default {
                 // title: `${roleGiven ? 'Role Added' : 'Role Removed'}`,
                 author: {
                   name: oldMember.user.tag,
-                  icon_url: oldMember.user.displayAvatarURL(),
+                  icon_url: oldMember.displayAvatarURL(),
                 },
                 description: `${
                   roleGiven
@@ -988,7 +992,7 @@ export default {
                 // title: 'User Join',
                 color: ColorCheck('ADD'),
                 // title: 'User Join',
-                thumbnail: { url: member.user.displayAvatarURL() },
+                thumbnail: { url: member.displayAvatarURL() },
                 author: {
                   name: 'Member Joined',
                   icon_url: guild.iconURL(),
