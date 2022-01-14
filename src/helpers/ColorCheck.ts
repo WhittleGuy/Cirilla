@@ -4,8 +4,8 @@ const ColorCheck = (color?: ColorResolvable | string): ColorResolvable => {
   // const DEFAULT = '#FF9ED7'
   const DEFAULT = '#FF9ED7'
   if (!color) return DEFAULT
-  else if (color === 'ADD') return '#00B000'
-  else if (color === 'REMOVE') return '#B00000'
+  else if (color === 'ADD') return '#00D000'
+  else if (color === 'REMOVE') return '#D00000'
   else if (color === 'STATUS') return '#FF9ED7'
   else if (color === 'PLAIN') return '#F4F1DE'
   else if (color === 'NONE') return '#2F3136'
