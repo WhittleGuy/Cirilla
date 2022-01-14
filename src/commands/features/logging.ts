@@ -840,8 +840,12 @@ export default {
           .send({
             embeds: [
               {
-                title: `Nickname Changed`,
+                // title: `Nickname Changed`,
                 color: ColorCheck(),
+                author: {
+                  name: newMember.user.tag,
+                  icon_url: newMember.displayAvatarURL(),
+                },
                 thumbnail: { url: oldMember.user.displayAvatarURL() },
                 description: `**${newMember.user} nickname changed**`,
                 fields: [
@@ -898,7 +902,7 @@ export default {
                 color: ColorCheck(timeoutAdded ? '#ff0000' : '#00ff00'),
                 author: {
                   name: oldMember.user.tag,
-                  icon_url: oldMember.user.displayAvatarURL(),
+                  icon_url: oldMember.displayAvatarURL(),
                 },
                 // thumbnail: { url: oldMember.user.displayAvatarURL() },
                 description: `**Timeout ${
