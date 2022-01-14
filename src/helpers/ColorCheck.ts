@@ -10,7 +10,7 @@ const ColorCheck = (color?: ColorResolvable | string): ColorResolvable => {
   else if (color === 'PLAIN') return '#F4F1DE'
   else if (color === 'NONE') return '#2F3136'
   else if (color === 'WARN') return '#FF9000'
-  else if (color.toString().match(/^#[0-9a-f]{6}$/))
+  else if (color.toString().match(/^#[0-9a-f]{6}$/i))
     return color as ColorResolvable
   else return DEFAULT
 }
