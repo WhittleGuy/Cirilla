@@ -77,11 +77,12 @@ export default {
     //  Kill condition
     if (bullet) {
       responseEmbed.color = ColorCheck('REMOVE')
-      responseEmbed.description = `**Bang! Timed out for ${timeoutLength} minute(s)**`
+      responseEmbed.title = 'Bang!'
+      responseEmbed.description = `**Timed out for ${timeoutLength} minute(s)**`
       await member
         .timeout(timeoutLength * 60000, '/russianroulette')
         .catch(() => {
-          responseEmbed.description = '**Bang!**'
+          responseEmbed.description = `${''}`
           return
         })
       await interaction.editReply({ embeds: [responseEmbed] })
@@ -98,7 +99,7 @@ export default {
         await interaction.editReply({ embeds: [responseEmbed] })
       } else {
         responseEmbed.color = ColorCheck('ADD')
-        responseEmbed.description = '**You have survived**'
+        responseEmbed.title = '**You have survived**'
         await interaction.editReply({ embeds: [responseEmbed] })
       }
     }
