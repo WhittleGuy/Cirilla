@@ -277,7 +277,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0x00ff00,
+                color: ColorCheck('ADD'),
                 title: `Invite Created`,
                 author: {
                   name: inv.inviter.tag,
@@ -313,7 +313,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0xff0000,
+                color: ColorCheck('REMOVE'),
                 title: `Invite Deleted`,
                 author: {
                   name: guild.name,
@@ -359,7 +359,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0xff0000,
+                color: ColorCheck('REMOVE'),
                 // title: 'Message Delete',
                 author: {
                   name: msg.member.user.tag,
@@ -386,7 +386,7 @@ export default {
               .send({
                 embeds: [
                   {
-                    color: 0xff0000,
+                    color: ColorCheck('REMOVE'),
                     // title: 'Image Delete',
                     author: {
                       name: msg.member.user.tag,
@@ -424,7 +424,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0xff0000,
+                color: ColorCheck('REMOVE'),
                 title: 'Bulk Delete',
                 author: {
                   name: guild.name,
@@ -460,7 +460,7 @@ export default {
           .send({
             embeds: [
               {
-                color: ColorCheck(),
+                color: ColorCheck('STATUS'),
                 // title: 'Message Edited',
                 author: {
                   name: newMsg.member.user.tag,
@@ -502,7 +502,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0x00ff00,
+                color: ColorCheck('ADD'),
                 title: 'Role Create',
                 author: {
                   name: role.guild.name,
@@ -535,7 +535,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0xff0000,
+                color: ColorCheck('REMOVE'),
                 title: 'Role Delete',
                 author: {
                   name: role.guild.name,
@@ -573,7 +573,7 @@ export default {
         await logChannel.send({
           embeds: [
             {
-              color: ColorCheck(),
+              color: ColorCheck('STATUS'),
               title: 'Role Updated',
               author: {
                 name: oldRole.guild.name,
@@ -611,7 +611,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0x00ff00,
+                color: ColorCheck('ADD'),
                 title: 'Thread Created',
                 author: {
                   name: thread.guild.name,
@@ -644,7 +644,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0xff0000,
+                color: ColorCheck('REMOVE'),
                 title: 'Thread Deleted',
                 author: {
                   name: thread.guild.name,
@@ -674,7 +674,7 @@ export default {
           .send({
             embeds: [
               {
-                color: ColorCheck(),
+                color: ColorCheck('STATUS'),
                 title: 'Thread Updated',
                 author: {
                   name: oldThread.guild.name,
@@ -715,7 +715,7 @@ export default {
               .send({
                 embeds: [
                   {
-                    color: 0x00ff00,
+                    color: ColorCheck('ADD'),
                     title: 'Voice Channel Connect',
                     author: {
                       name: oldState.member.user.tag,
@@ -731,7 +731,7 @@ export default {
               .send({
                 embeds: [
                   {
-                    color: 0xff0000,
+                    color: ColorCheck('REMOVE'),
                     title: 'Voice Channel Disconnect',
                     author: {
                       name: oldState.member.user.tag,
@@ -748,7 +748,7 @@ export default {
                 embeds: [
                   {
                     title: 'Voice Channel Switch',
-                    color: ColorCheck(),
+                    color: ColorCheck('STATUS'),
                     author: {
                       name: oldState.member.user.tag,
                       icon_url: oldState.member.user.displayAvatarURL(),
@@ -806,7 +806,7 @@ export default {
           .send({
             embeds: [
               {
-                color: ColorCheck(roleGiven ? '#00ff00' : '#ff0000'),
+                color: ColorCheck(roleGiven ? 'ADD' : 'REMOVE'),
                 // title: `${roleGiven ? 'Role Added' : 'Role Removed'}`,
                 author: {
                   name: oldMember.user.tag,
@@ -841,7 +841,7 @@ export default {
             embeds: [
               {
                 // title: `Nickname Changed`,
-                color: ColorCheck(),
+                color: ColorCheck('STATUS'),
                 author: {
                   name: newMember.user.tag,
                   icon_url: newMember.displayAvatarURL(),
@@ -899,7 +899,7 @@ export default {
             embeds: [
               {
                 // title: `Timeout ${timeoutAdded ? 'Added' : 'Removed'}`,
-                color: ColorCheck(timeoutAdded ? '#ff0000' : '#00ff00'),
+                color: ColorCheck(timeoutAdded ? 'REMOVE' : 'ADD'),
                 author: {
                   name: oldMember.user.tag,
                   icon_url: oldMember.displayAvatarURL(),
@@ -935,7 +935,7 @@ export default {
             embeds: [
               {
                 // title: 'User Leave',
-                color: 0xff0000,
+                color: ColorCheck('REMOVE'),
                 thumbnail: { url: member.user.displayAvatarURL() },
                 author: {
                   name: 'Member Left',
@@ -986,7 +986,7 @@ export default {
             embeds: [
               {
                 // title: 'User Join',
-                color: 0x00ff00,
+                color: ColorCheck('ADD'),
                 // title: 'User Join',
                 thumbnail: { url: member.user.displayAvatarURL() },
                 author: {
@@ -1028,7 +1028,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0xff0000,
+                color: ColorCheck('REMOVE'),
                 title: 'Ban',
                 thumbnail: { url: ban.user.displayAvatarURL() },
                 author: {
@@ -1065,7 +1065,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0x00ff00,
+                color: ColorCheck('STATUS'),
                 title: 'Unban',
                 thumbnail: { url: ban.user.displayAvatarURL() },
                 author: {
@@ -1103,7 +1103,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0x00ff00,
+                color: ColorCheck('ADD'),
                 title: `${cat ? 'Category' : 'Channel'} Created`,
                 author: {
                   name: chan.guild.name,
@@ -1134,7 +1134,7 @@ export default {
           .send({
             embeds: [
               {
-                color: 0xff0000,
+                color: ColorCheck('REMOVE'),
                 title: `${cat ? 'Category' : 'Channel'} Created`,
                 author: {
                   name: chan.guild.name,
