@@ -158,7 +158,7 @@ export default {
             .send({
               embeds: [
                 {
-                  color: 0xff9ed7,
+                  color: ColorCheck(),
                   title: `Winner - ${winner.tag} !`,
                   description: `**${title}**${
                     description ? '\n' + description : ''

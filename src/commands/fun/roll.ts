@@ -60,7 +60,7 @@ export default {
       .reply({
         embeds: [
           {
-            color: ColorCheck(),
+            color: ColorCheck('STATUS'),
             description: `${scores.join(
               '\n'
             )}\n------------------\n**Total:\t${total}**`,

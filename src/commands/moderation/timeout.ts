@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Moderation',
@@ -44,7 +44,7 @@ export default {
     await interaction.editReply({
       embeds: [
         {
-          color: 0x36393f,
+          color: ColorCheck('NONE'),
           title: `Timeout ${member.user.tag}?`,
           description: `Are you sure you want to timeout ${
             member.user.tag
@@ -85,7 +85,7 @@ export default {
             .send({
               embeds: [
                 {
-                  color: 0xff0000,
+                  color: ColorCheck('REMOVE'),
                   title: `${interaction.guild.name} | Timed Out`,
                   description: `**Length**: ${
                     length / 60000

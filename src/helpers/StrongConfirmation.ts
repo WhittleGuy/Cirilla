@@ -11,7 +11,7 @@ const StrongConfirmation = async (
   await interaction.reply({
     embeds: [
       {
-        color: 0x36393f,
+        color: 0x2f3136,
         title: title,
         description: description,
       },

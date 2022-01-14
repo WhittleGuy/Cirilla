@@ -44,7 +44,7 @@ export default {
     }
     // Prepare response to be edited accordingly
     const responseEmbed = {
-      color: ColorCheck(),
+      color: ColorCheck('REMOVE'),
       //author: { name: user.tag, iconURL: user.displayAvatarURL() },
       title: 'Misfire',
       description: `${''}`,
@@ -76,7 +76,7 @@ export default {
 
     //  Kill condition
     if (bullet) {
-      responseEmbed.color = ColorCheck('#ff0000')
+      responseEmbed.color = ColorCheck('REMOVE')
       responseEmbed.title = 'Bang!'
       responseEmbed.description = `Timed out for ${timeoutLength} minute(s)`
       await member
@@ -93,11 +93,12 @@ export default {
       const sexy = Math.floor(Math.random() * sexyChance + 1)
       // Sexy response
       if (sexy === sexyChance) {
+        responseEmbed.color = ColorCheck()
         responseEmbed.title =
           '<@&:zdripheart:> You are incredibly hot and sexy and everybody wants you.'
         await interaction.editReply({ embeds: [responseEmbed] })
       } else {
-        responseEmbed.color = ColorCheck('#00ff00')
+        responseEmbed.color = ColorCheck('ADD')
         responseEmbed.title = 'You have survived'
         await interaction.editReply({ embeds: [responseEmbed] })
       }

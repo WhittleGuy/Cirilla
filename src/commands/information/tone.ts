@@ -41,7 +41,7 @@ export default {
         )
       }
       const toneEmbed = {
-        color: ColorCheck(),
+        color: ColorCheck('STATUS'),
         description: match.name + ' | ' + match.shortDesc,
       }
       await interaction.editReply({ embeds: [toneEmbed] })

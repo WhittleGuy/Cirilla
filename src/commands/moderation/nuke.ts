@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Moderation',
@@ -27,7 +27,7 @@ export default {
     await interaction.reply({
       embeds: [
         {
-          color: 0x36393f,
+          color: ColorCheck('NONE'),
           title: `Nuke #${channel.name}?`,
           description: `Are you sure you want to nuke #${channel.name}? This action is irreversible.`,
         },

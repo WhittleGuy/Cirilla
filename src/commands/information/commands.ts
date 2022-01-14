@@ -88,7 +88,7 @@ export default {
       interaction.editReply({
         embeds: [
           {
-            color: ColorCheck(),
+            color: ColorCheck('STATUS'),
             title: 'Cirilla Commands',
             thumbnail: { url: client.user.displayAvatarURL() },
             timestamp: new Date(),

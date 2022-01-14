@@ -4,6 +4,7 @@ import {
   SelectMenuInteraction,
   Message,
 } from 'discord.js'
+import { ColorCheck } from '.'
 
 const SuccessMessage = async (
   input:
@@ -14,7 +15,7 @@ const SuccessMessage = async (
 ): Promise<void> => {
   // Generate success embed
   const successEmbed = {
-    color: 0x00ff00,
+    color: ColorCheck('REMOVE'),
     description: `${msg ? msg : 'Success'}`,
   }
 
