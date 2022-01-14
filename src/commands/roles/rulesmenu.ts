@@ -89,7 +89,7 @@ export default {
 
       const { customId, values, member } = inter
       if (customId === 'cirilla-rules-menu' && member instanceof GuildMember) {
-        await inter.deferReply({ ephemeral: true })
+        // await inter.deferReply({ ephemeral: true })
         const component = inter.component as MessageSelectMenu
         const role = [
           component.options.filter((r) => r.value.match(/\d+/))[0].value,
