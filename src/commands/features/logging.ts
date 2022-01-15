@@ -456,6 +456,34 @@ export default {
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
         const msgChannel = guild.channels.cache.get(oldMsg.channel.id)
+
+        let fields = [
+          {
+            name: 'Before',
+            value: `${oldMsg?.content}`,
+            inline: false,
+          },
+          {
+            name: 'After',
+            value: `${newMsg?.content}`,
+            inline: false,
+          },
+        ]
+        if (oldMsg.content.length + newMsg.content.length > 5500) {
+          fields = [
+            {
+              name: 'Before',
+              value: `${oldMsg?.content}`,
+              inline: false,
+            },
+            {
+              name: 'After',
+              value:
+                'Message content too long for embed. Please use link above to see new message.',
+              inline: false,
+            },
+          ]
+        }
         await logChannel
           .send({
             embeds: [
@@ -469,18 +497,7 @@ export default {
                 footer: { text: `Id: ${newMsg.id}` },
                 timestamp: new Date(),
                 description: `**[Message](${newMsg.url}) edited in ${msgChannel}**`,
-                fields: [
-                  {
-                    name: 'Before',
-                    value: `${oldMsg?.content}`,
-                    inline: false,
-                  },
-                  {
-                    name: 'After',
-                    value: `${newMsg?.content}`,
-                    inline: false,
-                  },
-                ],
+                fields: fields,
               },
             ],
           })
