@@ -473,7 +473,11 @@ export default {
           fields = [
             {
               name: 'Before',
-              value: `${oldMsg?.content?.slice(0, 950)}...`,
+              value: `${
+                oldMsg?.content
+                  ? oldMsg?.content?.slice(0, 950)
+                  : 'Error getting message content'
+              }...`,
               inline: false,
             },
             {
