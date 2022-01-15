@@ -469,11 +469,11 @@ export default {
             inline: false,
           },
         ]
-        if (oldMsg.content?.length + newMsg.content?.length > 5500) {
+        if (oldMsg.content?.length + newMsg.content?.length >= 2048) {
           fields = [
             {
               name: 'Before',
-              value: `${oldMsg?.content}`,
+              value: `${oldMsg?.content.slice(0, 1000)}...`,
               inline: false,
             },
             {
