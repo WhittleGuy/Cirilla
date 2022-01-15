@@ -469,7 +469,7 @@ export default {
             inline: false,
           },
         ]
-        if (oldMsg.content.length + newMsg.content.length > 5500) {
+        if (oldMsg.content?.length + newMsg.content?.length > 5500) {
           fields = [
             {
               name: 'Before',
