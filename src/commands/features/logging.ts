@@ -473,7 +473,7 @@ export default {
           fields = [
             {
               name: 'Before',
-              value: `${oldMsg?.content.slice(0, 950)}...`,
+              value: `${oldMsg?.content?.slice(0, 950)}...`,
               inline: false,
             },
             {
