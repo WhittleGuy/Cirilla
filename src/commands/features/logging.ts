@@ -966,26 +966,27 @@ export default {
                   name: 'Member Left',
                   icon_url: member.guild.iconURL(),
                 },
-                description: `${member.user} ${member.user.tag}`,
+                description: `${member.user} ${member.user.tag}` || `${''}`,
                 fields: [
                   {
                     name: 'Time in Server',
                     value: TimeSince(
-                      new Date(member.joinedTimestamp).getTime()
+                      new Date(member.joinedTimestamp).getTime() || `${''}`
                     ),
                     inline: false,
                   },
                   {
                     name: 'Roles',
-                    value: member.roles.cache
-                      .map((role: Role) => role)
-                      .slice(0, -1)
-                      .join(' '),
+                    value:
+                      member.roles.cache
+                        .map((role: Role) => role)
+                        .slice(0, -1)
+                        .join(' ') || `${''}`,
                     inline: false,
                   },
                 ],
                 footer: {
-                  text: `Id: ${member.id}`,
+                  text: `Id: ${member.id || ''}`,
                 },
                 timestamp: new Date(),
               },
