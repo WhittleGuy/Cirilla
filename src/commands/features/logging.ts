@@ -580,43 +580,127 @@ export default {
       const data = loggingData[oldRole.guild.id]
       if (!(data[1] && data[9])) return
       else {
-        const logChannel = (await oldRole.guild.channels
-          .fetch(data[0])
-          .catch(console.log)) as NonThreadGuildBasedChannel
-        if (logChannel?.type !== 'GUILD_TEXT') return
-        // Don't log position change only
-        if (
-          oldRole.hexColor === newRole.hexColor &&
-          oldRole.name == newRole.name &&
-          oldRole.permissions === newRole.permissions
-        )
-          return
-        await logChannel.send({
-          embeds: [
-            {
-              color: ColorCheck('STATUS'),
-              title: 'Role Updated',
-              author: {
-                name: oldRole.guild.name,
-                icon_url: oldRole.guild.iconURL(),
-              },
-              thumbnail: { url: newRole.iconURL() },
-              timestamp: new Date(),
-              description: `**Before**
-              Role: @${oldRole.name}
-              Color: ${oldRole.hexColor}
-              Position: ${oldRole.position}
-              Permissions: ${oldRole.permissions.toArray().join(', ')}\n
-              **After**
-              Role: ${newRole}
-              Color: ${newRole.hexColor}
-              Position: ${newRole.position}
-              Permissions: ${newRole.permissions.toArray().join(', ')}`,
-            },
-          ],
-        })
+        // Destructure role variations
+        const { hexColor, hoist, icon, mentionable, name, permissions } =
+          oldRole
+        const {
+          hexColor: nColor,
+          hoist: nHoist,
+          icon: nIcon,
+          mentionable: nMentionable,
+          name: nName,
+          permissions: nPermissions,
+        } = newRole
+
+        // Generate base embed
+        const changeEmbed = {
+          color: ColorCheck('STATUS'),
+          author: {
+            name: newRole.guild.name,
+            icon_url: newRole.guild.iconURL(),
+          },
+          thumbnail: { url: newRole.iconURL() },
+          timestamp: new Date(),
+          description: `${newRole} **Updated**`,
+          fields: [],
+        }
+
+        // Name change
+        if (name !== nName) {
+          console.log(name, nName)
+          changeEmbed.fields.push({
+            name: 'Old Name',
+            value: name,
+            inline: true,
+          })
+        }
+
+        // Color change
+        if (hexColor !== nColor) {
+          console.log(hexColor, nColor)
+          changeEmbed.fields.push({
+            name: 'Old Color',
+            value: hexColor || 'None',
+            inline: true,
+          })
+        }
+
+        // Hoist change
+        if (hoist !== nHoist) {
+          console.log(hoist, nHoist)
+          changeEmbed.fields.push({
+            name: 'Hoist',
+            value: nHoist ? 'True' : 'False',
+            inline: true,
+          })
+        }
+
+        // Icon change
+        if (icon !== nIcon) {
+          console.log(icon, nIcon)
+          changeEmbed.fields.push({
+            name: 'Icon',
+            value: nIcon || 'None',
+            inline: true,
+          })
+        }
+
+        // Mentionable change
+        if (mentionable !== nMentionable) {
+          console.log(mentionable, nMentionable)
+          changeEmbed.fields.push({
+            name: 'Mentionable',
+            value: nMentionable ? 'True' : 'False',
+            inline: true,
+          })
+        }
+
+        // Permissions change
+        if (permissions.bitfield !== nPermissions.bitfield) {
+          console.log(permissions, nPermissions)
+          const removedPerms = []
+          const addedPerms = []
+          for (const perm of permissions.toArray()) {
+            if (!nPermissions.has(perm)) {
+              removedPerms.push(perm)
+            }
+          }
+          for (const perm of nPermissions.toArray()) {
+            if (!permissions.has(perm)) {
+              addedPerms.push(perm)
+            }
+          }
+
+          // Added perms
+          if (addedPerms.length) {
+            changeEmbed.fields.push({
+              name: 'Added Perms',
+              value: `${addedPerms.map((p) => p).join(', ')}` || 'None',
+              inline: false,
+            })
+          }
+
+          // Removed perms
+          if (removedPerms.length) {
+            changeEmbed.fields.push({
+              name: 'Removed Perms',
+              value: `${removedPerms.map((p) => p).join(', ')}` || 'None',
+              inline: false,
+            })
+          }
+        }
+
+        if (changeEmbed.fields.length) {
+          const logChannel = (await newRole.guild.channels
+            .fetch(data[0])
+            .catch(console.log)) as NonThreadGuildBasedChannel
+          if (logChannel?.type !== 'GUILD_TEXT') return
+          await logChannel.send({
+            embeds: [changeEmbed],
+          })
+        }
+        return
       }
-      return
     })
     // Thread create
     client.on('threadCreate', async (thread) => {
