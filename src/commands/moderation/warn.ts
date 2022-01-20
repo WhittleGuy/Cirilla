@@ -129,7 +129,7 @@ export default {
                   },
                 ],
               })
-              .catch((err) => console.log(err))
+              .catch((err) => console.log('Warning Add Error: ' + err))
 
             return SuccessMessage(
               interaction,
@@ -184,7 +184,7 @@ export default {
             },
           ],
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log('Warning List Error: ' + err))
     }
   },
 } as ICommand

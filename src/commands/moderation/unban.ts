@@ -82,7 +82,7 @@ export default {
                 },
               ],
             })
-            .catch((err) => console.log(err))
+            .catch((err) => console.log('UnBan DM Error: ' + err))
 
           await guild.bans.remove(user.id).catch((err) => {
             return FailureMessage(interaction, err)

@@ -93,7 +93,7 @@ export default {
                 },
               ],
             })
-            .catch((err) => console.log(err))
+            .catch((err) => console.log('Timeout DM Error: ' + err))
 
           const timed = await member.timeout(length, reason).catch((err) => {
             return FailureMessage(interaction, err)

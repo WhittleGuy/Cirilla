@@ -86,7 +86,7 @@ export default {
                 },
               ],
             })
-            .catch((err) => console.log(err))
+            .catch((err) => console.log('Kick DM Error: ' + err))
 
           const kicked = await member.kick(reason).catch((err) => {
             return FailureMessage(interaction, err)

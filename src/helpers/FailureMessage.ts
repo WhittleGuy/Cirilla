@@ -33,7 +33,12 @@ const FailureMessage = async (
         embeds: [failureEmbed],
         components: [],
       })
-      .catch((err) => console.log(err))
+      .catch((err) =>
+        console.log(`Guild: ${input.guild.name}
+      Member: ${input.member.user.username}
+      Input: ${input.toString}
+      Err: ${err}`)
+      )
   } else {
     await input
       .reply({
@@ -41,7 +46,12 @@ const FailureMessage = async (
         components: [],
         ephemeral: true,
       })
-      .catch((err) => console.log(err))
+      .catch((err) =>
+        console.log(`Guild: ${input.guild.name}
+      Member: ${input.member.user.username}
+      Input: ${input.toString}
+      Err: ${err}`)
+      )
   }
   return
 }

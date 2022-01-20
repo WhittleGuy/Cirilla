@@ -88,7 +88,7 @@ export default {
                 },
               ],
             })
-            .catch((err) => console.log(err))
+            .catch((err) => console.log('Ban Error: ' + err))
 
           await member.ban({ reason, days: 7 }).catch((err) => {
             return FailureMessage(interaction, err)

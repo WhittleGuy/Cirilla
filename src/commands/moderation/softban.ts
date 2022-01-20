@@ -91,7 +91,7 @@ export default {
                 },
               ],
             })
-            .catch((err) => console.log(err))
+            .catch((err) => console.log('SoftBan DM Error: ' + err))
 
           const bannedMember = (await member
             .ban({ reason, days: 7 })
