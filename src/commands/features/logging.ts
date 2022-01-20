@@ -608,7 +608,6 @@ export default {
 
         // Name change
         if (name !== nName) {
-          console.log(name, nName)
           changeEmbed.fields.push({
             name: 'Old Name',
             value: name,
@@ -618,7 +617,6 @@ export default {
 
         // Color change
         if (hexColor !== nColor) {
-          console.log(hexColor, nColor)
           changeEmbed.fields.push({
             name: 'Old Color',
             value: hexColor || 'None',
@@ -628,7 +626,6 @@ export default {
 
         // Hoist change
         if (hoist !== nHoist) {
-          console.log(hoist, nHoist)
           changeEmbed.fields.push({
             name: 'Hoist',
             value: nHoist ? 'True' : 'False',
@@ -638,7 +635,6 @@ export default {
 
         // Icon change
         if (icon !== nIcon) {
-          console.log(icon, nIcon)
           changeEmbed.fields.push({
             name: 'Icon',
             value: nIcon || 'None',
@@ -648,7 +644,6 @@ export default {
 
         // Mentionable change
         if (mentionable !== nMentionable) {
-          console.log(mentionable, nMentionable)
           changeEmbed.fields.push({
             name: 'Mentionable',
             value: nMentionable ? 'True' : 'False',
@@ -658,7 +653,6 @@ export default {
 
         // Permissions change
         if (permissions.bitfield !== nPermissions.bitfield) {
-          console.log(permissions, nPermissions)
           const removedPerms = []
           const addedPerms = []
           for (const perm of permissions.toArray()) {
@@ -1293,7 +1287,7 @@ export default {
 
     let data = loggingData[guild.id]
     if (!data) {
-      console.log('Fetching log data')
+      // console.log('Fetching log data')
       const results = await loggingSchema.findById(guild.id)
       if (results) {
         const {
@@ -1416,7 +1410,7 @@ export default {
       channelDelete !== null ? channelDelete : data[22] || false,
     ]
 
-    console.log(loggingData[guild.id])
+    // console.log(loggingData[guild.id])
 
     return SuccessMessage(interaction, 'Settings saved')
   },
