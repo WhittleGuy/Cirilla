@@ -15,7 +15,7 @@ const SuccessMessage = async (
 ): Promise<void> => {
   // Generate success embed
   const successEmbed = {
-    color: ColorCheck('REMOVE'),
+    color: ColorCheck('ADD'),
     description: `${msg ? msg : 'Success'}`,
   }
 
