@@ -34,9 +34,9 @@ const FailureMessage = async (
         components: [],
       })
       .catch((err) =>
-        console.log(`Guild: ${input.guild.name}
-      Member: ${input.member.user.username}
-      Input: ${input.toString}
+        console.log(`Guild: ${input?.guild?.name}
+      Member: ${input.member?.user?.username}
+      Input: ${input.toString()}
       Err: ${err}`)
       )
   } else {
@@ -47,9 +47,9 @@ const FailureMessage = async (
         ephemeral: true,
       })
       .catch((err) =>
-        console.log(`Guild: ${input.guild.name}
-      Member: ${input.member.user.username}
-      Input: ${input.toString}
+        console.log(`Guild: ${input?.guild?.name}
+      Member: ${input.member?.user?.username}
+      Input: ${input.toString()}
       Err: ${err}`)
       )
   }
