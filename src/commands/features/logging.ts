@@ -578,6 +578,7 @@ export default {
     // Role update
     client.on('roleUpdate', async (oldRole, newRole) => {
       const data = loggingData[oldRole.guild.id]
+      if (!data) return
       if (!(data[1] && data[9])) return
       else {
         // Destructure role variations
