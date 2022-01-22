@@ -469,21 +469,22 @@ export default {
             inline: false,
           },
         ]
+
+        const chunkRegEx = /(.|\n){1,950}(\s|$)/
         if (oldMsg.content?.length >= 950 || newMsg.content?.length >= 950) {
           fields = [
             {
               name: 'Before',
               value: `${
                 oldMsg?.content
-                  ? oldMsg?.content?.slice(0, 950)
-                  : 'Error getting message content'
+                  ? oldMsg?.content?.match(chunkRegEx)[0]
+                  : 'Error fetching original message content'
               }...`,
               inline: false,
             },
             {
               name: 'After',
-              value:
-                'Message content too long for embed. Please use link above to see new message.',
+              value: `**[Message](${newMsg.url})**`,
               inline: false,
             },
           ]
