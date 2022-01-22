@@ -583,12 +583,18 @@ export default {
       if (!(data[1] && data[9])) return
       else {
         // Destructure role variations
-        const { hexColor, hoist, icon, mentionable, name, permissions } =
-          oldRole
+        const {
+          hexColor,
+          hoist,
+          iconURL: icon,
+          mentionable,
+          name,
+          permissions,
+        } = oldRole
         const {
           hexColor: nColor,
           hoist: nHoist,
-          icon: nIcon,
+          iconURL: nIcon,
           mentionable: nMentionable,
           name: nName,
           permissions: nPermissions,
