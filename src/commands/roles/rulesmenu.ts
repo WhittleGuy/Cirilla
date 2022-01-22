@@ -103,7 +103,7 @@ export default {
           else return false
         }
 
-        let complete
+        let complete = null
         if (values.includes('kick')) {
           removeRole()
           complete = await member

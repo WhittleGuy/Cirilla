@@ -362,8 +362,8 @@ export default {
                 color: ColorCheck('REMOVE'),
                 // title: 'Message Delete',
                 author: {
-                  name: msg.member.user.tag,
-                  icon_url: msg.member.displayAvatarURL(),
+                  name: msg.member?.user?.tag || 'Error Fetching Name',
+                  icon_url: msg.member?.displayAvatarURL() || null,
                 },
                 image: { url: url ? url : '' },
                 footer: {
