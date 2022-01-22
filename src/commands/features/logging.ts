@@ -365,12 +365,12 @@ export default {
                 color: ColorCheck('REMOVE'),
                 // title: 'Message Delete',
                 author: {
-                  name: msg.member?.user?.tag || 'Error Fetching Name',
-                  icon_url: msg.member?.displayAvatarURL() || null,
+                  name: msg?.member?.user?.tag || 'Error Fetching Name',
+                  icon_url: msg?.member?.displayAvatarURL() || null,
                 },
                 image: { url: url ? url : '' },
                 footer: {
-                  text: `Id: ${msg.member.user.id}`,
+                  text: `Id: ${msg?.member?.user?.id}`,
                 },
                 timestamp: new Date(),
                 description: `**${msgObject} deleted in ${msgChannel}**
@@ -379,12 +379,12 @@ export default {
             ],
           })
           .catch(console.log)
-        if (msg.attachments?.size > 1) {
+        if (msg?.attachments?.size > 1) {
           msg.attachments = msg.attachments.filter(
-            (a) => a.id !== msg.attachments.first().id
+            (a) => a !== msg.attachments.first()
           )
           msg.attachments.forEach(async (a) => {
-            a.url = a?.url
+            url = a?.url
             await logChannel
               .send({
                 embeds: [
