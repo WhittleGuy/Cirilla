@@ -829,7 +829,7 @@ export default {
                       name: user.tag,
                       icon_url: member.displayAvatarURL(),
                     },
-                    description: `**User Joined Voice Channel ${newChannel}**`,
+                    description: `**${user} Joined Voice Channel ${newChannel}**`,
                     footer: { text: `Id: ${user.id}` },
                     timestamp: new Date(),
                   },
@@ -865,7 +865,9 @@ export default {
                       name: user.tag,
                       icon_url: member.displayAvatarURL(),
                     },
-                    description: 'User Switched Voice Channels',
+                    footer: { text: `Id: ${user.id}` },
+                    timestamp: new Date(),
+                    description: `${user} Switched Voice Channels`,
                     fields: [
                       {
                         name: 'Before',
