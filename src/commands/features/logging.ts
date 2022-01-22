@@ -561,16 +561,15 @@ export default {
             embeds: [
               {
                 color: ColorCheck('REMOVE'),
-                title: 'Role Delete',
+                // title: 'Role Delete',
                 author: {
                   name: role.guild.name,
                   icon_url: role.guild.iconURL(),
                 },
                 thumbnail: { url: role.iconURL() },
                 timestamp: new Date(),
-                description: `@${role.name} **Deleted**\n
+                description: `**Role "${role.name}" Deleted**\n
               Color: ${role.hexColor}
-              Position: ${role.position}
               Permissions: ${role.permissions.toArray().join(', ')}`,
               },
             ],
