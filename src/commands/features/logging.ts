@@ -416,6 +416,12 @@ export default {
       const data = loggingData[msgs.first().guild.id]
       if (!data) return
       if (!(data[1] && data[5])) return
+
+      let fresh = false
+      msgs.forEach((m) => {
+        if (m.id === m.channel.lastMessageId) fresh = true
+      })
+      if (!fresh) return
       else {
         const guild = msgs.first().guild as Guild
         const logChannel = (await guild.channels
