@@ -26,6 +26,7 @@ export default {
 
   callback: async ({ guild, message, interaction }) => {
     let channel, content
+
     // Normal command
     if (message) {
       const idReg = /\d{18}/
@@ -36,6 +37,7 @@ export default {
       channel = guild.channels.cache.get(channelId)
       content = text.slice(1).join(' ')
     }
+
     //Slash command
     else {
       await interaction.deferReply({ ephemeral: true })
@@ -47,12 +49,14 @@ export default {
       return FailureMessage(message || interaction, 'Please tag a text channel')
     }
 
-    const sendMessage = await channel
-      .send(content)
-      .catch((err) => console.error(err))
+    const chunkRegEx = /(.|\n){1,2000}(\s|$)/g
+    let chunks = content.match(chunkRegEx)
 
-    if (!sendMessage) {
-      return FailureMessage(message || interaction)
+    for (let i = 0; i < chunks.length; i++) {
+      await channel.send(chunks[i]).catch((err) => {
+        console.error('Say Error' + err)
+        return FailureMessage(message || interaction)
+      })
     }
 
     return SuccessMessage(message || interaction)
