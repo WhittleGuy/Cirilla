@@ -808,9 +808,17 @@ export default {
         .catch(console.log)) as NonThreadGuildBasedChannel
       if (logChannel?.type !== 'GUILD_TEXT') return
       else {
+        // Get member and user
+        const {
+          channel: newChannel,
+          member,
+          member: { user },
+        } = newState
+        const { channel: oldChannel } = oldState
+
         // channel shift
-        if (oldState.channel !== newState.channel) {
-          if (oldState.channel === null) {
+        if (oldChannel !== newChannel) {
+          if (oldChannel === null) {
             await logChannel
               .send({
                 embeds: [
@@ -818,17 +826,17 @@ export default {
                     color: ColorCheck('ADD'),
                     // title: 'Voice Channel Connect',
                     author: {
-                      name: oldState.member.user.tag,
-                      icon_url: oldState.member.displayAvatarURL(),
+                      name: user.tag,
+                      icon_url: member.displayAvatarURL(),
                     },
-                    description: `**User Joined Voice Channel ${newState.channel}**`,
-                    footer: { text: `Id: ${oldState.member.user.id}` },
+                    description: `**User Joined Voice Channel ${newChannel}**`,
+                    footer: { text: `Id: ${user.id}` },
                     timestamp: new Date(),
                   },
                 ],
               })
               .catch(console.log)
-          } else if (newState.channel === null) {
+          } else if (newChannel === null) {
             await logChannel
               .send({
                 embeds: [
@@ -836,11 +844,11 @@ export default {
                     color: ColorCheck('REMOVE'),
                     // title: 'Voice Channel Disconnect',
                     author: {
-                      name: oldState.member.user.tag,
-                      icon_url: oldState.member.displayAvatarURL(),
+                      name: user.tag,
+                      icon_url: member.displayAvatarURL(),
                     },
-                    description: `**User Left Voice Channel ${oldState.channel}**`,
-                    footer: { text: `Id: ${oldState.member.user.id}` },
+                    description: `**${user} Left Voice Channel ${oldChannel}**`,
+                    footer: { text: `Id: ${user.id}` },
                     timestamp: new Date(),
                   },
                 ],
@@ -854,19 +862,19 @@ export default {
                     // title: 'Voice Channel Switch',
                     color: ColorCheck('STATUS'),
                     author: {
-                      name: oldState.member.user.tag,
-                      icon_url: oldState.member.displayAvatarURL(),
+                      name: user.tag,
+                      icon_url: member.displayAvatarURL(),
                     },
                     description: 'User Switched Voice Channels',
                     fields: [
                       {
                         name: 'Before',
-                        value: `${oldState.channel}`,
+                        value: `${oldChannel}`,
                         inline: true,
                       },
                       {
                         name: 'After',
-                        value: `${newState.channel}`,
+                        value: `${newChannel}`,
                         inline: true,
                       },
                     ],
