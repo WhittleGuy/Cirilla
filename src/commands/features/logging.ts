@@ -1190,8 +1190,7 @@ export default {
                 description: `${ban.user} **Unbanned**\n
                 Account Age: ${TimeSince(
                   new Date(ban.user.createdTimestamp).getTime()
-                )}
-                Reason: ${ban.reason}`,
+                )}`,
                 footer: {
                   text: `Id: ${ban.user.id}`,
                 },
