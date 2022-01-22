@@ -2,6 +2,7 @@ import {
   Client,
   Guild,
   GuildTextBasedChannel,
+  MessageManager,
   NonThreadGuildBasedChannel,
   Role,
 } from 'discord.js'
@@ -355,6 +356,8 @@ export default {
         const msgChannel = msg.guild.channels.cache.get(msg.channel.id)
         let url
         if (msg.attachments) url = msg.attachments?.first()?.url
+        let msgObject = 'Message'
+        if (msg?.content?.length === 0 && url) msgObject = 'Image'
         await logChannel
           .send({
             embeds: [
@@ -370,7 +373,7 @@ export default {
                   text: `Id: ${msg.member.user.id}`,
                 },
                 timestamp: new Date(),
-                description: `**Message deleted in ${msgChannel}**
+                description: `**${msgObject} deleted in ${msgChannel}**
                 ${msg?.content}`,
               },
             ],
