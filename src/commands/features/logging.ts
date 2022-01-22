@@ -937,8 +937,8 @@ export default {
                 },
                 description: `${
                   roleGiven
-                    ? `${oldMember.user} was given the ${changeRole} role`
-                    : `${changeRole} was removed from ${oldMember.user}`
+                    ? `**${oldMember.user} was given the ${changeRole} role**`
+                    : `**${changeRole} was removed from ${oldMember.user}**`
                 }`,
                 footer: {
                   text: `Id: ${newMember.id}`,
