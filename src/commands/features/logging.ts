@@ -615,7 +615,7 @@ export default {
             name: newRole.guild.name,
             icon_url: newRole.guild.iconURL() || '',
           },
-          thumbnail: { url: nIcon ? nIcon : '' },
+          thumbnail: { url: newRole.iconURL() },
           timestamp: new Date(),
           description: `${newRole} **Updated**`,
           fields: [],
@@ -652,7 +652,7 @@ export default {
         if (icon() !== nIcon()) {
           changeEmbed.fields.push({
             name: 'Old Icon',
-            value: icon ? icon : 'None',
+            value: oldRole?.iconURL() || 'None',
             inline: true,
           })
         }
