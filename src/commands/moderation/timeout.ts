@@ -5,8 +5,8 @@ import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
 export default {
   category: 'Moderation',
   description: 'Timeout a user',
-  permissions: ['MODERATE_MEMBERS'],
-  requireRoles: false,
+  // permissions: ['MODERATE_MEMBERS'],
+  requireRoles: true,
   slash: true,
   testOnly: false,
   guildOnly: true,
