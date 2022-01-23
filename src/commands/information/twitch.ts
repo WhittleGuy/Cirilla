@@ -3,6 +3,7 @@ import axios from 'axios'
 import { ColorCheck, SuccessMessage } from '../../helpers'
 
 const HELIX = 'https://api.twitch.tv/helix'
+let authToken = ''
 
 export default {
   category: 'Information',
@@ -21,6 +22,13 @@ export default {
     },
   ],
 
+  init: async () => {
+    const res = await axios.post(
+      `https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCHCLIENT}&client_secret=${process.env.TWITCHSECRET}&grant_type=client_credentials`
+    )
+    authToken = res.data['access_token']
+  },
+
   callback: async ({ interaction }) => {
     await interaction.deferReply()
     const streamer = interaction.options.getString('streamer').toLowerCase()
@@ -30,7 +38,7 @@ export default {
       timeout: 5000,
       headers: {
         'Client-ID': process.env.TWITCHCLIENT,
-        Authorization: 'Bearer ugarzk1dpgdfy2u0eakcbenngb5rgl',
+        Authorization: `Bearer ${authToken}`,
       },
     })
 
