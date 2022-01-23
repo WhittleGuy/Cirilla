@@ -613,9 +613,9 @@ export default {
           color: ColorCheck('STATUS'),
           author: {
             name: newRole.guild.name,
-            icon_url: newRole.guild.iconURL(),
+            icon_url: newRole.guild.iconURL() || '',
           },
-          thumbnail: { url: nIcon() || '' },
+          thumbnail: { url: nIcon ? nIcon : '' },
           timestamp: new Date(),
           description: `${newRole} **Updated**`,
           fields: [],
@@ -652,7 +652,7 @@ export default {
         if (icon() !== nIcon()) {
           changeEmbed.fields.push({
             name: 'Old Icon',
-            value: icon() || 'None',
+            value: icon ? icon : 'None',
             inline: true,
           })
         }
