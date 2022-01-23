@@ -615,7 +615,7 @@ export default {
             name: newRole.guild.name,
             icon_url: newRole.guild.iconURL(),
           },
-          thumbnail: { url: nIcon() },
+          thumbnail: { url: nIcon() || '' },
           timestamp: new Date(),
           description: `${newRole} **Updated**`,
           fields: [],
