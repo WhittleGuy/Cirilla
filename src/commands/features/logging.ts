@@ -649,7 +649,7 @@ export default {
         }
 
         // Icon change
-        if (icon() !== nIcon()) {
+        if (oldRole?.iconURL() !== newRole.iconURL()) {
           changeEmbed.fields.push({
             name: 'Old Icon',
             value: oldRole?.iconURL() || 'None',
