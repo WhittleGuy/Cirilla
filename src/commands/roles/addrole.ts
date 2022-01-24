@@ -149,7 +149,7 @@ export default {
         // await interaction.deferReply({ ephemeral: true })
         const component = interaction.component as MessageSelectMenu
         const removed = component.options.filter((option) => {
-          return !values.includes(option.value)
+          !values.includes(option.value)
         })
 
         for (const id of values) {
