@@ -1059,6 +1059,10 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
+        const memRoles = member.roles.cache
+          .map((role: Role) => role)
+          .slice(0, -1)
+          .join(' ')
         await logChannel
           .send({
             embeds: [
@@ -1081,11 +1085,7 @@ export default {
                   },
                   {
                     name: 'Roles',
-                    value:
-                      member.roles.cache
-                        .map((role: Role) => role)
-                        .slice(0, -1)
-                        .join(' ') || `${''}`,
+                    value: memRoles.length ? memRoles : 'None',
                     inline: false,
                   },
                 ],
