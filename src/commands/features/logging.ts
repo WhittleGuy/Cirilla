@@ -505,7 +505,7 @@ export default {
                 color: ColorCheck('STATUS'),
                 // title: 'Message Edited',
                 author: {
-                  name: newMsg.member.user.tag,
+                  name: newMsg?.member?.user?.tag || 'Error',
                   icon_url: newMsg.member.displayAvatarURL(),
                 },
                 footer: { text: `Id: ${newMsg.id}` },
