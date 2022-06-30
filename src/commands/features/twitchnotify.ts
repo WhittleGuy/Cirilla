@@ -25,7 +25,7 @@ export default {
 
     const twitch = axios.create({
       baseURL: HELIX,
-      timeout: 5000,
+      timeout: 10000,
       headers: {
         'Client-ID': process.env.TWITCHCLIENT,
         Authorization: `Bearer ${authToken}`,
@@ -35,43 +35,47 @@ export default {
     const checkStatus = async () => {
       console.log('called')
       for (const i in STREAMERS) {
-        const {
-          data: { data: liveData },
-        } = await twitch.get(`/streams?user_login=${STREAMERS[i]}`)
-        if (liveData.length > 0) {
-          if (!LIVE_STREAMERS.includes(STREAMERS[i])) {
-            LIVE_STREAMERS.push(STREAMERS[i])
-            const {
-              data: { data: user },
-            } = await twitch.get(`/users?login=${STREAMERS[i]}`)
-            client.channels.fetch('930927322809393272').then((channel) =>
-              channel.send({
-                embeds: [
-                  {
-                    color: ColorCheck('STATUS'),
-                    thumbnail: {
-                      url: user[0].profile_image_url,
-                    },
-                    image: {
-                      url: `https://static-cdn.jtvnw.net/previews-ttv/live_user_${STREAMERS[i]}-960x540.jpg`,
-                    },
-                    description: `**[${liveData[0].title}](https://www.twitch.tv/${STREAMERS[i]})**
+        try {
+          const {
+            data: { data: liveData },
+          } = await twitch.get(`/streams?user_login=${STREAMERS[i]}`)
+          if (liveData.length > 0) {
+            if (!LIVE_STREAMERS.includes(STREAMERS[i])) {
+              LIVE_STREAMERS.push(STREAMERS[i])
+              const {
+                data: { data: user },
+              } = await twitch.get(`/users?login=${STREAMERS[i]}`)
+              client.channels.fetch('495490338035859456').then((channel) =>
+                channel.send({
+                  embeds: [
+                    {
+                      color: ColorCheck('STATUS'),
+                      thumbnail: {
+                        url: user[0].profile_image_url,
+                      },
+                      image: {
+                        url: `https://static-cdn.jtvnw.net/previews-ttv/live_user_${STREAMERS[i]}-960x540.jpg`,
+                      },
+                      description: `**[${liveData[0].title}](https://www.twitch.tv/${STREAMERS[i]})**
                     \n**Game**\n${liveData[0].game_name}`,
-                  },
-                ],
-              })
-            )
+                    },
+                  ],
+                })
+              )
+            }
+          } else {
+            const index = LIVE_STREAMERS.indexOf(STREAMERS[i])
+            if (index > -1) {
+              LIVE_STREAMERS.splice(index, 1)
+            }
           }
-        } else {
-          const index = LIVE_STREAMERS.indexOf(STREAMERS[i])
-          if (index > -1) {
-            LIVE_STREAMERS.splice(index, 1)
-          }
+        } catch (err) {
+          console.log(`TwitchNotify Error: ${err}`)
         }
       }
     }
 
-    setInterval(() => checkStatus(), 30000)
+    setInterval(() => checkStatus(), 60000)
   },
 
   callback: async ({ interaction }) => {},
