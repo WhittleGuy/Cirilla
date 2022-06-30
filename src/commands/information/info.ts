@@ -37,7 +37,7 @@ export default {
       const member = (interaction.options.getMember('user') ||
         interaction.member) as GuildMember
       const user = member.user
-
+      console.log(member.roles.cache.size)
       return interaction.reply({
         embeds: [
           {
@@ -69,10 +69,13 @@ export default {
               },
               {
                 name: `Roles [${member.roles.cache.size - 1}]`,
-                value: member.roles.cache
-                  .map((role: Role) => role)
-                  .slice(0, -1)
-                  .join(' '),
+                value:
+                  member.roles.cache.size > 1 // exclude @everyone
+                    ? member.roles.cache
+                        .map((role: Role) => role)
+                        .slice(0, -1)
+                        .join(' ')
+                    : 'None',
                 inline: false,
               },
             ],
