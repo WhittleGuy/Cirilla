@@ -4,7 +4,13 @@ import { ColorCheck, SuccessMessage } from '../../helpers'
 import { arrayBuffer } from 'stream/consumers'
 
 const LIVE_STREAMERS = []
-const STREAMERS = ['asterixks', 'kloudmello', 'catssnap', 'vermillionaf']
+const STREAMERS = [
+  'asterixks',
+  'kloudmello',
+  'catssnap',
+  'vermillionaf',
+  'oxillery',
+]
 const HELIX = 'https://api.twitch.tv/helix'
 let authToken = ''
 
@@ -33,7 +39,6 @@ export default {
     })
 
     const checkStatus = async () => {
-      console.log('called')
       for (const i in STREAMERS) {
         try {
           const {
