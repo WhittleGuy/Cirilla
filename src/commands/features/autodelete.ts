@@ -32,7 +32,7 @@ export default {
           name: 'timeout',
           description:
             'Time in seconds to wait before deleting a message (Default: 10)',
-          type: 10,
+          type: 3,
           required: false,
         },
       ],
@@ -83,7 +83,7 @@ export default {
       if (channel.type !== 'GUILD_TEXT')
         return FailureMessage(interaction, 'Tag a text channel')
       // Validate timeout
-      let timeout = interaction.options.getNumber('timeout')
+      let timeout = Number(interaction.options.getString('timeout'))
 
       // Set in database
       const set = await autoDeleteSchema.findOneAndUpdate(
