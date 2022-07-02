@@ -24,8 +24,8 @@ export default {
       options: [
         {
           name: 'channel',
-          description: 'Leave notification channel',
-          type: 7,
+          description: 'auto-delete channel',
+          type: 4,
           required: true,
         },
         {
@@ -65,7 +65,7 @@ export default {
           () =>
             message
               .delete()
-              .catch((err) => console.log('Message Delete Error: ' + err)),
+              .catch((err) => console.log('AutoDelete Error: ' + err)),
           data[1]
         )
       }
