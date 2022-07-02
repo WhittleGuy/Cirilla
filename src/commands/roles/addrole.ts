@@ -148,26 +148,31 @@ export default {
       ) {
         // await interaction.deferReply({ ephemeral: true })
         const component = interaction.component as MessageSelectMenu
-        const removed = component.options.filter((option) => {
-          !values.includes(option.value)
-        })
+        const removed = component.options.filter(
+          (opt) => !values.includes(opt.value)
+        )   
 
         for (const id of values) {
-          await member.roles
-            .add(id)
-            .catch((err) => console.log(`Role Add Error: ${err}`))
+          try {
+            await member.roles.add(id)
+          } catch (err) {
+            console.log(`Role Add Error: ${err}`)
+          }
         }
 
         for (const id of removed) {
-          await member.roles
-            .remove(id.value)
-            .catch((err) => console.log(`Role Remove Error: ${err}`))
+          try {
+            await member.roles.remove(id.value)
+          } catch (err) {
+            console.log(`Role Remove Error: ${err}`)
+          }
         }
 
         SuccessMessage(interaction, 'Roles updated!')
       } else return
     })
-  },
+  }
+,
 
   // Add/Remove roles from message
   callback: async ({ client, interaction }) => {
