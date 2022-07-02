@@ -62,10 +62,16 @@ export default {
       if (channel.id !== data[0]) return
       else {
         setTimeout(
-          () =>
-            message
-              .delete()
-              .catch((err) => console.log('AutoDelete Error: ' + err)),
+          () => {
+            try {
+              message
+                .delete()
+                .catch((err) => console.log('AutoDelete Error: ' + err))
+            } catch (err) {
+              console.log('AutoDelete Error: ' + err)
+            }
+          },
+
           data[1]
         )
       }
