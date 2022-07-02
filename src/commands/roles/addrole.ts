@@ -146,11 +146,11 @@ export default {
         ['cirilla-roles', 'cirilla-roles-exclusive'].includes(customId) &&
         member instanceof GuildMember
       ) {
-        // await interaction.deferReply({ ephemeral: true })
+        await interaction.deferReply({ ephemeral: true })
         const component = interaction.component as MessageSelectMenu
         const removed = component.options.filter(
           (opt) => !values.includes(opt.value)
-        )   
+        )
 
         for (const id of values) {
           try {
@@ -160,20 +160,25 @@ export default {
           }
         }
 
+        // @ts-ignore
+        const memberRoles = interaction.member.roles.cache.map(
+          (role) => role.id
+        )
+
         for (const id of removed) {
-          try {
-            await member.roles.remove(id.value)
-          } catch (err) {
-            console.log(`Role Remove Error: ${err}`)
+          if (memberRoles.includes(id.value)) {
+            try {
+              await member.roles.remove(id.value)
+            } catch (err) {
+              console.log(`Role Remove Error: ${err}`)
+            }
           }
         }
 
         SuccessMessage(interaction, 'Roles updated!')
       } else return
     })
-  }
-,
-
+  },
   // Add/Remove roles from message
   callback: async ({ client, interaction }) => {
     // Send "thinking" response
