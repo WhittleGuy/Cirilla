@@ -10,6 +10,7 @@ const STREAMERS = [
   'catssnap',
   'vermillionaf',
   'oxillery',
+  'dilophomasnaurus',
 ]
 const HELIX = 'https://api.twitch.tv/helix'
 let authToken = ''
