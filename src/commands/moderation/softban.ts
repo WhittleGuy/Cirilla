@@ -1,6 +1,11 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
+import {
+  ColorCheck,
+  FailureMessage,
+  SendError,
+  SuccessMessage,
+} from '../../helpers'
 
 export default {
   category: 'Moderation',
@@ -25,7 +30,7 @@ export default {
     },
   ],
 
-  callback: async ({ interaction }) => {
+  callback: async ({ interaction, guild, member: memberInt }) => {
     await interaction.deferReply({ ephemeral: true })
     const member = interaction.options.getMember('user') as GuildMember
     const reason = interaction.options.getString('reason')
@@ -74,12 +79,12 @@ export default {
       return i.member.user.id === interaction.member.user.id
     }
 
-    await interaction.channel
-      .awaitMessageComponent({ filter, componentType: 'BUTTON', time: 30000 })
-      .then(async (button) => {
-        if (button.customId === 'cirilla-confirm') {
-          await member
-            .send({
+    try {
+      await interaction.channel
+        .awaitMessageComponent({ filter, componentType: 'BUTTON', time: 30000 })
+        .then(async (button) => {
+          if (button.customId === 'cirilla-confirm') {
+            await member.send({
               embeds: [
                 {
                   color: ColorCheck('REMOVE'),
@@ -91,26 +96,26 @@ export default {
                 },
               ],
             })
-            .catch((err) => console.log('SoftBan DM Error: ' + err))
 
-          const bannedMember = (await member
-            .ban({ reason, days: 7 })
-            .catch(() => {
-              return FailureMessage(interaction, 'Error banning member')
-            })) as GuildMember
-          await interaction.guild.bans.remove(bannedMember.id).catch(() => {
-            return FailureMessage(interaction, 'Error unbanning member')
-          })
-          return SuccessMessage(
-            interaction,
-            `${member.user.username} has been softbanned`
-          )
-        } else if (button.customId === 'cirilla-cancel') {
-          return SuccessMessage(interaction, 'Softban cancelled')
-        }
-      })
-      .catch(() => {
-        return FailureMessage(interaction, 'Confirmation timed out')
-      })
+            const bannedMember = (await member
+              .ban({ reason, days: 7 })
+              .catch((err) => {
+                SendError('softban.ts', guild, memberInt, err)
+                return FailureMessage(interaction, 'Error banning member')
+              })) as GuildMember
+            await interaction.guild.bans.remove(bannedMember.id).catch(() => {
+              return FailureMessage(interaction, 'Error unbanning member')
+            })
+            return SuccessMessage(
+              interaction,
+              `${member.user.username} has been softbanned`
+            )
+          } else if (button.customId === 'cirilla-cancel') {
+            return SuccessMessage(interaction, 'Softban cancelled')
+          }
+        })
+    } catch (err) {
+      SendError('softban.ts', guild, member, err)
+    }
   },
 } as ICommand

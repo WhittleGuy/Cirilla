@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Utility',
@@ -30,7 +30,7 @@ export default {
     },
   ],
 
-  callback: async ({ guild, message, client, interaction }) => {
+  callback: async ({ guild, message, client, interaction, member }) => {
     const idReg = /\d{18}/
     let channel, messageId, content
     if (message) {
@@ -69,9 +69,12 @@ export default {
     }
 
     // Edit message
-    await targetMessage.edit({ content: content }).catch(async () => {
-      return FailureMessage(message || interaction)
-    })
+    try {
+      await targetMessage.edit({ content: content })
+    } catch (err) {
+      SendError('editmessage.ts', guild, member, err)
+      return FailureMessage(message || interaction, `${err}`)
+    }
 
     SuccessMessage(message || interaction)
   },

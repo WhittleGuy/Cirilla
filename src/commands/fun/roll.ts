@@ -1,5 +1,10 @@
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
+import {
+  ColorCheck,
+  FailureMessage,
+  SendError,
+  SuccessMessage,
+} from '../../helpers'
 
 export default {
   category: 'Fun',
@@ -24,7 +29,7 @@ export default {
     },
   ],
 
-  callback: async ({ interaction }) => {
+  callback: async ({ guild, member, interaction }) => {
     const diceString = interaction.options.getString('dice')
     const hide = interaction.options.getBoolean('hide')
 
@@ -56,8 +61,8 @@ export default {
       }
     }
 
-    await interaction
-      .reply({
+    try {
+      await interaction.reply({
         embeds: [
           {
             color: ColorCheck('STATUS'),
@@ -68,6 +73,9 @@ export default {
         ],
         ephemeral: hide,
       })
-      .catch(() => FailureMessage(interaction, 'Output embed too large'))
+    } catch (err) {
+      SendError('roll.ts', guild, member, err)
+      return FailureMessage(interaction, 'Something went wrong...')
+    }
   },
 } as ICommand

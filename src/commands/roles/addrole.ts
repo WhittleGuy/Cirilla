@@ -6,7 +6,7 @@ import {
   Role,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 
 interface RoleOption {
   label: string
@@ -156,7 +156,7 @@ export default {
           try {
             await member.roles.add(id)
           } catch (err) {
-            console.log(`Role Add Error: ${err}`)
+            SendError('addrole.ts', member.guild, member, err)
           }
         }
 
@@ -170,7 +170,7 @@ export default {
             try {
               await member.roles.remove(id.value)
             } catch (err) {
-              console.log(`Role Remove Error: ${err}`)
+              SendError('addrole.ts', member.guild, member, err)
             }
           }
         }
@@ -180,7 +180,7 @@ export default {
     })
   },
   // Add/Remove roles from message
-  callback: async ({ client, interaction }) => {
+  callback: async ({ client, interaction, guild, member }) => {
     // Send "thinking" response
     await interaction.deferReply({ ephemeral: true })
 
@@ -252,14 +252,18 @@ export default {
       })
     }
 
-    await targetMessage.edit({
-      components: [row],
-    })
+    try {
+      await targetMessage.edit({
+        components: [row],
+      })
 
-    interaction.editReply(
-      `Added [${roleOptionArray.map((o) => o.label).join()}] to ${
-        targetMessage.id
-      }`
-    )
+      await interaction.editReply(
+        `Added [${roleOptionArray.map((o) => o.label).join()}] to ${
+          targetMessage.id
+        }`
+      )
+    } catch (err) {
+      SendError('addrole.ts', guild, member, err)
+    }
   },
 } as ICommand

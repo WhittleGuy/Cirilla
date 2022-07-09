@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 import afkSchema from '../../models/afk-schema'
 
 const afkData = {} as {
@@ -42,8 +42,8 @@ export default {
     if (interaction.options.getSubcommand() === 'set') {
       const afkMessage = interaction.options.getString('message')
 
-      await afkSchema
-        .findOneAndUpdate(
+      try {
+        await afkSchema.findOneAndUpdate(
           {
             _id: user.id,
           },
@@ -56,9 +56,10 @@ export default {
             upsert: true,
           }
         )
-        .catch((err) => {
-          return FailureMessage(interaction, err)
-        })
+      } catch (err) {
+        SendError('afk.ts', null, null, err)
+      }
+
       afkData[user.id] = [afkMessage, true]
       return SuccessMessage(
         interaction,
@@ -80,8 +81,8 @@ export default {
         data = afkData[user.id] = [text, afk]
       }
 
-      await afkSchema
-        .findOneAndUpdate(
+      try {
+        await afkSchema.findOneAndUpdate(
           {
             _id: user.id,
           },
@@ -91,9 +92,10 @@ export default {
             afk: !data[1],
           }
         )
-        .catch((err) => {
-          return FailureMessage(interaction, err)
-        })
+      } catch (err) {
+        SendError('afk.ts', null, null, err)
+      }
+
       afkData[user.id] = [data[0], !data[1]]
       return SuccessMessage(
         interaction,

@@ -7,7 +7,7 @@ import {
   Role,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'CirillaRoles',
@@ -97,6 +97,7 @@ export default {
 
         const removeRole = async () => {
           const removed = await member.roles.remove(role).catch((err) => {
+            SendError('rulesmenu.ts', member.guild, member, err)
             FailureMessage(inter, err)
           })
           if (removed) return true
@@ -109,12 +110,14 @@ export default {
           complete = await member
             .kick('Disagreed to Cirilla rule menu')
             .catch((err) => {
+              SendError('rulesmenu.ts', member.guild, member, err)
               FailureMessage(inter, err)
             })
         } else if (values.includes('live')) {
           complete = await removeRole()
         } else {
           complete = await member.roles.add(role).catch((err) => {
+            SendError('rulesmenu.ts', member.guild, member, err)
             FailureMessage(inter, err)
           })
         }
@@ -125,7 +128,7 @@ export default {
   },
 
   // Send dropdown
-  callback: async ({ client, interaction }) => {
+  callback: async ({ client, interaction, guild, member }) => {
     await interaction.deferReply({ ephemeral: true })
     const channel = interaction.options.getChannel('channel')
     const messageId = interaction.options.getString('message')
@@ -187,11 +190,15 @@ export default {
         ],
       })
 
-    const sent = await targetMessage.edit({
-      components: [row],
-    })
+    try {
+      const sent = await targetMessage.edit({
+        components: [row],
+      })
+    } catch (err) {
+      SendError('rulesmenu.ts', guild, member, err)
+      return FailureMessage(interaction, 'Somthing went wrong...')
+    }
 
-    if (!sent) return FailureMessage(interaction)
     return SuccessMessage(interaction, `Dropdown posted in #${channel.name}`)
   },
 } as ICommand

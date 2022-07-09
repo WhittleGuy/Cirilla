@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Moderation',
@@ -18,20 +18,20 @@ export default {
     },
   ],
 
-  callback: async ({ interaction, channel }) => {
+  callback: async ({ interaction, channel, guild, member }) => {
     const amount = interaction.options.getNumber('number')
 
     if (amount < 1 || amount > 99) {
       return FailureMessage(interaction, 'Specify a number between 1 and 99')
     }
 
-    await channel
-      .bulkDelete(amount)
-      .then(() => {
+    try {
+      await channel.bulkDelete(amount).then(() => {
         return SuccessMessage(interaction, `Cleaned up ${amount} messages`)
       })
-      .catch((err) => {
-        return FailureMessage(interaction, err)
-      })
+    } catch (err) {
+      SendError('clean.ts', guild, member, err)
+      return FailureMessage(interaction, `${err}`)
+    }
   },
 } as ICommand

@@ -1,6 +1,11 @@
 import { ColorResolvable } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
+import {
+  ColorCheck,
+  FailureMessage,
+  SendError,
+  SuccessMessage,
+} from '../../helpers'
 
 export default {
   category: 'Utility',
@@ -37,7 +42,7 @@ export default {
     },
   ],
 
-  callback: async ({ interaction }) => {
+  callback: async ({ interaction, guild, member }) => {
     // RegEx to verify emote Ids
     const EMOTE = /^<:[\w\W]+:\d+>$/
     const EMOJI = /\p{Extended_Pictographic}/u
@@ -93,12 +98,14 @@ export default {
 
     const addReactions = async (emotes: string[]) => {
       for (const emote of emotes) {
-        const reaction = await poll.react(emote).catch(() => {
-          return
-        })
-        if (!reaction) {
+        try {
+          await poll.react(emote).catch(() => {
+            return
+          })
+        } catch (err) {
+          SendError('poll.ts', guild, member, err)
           FailureMessage(interaction, "I don't have access to that emote")
-          poll.delete()
+          await poll.delete()
           return false
         }
       }

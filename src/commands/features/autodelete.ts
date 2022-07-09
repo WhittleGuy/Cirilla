@@ -1,6 +1,6 @@
 import { Client } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 import autoDeleteSchema from '../../models/auto-delete-schema'
 
 const autoDeleteData = {} as {
@@ -46,7 +46,7 @@ export default {
 
   init: async (client: Client) => {
     client.on('messageCreate', async (message) => {
-      const { guild, channel } = message
+      const { guild, channel, member } = message
       if (channel.type !== 'GUILD_TEXT') return
 
       let data = autoDeleteData[guild.id]
@@ -64,11 +64,9 @@ export default {
         setTimeout(
           async () => {
             try {
-              await message
-                .delete()
-                .catch((err) => console.log('AutoDelete Error: ' + err))
+              await message.delete()
             } catch (err) {
-              console.log('AutoDelete Error: ' + err)
+              SendError('autoDelete.ts', guild, member, err)
             }
           },
 
@@ -80,7 +78,7 @@ export default {
     })
   },
 
-  callback: async ({ guild, interaction }) => {
+  callback: async ({ guild, interaction, member }) => {
     await interaction.deferReply({ ephemeral: true })
     // Enable an autoDelete channel
     if (interaction.options.getSubcommand() === 'enable') {
@@ -106,6 +104,13 @@ export default {
       autoDeleteData[guild.id] = [channel.id, timeout ? timeout * 1000 : 10000]
 
       if (set) return SuccessMessage(interaction)
+      if (!set)
+        SendError(
+          'autoDelete.ts',
+          guild,
+          member,
+          'Error setting autoDelete in DB'
+        )
     }
 
     // Disable
@@ -114,7 +119,16 @@ export default {
         _id: guild.id,
       })
 
+      autoDeleteData[guild.id].pop()
+
       if (set) return SuccessMessage(interaction)
+      if (!set)
+        SendError(
+          'autoDelete.ts',
+          guild,
+          member,
+          'Error removing autoDelete in DB'
+        )
     }
   },
 } as ICommand

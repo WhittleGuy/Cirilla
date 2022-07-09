@@ -1,4 +1,5 @@
 import { Client, TextChannel } from 'discord.js'
+import { SendError } from '../helpers'
 import autoDeleteSchema from '../models/auto-delete-schema'
 
 const autoDeleteData = {} as {
@@ -23,7 +24,11 @@ export default async (client: Client) => {
 
     if (channel.id !== data[0]) return
     else {
-      setTimeout(() => message.delete(), data[1])
+      try {
+        setTimeout(() => message.delete(), data[1])
+      } catch (err) {
+        SendError('autodelete.ts', guild, null, err)
+      }
     }
 
     return

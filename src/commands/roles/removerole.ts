@@ -4,7 +4,7 @@ import {
   MessageSelectOptionData,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'CirillaRoles',
@@ -35,7 +35,7 @@ export default {
     },
   ],
 
-  callback: async ({ interaction }) => {
+  callback: async ({ interaction, guild, member }) => {
     await interaction.deferReply({ ephemeral: true })
     const channel = interaction.options.getChannel('channel')
     if (channel.type !== 'GUILD_TEXT')
@@ -67,16 +67,20 @@ export default {
         (o) => o.value !== role.id
       ) as MessageSelectOptionData[]
 
-      if (menu.options.length === 1) {
-        await targetMessage.edit({ components: [] })
-      } else {
-        await targetMessage.edit({
-          components: [
-            row.setComponents(
-              menu.setOptions(newOpts).setMaxValues(menu.options.length)
-            ),
-          ],
-        })
+      try {
+        if (menu.options.length === 1) {
+          await targetMessage.edit({ components: [] })
+        } else {
+          await targetMessage.edit({
+            components: [
+              row.setComponents(
+                menu.setOptions(newOpts).setMaxValues(menu.options.length)
+              ),
+            ],
+          })
+        }
+      } catch (err) {
+        SendError('removerole.ts', guild, member, err)
       }
 
       return SuccessMessage(

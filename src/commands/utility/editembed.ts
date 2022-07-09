@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Utility',
@@ -92,19 +92,22 @@ export default {
     }
 
     // Edit message
-    const editEmbed = await targetMessage.edit({
-      embeds: [
-        {
-          color: targetMessage.embeds[0].color,
-          title: `${title ? title : ''}`,
-          description: `${description ? description : ''}`,
-          footer: { text: userId },
-          timestamp: new Date(),
-        },
-      ],
-    })
-
-    if (!editEmbed) return FailureMessage(message || interaction)
+    try {
+      await targetMessage.edit({
+        embeds: [
+          {
+            color: targetMessage.embeds[0].color,
+            title: `${title ? title : ''}`,
+            description: `${description ? description : ''}`,
+            footer: { text: userId },
+            timestamp: new Date(),
+          },
+        ],
+      })
+    } catch (err) {
+      SendError('editembed.ts', null, null, err)
+      return FailureMessage(message || interaction, `${err}`)
+    }
     return SuccessMessage(message || interaction)
   },
 } as ICommand

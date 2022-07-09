@@ -1,6 +1,11 @@
 import { ICommand } from 'wokcommands'
 import axios from 'axios'
-import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
+import {
+  ColorCheck,
+  FailureMessage,
+  SendError,
+  SuccessMessage,
+} from '../../helpers'
 import twitchNotifySchema from '../../models/twitchNotifySchema'
 
 interface Streamer {
@@ -134,7 +139,7 @@ export default {
               }
             }
           } catch (err) {
-            console.log(`[-] TwitchNotify | ${err}`)
+            SendError('twitchNotify.ts', null, null, err)
           }
         }
       }

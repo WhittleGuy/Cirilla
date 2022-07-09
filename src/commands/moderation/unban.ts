@@ -1,6 +1,11 @@
 import { User } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
+import {
+  ColorCheck,
+  FailureMessage,
+  SendError,
+  SuccessMessage,
+} from '../../helpers'
 
 export default {
   category: 'Moderation',
@@ -25,7 +30,7 @@ export default {
     },
   ],
 
-  callback: async ({ guild, interaction }) => {
+  callback: async ({ guild, interaction, member }) => {
     const user = interaction.options.getUser('user') as User
     const reason = interaction.options.getString('reason')
 
@@ -68,32 +73,34 @@ export default {
       return i.member.user.id === interaction.member.user.id
     }
 
-    await interaction.channel
-      .awaitMessageComponent({ filter, componentType: 'BUTTON', time: 30000 })
-      .then(async (button) => {
-        if (button.customId === 'cirilla-confirm') {
-          await user
-            .send({
-              embeds: [
-                {
-                  color: ColorCheck('STATUS'),
-                  title: `${interaction.guild.name} | Unbanned`,
-                  description: `Reason: ${reason}`,
-                },
-              ],
-            })
-            .catch((err) => console.log('UnBan DM Error: ' + err))
+    try {
+      await interaction.channel
+        .awaitMessageComponent({ filter, componentType: 'BUTTON', time: 30000 })
+        .then(async (button) => {
+          if (button.customId === 'cirilla-confirm') {
+            await user
+              .send({
+                embeds: [
+                  {
+                    color: ColorCheck('STATUS'),
+                    title: `${interaction.guild.name} | Unbanned`,
+                    description: `Reason: ${reason}`,
+                  },
+                ],
+              })
+              .catch((err) => console.log('UnBan DM Error: ' + err))
 
-          await guild.bans.remove(user.id).catch((err) => {
-            return FailureMessage(interaction, err)
-          })
-          return SuccessMessage(interaction, `${user.tag} has been unbanned`)
-        } else if (button.customId === 'cirilla-cancel') {
-          return SuccessMessage(interaction, 'Unban cancelled')
-        }
-      })
-      .catch(() => {
-        return FailureMessage(interaction, 'Confirmation timed out')
-      })
+            await guild.bans.remove(user.id).catch((err) => {
+              return FailureMessage(interaction, err)
+            })
+            return SuccessMessage(interaction, `${user.tag} has been unbanned`)
+          } else if (button.customId === 'cirilla-cancel') {
+            return SuccessMessage(interaction, 'Unban cancelled')
+          }
+        })
+    } catch (err) {
+      SendError('unban.ts', guild, member, err)
+      return FailureMessage(interaction, `${err}`)
+    }
   },
 } as ICommand

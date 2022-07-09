@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck } from '../../helpers'
+import { ColorCheck, SendError } from '../../helpers'
 import revolverSchema from '../../models/revolver-schema'
 
 const revolverData = {} as {
@@ -34,12 +34,16 @@ export default {
     // Get data if present, reset revolver if not
     let data = revolverData[guild.id]
     if (!data) {
-      const res = await revolverSchema.findById(guild.id)
-      if (res) {
-        const { chambers } = res
-        data = chambers
-      } else {
-        data = spin()
+      try {
+        const res = await revolverSchema.findById(guild.id)
+        if (res) {
+          const { chambers } = res
+          data = chambers
+        } else {
+          data = spin()
+        }
+      } catch (err) {
+        SendError('russianRoulette.ts', guild, member, err)
       }
     }
     // Prepare response to be edited accordingly
@@ -61,31 +65,43 @@ export default {
       data = spin()
     }
     revolverData[guild.id] = data
-    await revolverSchema.findOneAndUpdate(
-      {
-        _id: guild.id,
-      },
-      {
-        _id: guild.id,
-        chambers: data,
-      },
-      {
-        upsert: true,
-      }
-    )
+    try {
+      await revolverSchema.findOneAndUpdate(
+        {
+          _id: guild.id,
+        },
+        {
+          _id: guild.id,
+          chambers: data,
+        },
+        {
+          upsert: true,
+        }
+      )
+    } catch (err) {
+      SendError('russianRoulette.ts', guild, member, err)
+    }
 
     //  Kill condition
     if (bullet) {
       responseEmbed.color = ColorCheck('REMOVE')
       responseEmbed.title = 'Bang!'
       responseEmbed.description = `**Timed out for ${timeoutLength} minute(s)**`
-      await member
-        .timeout(timeoutLength * 60000, '/russianroulette')
-        .catch(() => {
-          responseEmbed.description = `${''}`
-          return
-        })
-      await interaction.editReply({ embeds: [responseEmbed] })
+      try {
+        await member
+          .timeout(timeoutLength * 60000, '/russianroulette')
+          .catch(() => {
+            responseEmbed.description = `${''}`
+            return
+          })
+      } catch (err) {
+        SendError('russianRoulette.ts', guild, member, err)
+      }
+      try {
+        await interaction.editReply({ embeds: [responseEmbed] })
+      } catch (err) {
+        SendError('russianRoulette.ts', guild, member, err)
+      }
     }
 
     // Survival condition
@@ -96,11 +112,19 @@ export default {
         responseEmbed.color = ColorCheck()
         responseEmbed.description =
           '**<a:zdripheart:901385907859501056> You are incredibly hot and sexy and everybody wants you <a:zdripheart:901385907859501056>**'
-        await interaction.editReply({ embeds: [responseEmbed] })
+        try {
+          await interaction.editReply({ embeds: [responseEmbed] })
+        } catch (err) {
+          SendError('russianRoulette.ts', guild, member, err)
+        }
       } else {
         responseEmbed.color = ColorCheck('ADD')
         responseEmbed.title = '**You have survived**'
-        await interaction.editReply({ embeds: [responseEmbed] })
+        try {
+          await interaction.editReply({ embeds: [responseEmbed] })
+        } catch (err) {
+          SendError('russianRoulette.ts', guild, member, err)
+        }
       }
     }
 

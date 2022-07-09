@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'Utility',
@@ -24,7 +24,7 @@ export default {
     },
   ],
 
-  callback: async ({ guild, message, interaction }) => {
+  callback: async ({ guild, message, interaction, member }) => {
     let channel, content
 
     // Normal command
@@ -53,10 +53,12 @@ export default {
     let chunks = content.match(chunkRegEx)
 
     for (let i = 0; i < chunks.length; i++) {
-      await channel.send(chunks[i]).catch((err) => {
-        console.error('Say Error' + err)
+      try {
+        await channel.send(chunks[i])
+      } catch (err) {
+        SendError('say.ts', guild, member, err)
         return FailureMessage(message || interaction)
-      })
+      }
     }
 
     return SuccessMessage(message || interaction)

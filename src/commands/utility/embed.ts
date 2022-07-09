@@ -1,6 +1,11 @@
 import { ColorResolvable } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
+import {
+  ColorCheck,
+  FailureMessage,
+  SendError,
+  SuccessMessage,
+} from '../../helpers'
 
 export default {
   category: 'Utility',
@@ -37,7 +42,7 @@ export default {
     },
   ],
 
-  callback: async ({ guild, message, interaction }) => {
+  callback: async ({ guild, message, interaction, member }) => {
     let channel, title, description, color
     // Standard command
     if (message) {
@@ -68,20 +73,21 @@ export default {
       ? guild.members.cache.get(message.author.id).user.id
       : interaction.user.id
 
-    const postEmbed = await channel.send({
-      embeds: [
-        {
-          color: ColorCheck(color),
-          title: `${title ? title : ''}`,
-          description: `${description ? description : ''}`,
-          // footer: { text: userId },
-          // timestamp: new Date(),
-        },
-      ],
-    })
-
-    if (!postEmbed) {
-      return FailureMessage(message || interaction)
+    try {
+      await channel.send({
+        embeds: [
+          {
+            color: ColorCheck(color),
+            title: `${title ? title : ''}`,
+            description: `${description ? description : ''}`,
+            // footer: { text: userId },
+            // timestamp: new Date(),
+          },
+        ],
+      })
+    } catch (err) {
+      SendError('embed.ts', guild, member, err)
+      return FailureMessage(message || interaction, `${err}`)
     }
 
     return SuccessMessage(message || interaction, 'Embed sent')

@@ -7,7 +7,12 @@ import {
   Role,
 } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { ColorCheck, FailureMessage, SuccessMessage } from '../../helpers'
+import {
+  ColorCheck,
+  FailureMessage,
+  SendError,
+  SuccessMessage,
+} from '../../helpers'
 import loggingSchema from '../../models/loggingSchema'
 
 const loggingData = {} as {
@@ -274,8 +279,8 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('ADD'),
@@ -294,7 +299,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (inviteCreate)', guild, inv.inviter, err)
+        }
       }
       return
     })
@@ -310,8 +317,8 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('REMOVE'),
@@ -336,7 +343,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (inviteDelete)', guild, inv.inviter, err)
+        }
       }
       return
     })
@@ -358,8 +367,8 @@ export default {
         if (msg.attachments) url = msg.attachments?.first()?.url
         let msgObject = 'Message'
         if (msg?.content?.length === 0 && url) msgObject = 'Image'
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('REMOVE'),
@@ -378,15 +387,17 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (msgDelete)', guild, msg.author, err)
+        }
         if (msg?.attachments?.size > 1) {
           msg.attachments = msg.attachments.filter(
             (a) => a !== msg.attachments.first()
           )
           msg.attachments.forEach(async (a) => {
             url = a?.url
-            await logChannel
-              .send({
+            try {
+              await logChannel.send({
                 embeds: [
                   {
                     color: ColorCheck('REMOVE'),
@@ -404,7 +415,9 @@ export default {
                   },
                 ],
               })
-              .catch(console.log)
+            } catch (err) {
+              SendError('logging.ts (msgDelete)', guild, msg.author, err)
+            }
           })
         }
       }
@@ -429,8 +442,8 @@ export default {
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
         const msgChannel = guild.channels.cache.get(msgs.first().channel.id)
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('REMOVE'),
@@ -445,7 +458,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (msgDeleteBulk)', guild, null, err)
+        }
       }
       return
     })
@@ -498,8 +513,8 @@ export default {
             },
           ]
         }
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('STATUS'),
@@ -515,7 +530,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (msgUpdate)', guild, newMsg.author, err)
+        }
       }
       return
     })
@@ -529,8 +546,8 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('ADD'),
@@ -548,7 +565,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (roleCreate)', role.guild, null, err)
+        }
       }
       return
     })
@@ -562,8 +581,8 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('REMOVE'),
@@ -580,7 +599,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (roleDelete)', role.guild, null, err)
+        }
       }
       return
     })
@@ -705,9 +726,13 @@ export default {
             .fetch(data[0])
             .catch(console.log)) as NonThreadGuildBasedChannel
           if (logChannel?.type !== 'GUILD_TEXT') return
-          await logChannel.send({
-            embeds: [changeEmbed],
-          })
+          try {
+            await logChannel.send({
+              embeds: [changeEmbed],
+            })
+          } catch (err) {
+            SendError('logging.ts (roleUpdate)', newRole.guild, null, err)
+          }
         }
         return
       }
@@ -722,8 +747,8 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('ADD'),
@@ -741,7 +766,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (threadCreate)', thread.guild, null, err)
+        }
       }
       return
     })
@@ -755,8 +782,8 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('REMOVE'),
@@ -771,7 +798,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (threadDelete)', thread.guild, null, err)
+        }
       }
       return
     })
@@ -785,8 +814,8 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('STATUS'),
@@ -809,7 +838,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (threadUpdate)', newThread.guild, null, err)
+        }
       }
       return
     })
@@ -834,8 +865,8 @@ export default {
         // channel shift
         if (oldChannel !== newChannel) {
           if (oldChannel === null) {
-            await logChannel
-              .send({
+            try {
+              await logChannel.send({
                 embeds: [
                   {
                     color: ColorCheck('ADD'),
@@ -850,10 +881,17 @@ export default {
                   },
                 ],
               })
-              .catch(console.log)
+            } catch (err) {
+              SendError(
+                'logging.ts (voiceStateJoin)',
+                newChannel.guild,
+                user,
+                err
+              )
+            }
           } else if (newChannel === null) {
-            await logChannel
-              .send({
+            try {
+              await logChannel.send({
                 embeds: [
                   {
                     color: ColorCheck('REMOVE'),
@@ -868,10 +906,17 @@ export default {
                   },
                 ],
               })
-              .catch(console.log)
+            } catch (err) {
+              SendError(
+                'logging.ts (voiceStateLeave)',
+                newChannel.guild,
+                user,
+                err
+              )
+            }
           } else {
-            await logChannel
-              .send({
+            try {
+              await logChannel.send({
                 embeds: [
                   {
                     // title: 'Voice Channel Switch',
@@ -898,7 +943,14 @@ export default {
                   },
                 ],
               })
-              .catch(console.log)
+            } catch (err) {
+              SendError(
+                'logging.ts (voiceStateSwitch)',
+                newChannel.guild,
+                user,
+                err
+              )
+            }
           }
         }
       }
@@ -916,7 +968,14 @@ export default {
         // Role change
         const logChannel = (await oldMember.guild.channels
           .fetch(data[0])
-          .catch(console.log)) as NonThreadGuildBasedChannel
+          .catch((err) =>
+            SendError(
+              'logging.ts (voiceStateLeave)',
+              newMember.guild,
+              newMember,
+              err
+            )
+          )) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
         let roleGiven
         if (newMember.roles.cache.size > oldMember.roles.cache.size) {
@@ -931,8 +990,8 @@ export default {
           : oldMember.roles.cache
               .filter((r) => !newMember.roles.cache.has(r.id))
               .first()
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck(roleGiven ? 'ADD' : 'REMOVE'),
@@ -953,7 +1012,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (memberRole)', newMember.guild, newMember, err)
+        }
       }
       // Nick Change
       else if (
@@ -965,8 +1026,8 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 // title: `Nickname Changed`,
@@ -996,7 +1057,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (memberNick)', newMember.guild, newMember, err)
+        }
       }
       // Timeout
       else if (
@@ -1023,8 +1086,8 @@ export default {
               },
             ]
           : []
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 // title: `Timeout ${timeoutAdded ? 'Added' : 'Removed'}`,
@@ -1045,7 +1108,14 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError(
+            'logging.ts (memberTimeout)',
+            newMember.guild,
+            newMember,
+            err
+          )
+        }
       }
       return
     })
@@ -1063,8 +1133,8 @@ export default {
           .map((role: Role) => role)
           .slice(0, -1)
           .join(' ')
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 // title: 'User Leave',
@@ -1096,7 +1166,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (memberLeave)', member.guild, null, err)
+        }
       }
       return
     })
@@ -1111,8 +1183,8 @@ export default {
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
         const { guild } = member
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 // title: 'User Join',
@@ -1139,7 +1211,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (memberJoin)', member.guild, member, err)
+        }
       }
 
       return
@@ -1154,8 +1228,8 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('REMOVE'),
@@ -1176,7 +1250,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (guildBan)', ban.guild, ban.user, err)
+        }
       }
       return
     })
@@ -1190,8 +1266,8 @@ export default {
           .fetch(data[0])
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('STATUS'),
@@ -1212,7 +1288,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (guildBanRemove)', ban.guild, ban.user, err)
+        }
       }
       return
     })
@@ -1227,8 +1305,8 @@ export default {
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
         const cat = chan.type === 'GUILD_CATEGORY'
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('ADD'),
@@ -1242,7 +1320,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (channelCreate)', chan.guild, null, err)
+        }
       }
       return
     })
@@ -1258,8 +1338,8 @@ export default {
           .catch(console.log)) as NonThreadGuildBasedChannel
         if (logChannel?.type !== 'GUILD_TEXT') return
         const cat = ch.type === 'GUILD_CATEGORY'
-        await logChannel
-          .send({
+        try {
+          await logChannel.send({
             embeds: [
               {
                 color: ColorCheck('REMOVE'),
@@ -1273,7 +1353,9 @@ export default {
               },
             ],
           })
-          .catch(console.log)
+        } catch (err) {
+          SendError('logging.ts (channelDelete)', chan.guild, null, err)
+        }
       }
       return
     })

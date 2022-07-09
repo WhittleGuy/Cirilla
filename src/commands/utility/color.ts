@@ -1,7 +1,7 @@
 import { ICommand } from 'wokcommands'
 import Canvas from 'canvas'
 import { ColorResolvable, MessageAttachment } from 'discord.js'
-import { ColorCheck } from '../../helpers'
+import { ColorCheck, SendError } from '../../helpers'
 
 const hexToRGB = (
   hex: string
@@ -133,32 +133,36 @@ export default {
     const { c, m, y, k } = rgbToCMYK(r, g, b)
 
     const attachment = new MessageAttachment(canvas.toBuffer(), `ciri.png`)
-    interaction.editReply({
-      embeds: [
-        {
-          color: hex,
-          thumbnail: { url: `attachment://ciri.png` },
-          fields: [
-            {
-              name: 'Hex',
-              value: hex.toString(),
-            },
-            {
-              name: 'RGB',
-              value: `${r}, ${g}, ${b}`,
-            },
-            {
-              name: 'HSL',
-              value: `${h}, ${s}%, ${l}%`,
-            },
-            {
-              name: 'CMYK',
-              value: `${c}%, ${m}%, ${y}%, ${k}%, `,
-            },
-          ],
-        },
-      ],
-      files: [attachment],
-    })
+    try {
+      await interaction.editReply({
+        embeds: [
+          {
+            color: hex,
+            thumbnail: { url: `attachment://ciri.png` },
+            fields: [
+              {
+                name: 'Hex',
+                value: hex.toString(),
+              },
+              {
+                name: 'RGB',
+                value: `${r}, ${g}, ${b}`,
+              },
+              {
+                name: 'HSL',
+                value: `${h}, ${s}%, ${l}%`,
+              },
+              {
+                name: 'CMYK',
+                value: `${c}%, ${m}%, ${y}%, ${k}%, `,
+              },
+            ],
+          },
+        ],
+        files: [attachment],
+      })
+    } catch (err) {
+      SendError('color.ts', null, null, err)
+    }
   },
 } as ICommand

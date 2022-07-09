@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 
 export default {
   category: 'CirillaRoles',
@@ -24,7 +24,7 @@ export default {
     },
   ],
 
-  callback: async ({ client, interaction }) => {
+  callback: async ({ client, interaction, guild, member }) => {
     interaction.deferReply({ ephemeral: true })
     const channel = interaction.options.getChannel('channel')
     if (channel.type !== 'GUILD_TEXT')
@@ -42,7 +42,12 @@ export default {
          Try using \`/embed\` or \`/say\``
       )
     }
-    const removed = await targetMessage.edit({ components: [] })
-    if (removed) SuccessMessage(interaction, 'Dropdown removed')
+    try {
+      await targetMessage.edit({ components: [] })
+    } catch (err) {
+      SendError('removemenu.ts', guild, member, err)
+      return FailureMessage(interaction, `${err}`)
+    }
+    return SuccessMessage(interaction, 'Dropdown removed')
   },
 } as ICommand

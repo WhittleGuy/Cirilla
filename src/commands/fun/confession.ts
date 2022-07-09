@@ -1,7 +1,7 @@
 import { MembershipScreeningFieldType } from 'discord-api-types'
 import { Permissions, TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { FailureMessage, SuccessMessage } from '../../helpers'
+import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 import confessionChSchema from '../../models/confession-ch-schema'
 
 const confessionData = {} as {
@@ -92,16 +92,19 @@ export default {
 
       const confession = interaction.options.getString('confession')
 
-      const sent = await data.send({
-        embeds: [
-          {
-            color: 'RANDOM',
-            description: confession,
-          },
-        ],
-      })
-
-      if (!sent) return FailureMessage(interaction)
+      try {
+        await data.send({
+          embeds: [
+            {
+              color: 'RANDOM',
+              description: confession,
+            },
+          ],
+        })
+      } catch (err) {
+        SendError('confession.ts', guild, member, err)
+        return FailureMessage(interaction)
+      }
       return SuccessMessage(interaction)
     }
   },
