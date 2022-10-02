@@ -22,7 +22,7 @@ const twitchNotifyData = {} as {
 const helixURL = 'https://api.twitch.tv/helix'
 let authToken = ''
 
-const liveEmbed = (userIconURL, channel, title, game) => {
+const liveEmbed = (username, userIconURL, channel, title, game) => {
   return {
     color: ColorCheck('STATUS'),
     thumbnail: {
@@ -31,6 +31,7 @@ const liveEmbed = (userIconURL, channel, title, game) => {
     image: {
       url: `https://static-cdn.jtvnw.net/previews-ttv/live_user_${channel}-960x540.jpg`,
     },
+    title: `${username} is live!`,
     description: `**[${title}](https://www.twitch.tv/${channel})**
                     \n**Game**\n${game}`,
   }
@@ -109,8 +110,7 @@ export default {
 
             if (liveData.length > 0) {
               // don't repost live notifications for the same stream
-              if (live === true) return
-              else {
+              if (live === false) {
                 const {
                   data: { data: user },
                 } = await twitch.get(`/users?login=${channel}`)
@@ -120,6 +120,7 @@ export default {
                 const notificationSent = await ch.send({
                   embeds: [
                     liveEmbed(
+                      user[0].display_name,
                       user[0].profile_image_url,
                       channel,
                       liveData[0].title,
