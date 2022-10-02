@@ -6,7 +6,7 @@ export default {
   description: 'Send a message from Cirilla',
   permissions: ['MANAGE_MESSAGES'],
   requireRoles: false,
-  slash: 'both',
+  slash: true,
   testOnly: false,
   guildOnly: true,
   options: [

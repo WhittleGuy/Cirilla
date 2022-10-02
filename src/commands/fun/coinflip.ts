@@ -6,7 +6,7 @@ export default {
   description: 'Flip a coin',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
-  slash: 'both',
+  slash: true,
   testOnly: false,
   guildOnly: false,
   options: [],

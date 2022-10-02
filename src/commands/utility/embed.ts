@@ -12,7 +12,7 @@ export default {
   description: 'Post a custom embed',
   permissions: ['MANAGE_MESSAGES'],
   requireRoles: false,
-  slash: 'both',
+  slash: true,
   testOnly: false,
   guildOnly: true,
   options: [

@@ -6,7 +6,7 @@ export default {
   description: 'Edit a post made with /say',
   permissions: ['MANAGE_MESSAGES'],
   // requireRoles: true,
-  slash: 'both',
+  slash: true,
   testOnly: false,
   guildOnly: true,
   options: [

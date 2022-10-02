@@ -58,23 +58,17 @@ export default {
         const { channelId, timeout } = results
         data = autoDeleteData[guild.id] = [channelId, timeout]
       }
-
       if (channel.id !== data[0]) return
       else {
-        setTimeout(
-          async () => {
-            try {
-              await message.delete()
-            } catch (err) {
-              SendError('autoDelete.ts', guild, member, err)
-            }
-          },
-
-          data[1]
-        )
+        setTimeout(async () => {
+          try {
+            console.log(message)
+            await message.delete()
+          } catch (e) {
+            SendError('autoDelete.ts', guild, member, e)
+          }
+        }, data[1])
       }
-
-      return
     })
   },
 

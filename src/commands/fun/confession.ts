@@ -14,7 +14,7 @@ export default {
   description: 'Set up or post to an anonymous confession channel',
   // permissions: ['ADMINISTRATOR'],
   requireRoles: false,
-  slash: 'both',
+  slash: true,
   testOnly: false,
   guildOnly: false,
   options: [
