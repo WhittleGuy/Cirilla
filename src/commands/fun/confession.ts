@@ -3,6 +3,7 @@ import { Permissions, TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import { FailureMessage, SendError, SuccessMessage } from '../../helpers'
 import confessionChSchema from '../../models/confession-ch-schema'
+import fs from 'fs'
 
 const confessionData = {} as {
   // guildId: [channel]
@@ -51,7 +52,10 @@ export default {
     if (interaction.options.getSubcommand() === 'set') {
       // Validate user
       if (!member.permissions.has([Permissions.FLAGS.MANAGE_CHANNELS])) {
-        return FailureMessage(interaction)
+        return FailureMessage(
+          interaction,
+          'You do not have the proper permissions'
+        )
       }
 
       const channel = interaction.options.getChannel('channel')
@@ -81,6 +85,7 @@ export default {
     // Send confession
     if (interaction.options.getSubcommand() === 'post') {
       let data = confessionData[guild.id]
+      const uid = interaction.user.id
 
       if (!data) {
         const res = await confessionChSchema.findById(guild.id)
@@ -91,6 +96,13 @@ export default {
       }
 
       const confession = interaction.options.getString('confession')
+
+      // @ts-ignore
+      fs.appendFileSync('confession.log', `${uid}: ${confession}\n`, (err) => {
+        if (err) {
+          console.error(`Error logging confession by ${uid}`)
+        }
+      })
 
       try {
         await data.send({

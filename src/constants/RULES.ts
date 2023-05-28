@@ -55,10 +55,10 @@ export const RULES: RULE[] = [
   },
   {
     category: 'Moderation',
-    description: 'If a server member is causing problems, DM ModMail',
+    description: 'If a server member is causing problems, DM a moderator',
   },
   {
     category: 'Administration',
-    description: 'Report server issues to ModMail',
+    description: 'Report server issues to server admin',
   },
 ]

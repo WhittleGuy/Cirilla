@@ -37,7 +37,6 @@ export default {
       const member = (interaction.options.getMember('user') ||
         interaction.member) as GuildMember
       const user = member.user
-      console.log(member.roles.cache.size)
       return interaction.reply({
         embeds: [
           {
